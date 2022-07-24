@@ -21,6 +21,20 @@ const userSchema = new Schema({
     },
     Admin: Number,
   },
+  games: {
+    points: {
+      type: Number,
+      default: 0,
+    },
+    gamesWon: {
+      type: Number,
+      default: 0,
+    },
+    gamesLost: {
+      type: Number,
+      default: 0,
+    },
+  },
   createdAt: {
     type: Date,
     immutable: true,

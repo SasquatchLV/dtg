@@ -5,17 +5,17 @@ import { useAuthContext } from './hooks/useAuthContext'
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup'
-import Navbar from './components/NavBar/NavBar'
+import Header from './components/Header/Header'
 import AdminPanel from './pages/Admin/AdminPanel'
 
 function App() {
   const { user } = useAuthContext();
-  // const isAdmin = user?.roles.includes(2000);
+  const isAdmin = user?.roles.includes(2000);
 
   return (
     <div className="App">
       <BrowserRouter>
-        {user && <Navbar />}
+        {user && <Header />}
         <div className="pages">
           <Routes>
             <Route 
@@ -30,10 +30,10 @@ function App() {
               path="/signup" 
               element={!user ? <Signup /> : <Navigate to="/" />} 
             />
-            {/* <Route 
+            <Route 
               path="/admin" 
               element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} 
-            /> */}
+            />
           </Routes>
         </div>
       </BrowserRouter>

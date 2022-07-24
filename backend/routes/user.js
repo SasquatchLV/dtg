@@ -19,11 +19,14 @@ router.post("/signup", signupUser);
 // require auth for all routes below
 router.use(requireAuth);
 
-// give admin access route
-router.post("/promote/:email", promoteUser);
 
 // only admin routes
 router.use(requireAdmin);
+
+// give admin access route
+router.post("/promote/:email", promoteUser);
+
+router.get('/all', getAllUsers)
 
 router.get("/", getAllUsers);
 

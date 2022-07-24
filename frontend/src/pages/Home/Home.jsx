@@ -23,7 +23,7 @@ const Home = () => {
     }
 
     const getAllUsers = async () => {
-      const response = await fetch("/api/user", {
+      const response = await fetch("/api/user/all", {
         headers: { Authorization: `Bearer ${user.token}` },
       })
 
@@ -47,10 +47,27 @@ const Home = () => {
   const handlePromote = async (email) => {
     await fetch(`/api/user/promote/${email}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${user.token}` },
       body: JSON.stringify({ email }),
     })
   }
+
+  const getAllUsers = async () => {
+    const response = await fetch("api/user/all", {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+
+    if (response.ok) {
+      console.log(users)
+    }
+
+    if (!response.ok) {
+      console.log("Unauthorized")
+    }
+  }
+  
 
   return (
     <div className={styles.home}>
@@ -63,6 +80,7 @@ const Home = () => {
           )
         })}
       <div className={styles.workouts}>
+        <button onClick={getAllUsers}>GET ALL USERS</button>
         <button onClick={() => handlePromote(user.email)}>PROMOTE ME</button>
         {workouts &&
           workouts.map((workout) => (

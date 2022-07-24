@@ -1,8 +1,45 @@
+import { useState } from 'react';
 import styles from './AdminPanel.module.scss';
+import MatchOverview from './MatchOverview';
+import UserOverview from './UserOverview';
 
 const AdminPanel = () => {
+  const [activePanel, setActivePanel] = useState('Match Overview');
+
+  const actions = [
+    {
+      id: 1,
+      title: 'Match Overview',
+      handleClick: () => setActivePanel('Match Overview'),
+    },
+    {
+      id: 2,
+      title: 'Team Overview',
+      handleClick: () => setActivePanel('Team Overview'),
+    },
+    {
+      id: 3,
+      title: 'User Overview',
+      handleClick: () => setActivePanel('User Overview'),
+    },
+  ]
+
   return (
-    <div>AdminPanel</div>
+    <div className={styles.container}>
+      <div className={styles.actions}>
+        {actions.map(({ id, title, handleClick }) => (
+          <button
+            className={activePanel === title ? styles.activeBtn : styles.actionBtn}
+            onClick={handleClick}
+            key={id}
+          >
+            {title}
+          </button>
+        ))}
+      </div>
+      {activePanel === 'matches' && <MatchOverview />}
+      {activePanel === 'users' && <UserOverview />}
+    </div>
   )
 }
 
