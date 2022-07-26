@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Signup from '../../components/Signup/Signup'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { usePromote } from '../../hooks/usePromote'
@@ -42,7 +42,7 @@ const UserOverview = () => {
     },
   ]
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     const response = await fetch('/api/user/all', {
       headers: { Authorization: `Bearer ${user.token}` },
     })
@@ -56,9 +56,9 @@ const UserOverview = () => {
     if (!response.ok) {
       setError(json.error)
     }
-  }
+  }, [user])
 
-  const fetchUser = async (email) => {
+  const fetchUser = useCallback(async (email) => {
     setError('')
 
     const response = await fetch(`/api/user/${email}`, {
@@ -71,27 +71,25 @@ const UserOverview = () => {
     const json = await response.json()
 
     if (response.ok) setActiveUser(json)
-    console.log(json)
     if (!response.ok) {
       setError(json.error)
       setActiveUser({})
     }
-  }
+  }, [user.token])
 
   useEffect(() => {
     if (user) {
       fetchUsers()
     }
-  }, [user])
+  }, [user, fetchUsers, activeUser])
 
   useEffect(() => {
     if (selectedUser) {
-      console.log(selectedUser)
       fetchUser(selectedUser)
       setSelectedUser('')
       setWrittenEmail('')
     }
-  }, [selectedUser])
+  }, [selectedUser, fetchUser])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -148,11 +146,10 @@ const UserOverview = () => {
               <h3>{activeUser.email}</h3>
               <div className={styles.userIcons}>
                 {icons.map(({ title, imgLink, handleClick }) => (
-                  <div onClick={handleClick}>
+                  <div onClick={handleClick} key={title}>
                     <img
                       className={styles.icon}
                       src={imgLink}
-                      key={title}
                       alt="icon"
                     />
                   </div>
