@@ -1,0 +1,114 @@
+.container {
+    display: grid;
+    grid-template-columns: 10% 60% 30%;
+    justify-content: center;
+    align-items: center;
+    background-color: #0338341f;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.time {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.teams {
+    display: grid;
+    grid-template-columns: 45% 10% 45%;
+}
+
+.team1 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: .5rem;
+}
+
+.team2 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: .5rem;
+}
+
+.result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flag {
+    max-width: 40px;
+    width: 100%;
+}
+
+.prediction {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputTop {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: .5rem;
+}
+
+.inputBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    display: block;
+    text-align: center;
+    max-width: 330px;
+    max-width: 30px;
+    width: 100%;
+    background-color: #03383443;
+    border-radius: 3px;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+::placeholder {
+    color: #033834;
+    text-align: center;
+}
+
+.predictBtn {
+    width: 100%;
+    background-color: #033834;
+    color: #EEFAF9;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin: 5px 0 0 0;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        opacity: .8;
+    }
+}

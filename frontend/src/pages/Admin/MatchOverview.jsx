@@ -4,6 +4,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatch } from '../../hooks/useMatch'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './AdminPanel.module.scss'
+import MatchCard from '../../components/MatchCard/MatchCard'
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
@@ -91,8 +92,20 @@ const MatchOverview = () => {
           </button>
         </form>
       </div>
-
-      <div className={styles.matchWrapper}>matches</div>
+      {matches && (
+      <div className={styles.matchWrapper}>
+        {matches.map((match) => (
+          <MatchCard
+            startingTime={match.startingTime}
+            homeTeam={match.homeTeam}
+            homeTeamScore={match.homeTeamScore}
+            awayTeam={match.awayTeam}
+            awayTeamScore={match.awayTeamScore}
+            key={Math.random(100) * 1.5}
+          />
+        ))}
+      </div>
+      )}
     </div>
   )
 }

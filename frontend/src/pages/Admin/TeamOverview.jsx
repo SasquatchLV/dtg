@@ -14,6 +14,7 @@ const TeamOverview = () => {
     })
 
     const json = await response.json()
+
     if (response.ok) {
       setTeams(json)
     }
@@ -47,10 +48,6 @@ const TeamOverview = () => {
     })
   }
 
-  useEffect(() => {
-    if (user) getAllTeams()
-  }, [user, addTeam])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -59,6 +56,12 @@ const TeamOverview = () => {
     setCountryFlag('')
     setCountryName('')
   }
+
+  useEffect(() => {
+    if (user) {
+      getAllTeams()
+    }
+  }, [user])
 
   return (
     <div className={styles.teamOverview}>

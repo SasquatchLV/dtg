@@ -5,7 +5,6 @@ export const usePromote = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
   const { user } = useAuthContext()
-  const [users, setUsers] = useState(null)
 
   const promoteUser = async (email) => {
     setIsLoading(true)
