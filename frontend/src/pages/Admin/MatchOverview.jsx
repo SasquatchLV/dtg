@@ -7,6 +7,7 @@ import styles from './AdminPanel.module.scss'
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
+  const [matches, setMatches] = useState([])
   const [homeTeam, setHomeTeam] = useState({})
   const [awayTeam, setAwayTeam] = useState({})
   const [startingTime, setStartingTime] = useState(new Date())
@@ -22,35 +23,30 @@ const MatchOverview = () => {
     if (response.ok) {
       setTeams(json)
     }
-
-    if (!response.ok) {
-      console.log('Unauthorized')
-    }
   }
 
   const getAllMatches = async () => {
-    const response = await fetch('/api/team/all', {
+    const response = await fetch('/api/match/all', {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 
     const json = await response.json()
     if (response.ok) {
-      setTeams(json)
-    }
-
-    if (!response.ok) {
-      console.log('Unauthorized')
+      console.log(json)
+      setMatches(json)
     }
   }
 
   useEffect(() => {
     if (user) {
       getAllTeams()
+      getAllMatches()
     }
   }, [user])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
   }
 

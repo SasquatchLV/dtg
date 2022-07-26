@@ -1,35 +1,35 @@
-import styles from './Match.module.scss'
+import styles from './MatchCard.module.scss'
 
-const Match = (match) => {
-  return (
-    <div className={styles.container}>
-      <div className={styles.time}>{match.startingTime}</div>
-      <div className={styles.team}>
-        {match.homeTeam.country}
-        <img src={match.homeTeam.flag} alt="flag" />
-      </div>
-      <div className={styles.result}>
-        {`${match.homeTeamScore} - ${match.awayTeamScore}`}
-      </div>
-      <div className={styles.team}>
-        <img src={match.homeTeam.flag} alt="flag" />
-        {match.homeTeam.country}
-      </div>
-      <div className={styles.prediction}>
-        <span>Predict score</span>
+const Match = ({
+  startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore,
+}) => (
+  <div className={styles.container}>
+    <div className={styles.time}>{startingTime}</div>
+    <div className={styles.team}>
+      {homeTeam.country}
+      <img src={homeTeam.flag} alt="flag" />
+    </div>
+    <div className={styles.result}>
+      {`${homeTeamScore} - ${awayTeamScore}`}
+    </div>
+    <div className={styles.team}>
+      <img src={awayTeam.flag} alt="flag" />
+      {awayTeam.country}
+    </div>
+    <div className={styles.prediction}>
+      <span>Predict score</span>
+      <div>
         <div>
-          <div>
-            <b>TEAM 1</b>
-            <input type="text" placeholder="0" />
-          </div>
-          <div>
-            <b>TEAM 2</b>
-            <input type="text" placeholder="0" />
-          </div>
+          <b>TEAM 1</b>
+          <input type="text" placeholder="0" />
+        </div>
+        <div>
+          <b>TEAM 2</b>
+          <input type="text" placeholder="0" />
         </div>
       </div>
     </div>
-  )
-}
+  </div>
+)
 
 export default Match

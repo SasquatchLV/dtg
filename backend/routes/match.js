@@ -10,7 +10,7 @@ const router = express.Router()
 router.use(requireAuth)
 
 // create a new match
-router.post("/all", getAllMatches)
+router.get("/all", verifyRoles(ROLE_LIST.Admin), getAllMatches)
 
 // create a new match
 router.post("/new", verifyRoles(ROLE_LIST.Admin), createMatch)

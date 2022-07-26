@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 // get all matches
 const getAllMatches = async (req, res) => {
   try {
-    const matches = await Match.find().sort({ createdAt: -1 })
+    const matches = await Match.find()
 
     if (!matches)
       return res.status(204).json({ message: "No upcoming matches" })
