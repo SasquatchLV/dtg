@@ -1,39 +1,39 @@
-import { useState, useEffect } from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
-import styles from "../Admin/AdminPanel.module.scss";
+import { useState, useEffect } from 'react'
+import { useAuthContext } from '../../hooks/useAuthContext'
+import styles from '../Admin/AdminPanel.module.scss'
 
 const Teams = () => {
-  const [teams, setTeams] = useState([]);
-  const { user } = useAuthContext();
+  const [teams, setTeams] = useState([])
+  const { user } = useAuthContext()
 
   useEffect(() => {
     const getAllTeams = async () => {
-      const response = await fetch("/api/team/all", {
+      const response = await fetch('/api/team/all', {
         headers: { Authorization: `Bearer ${user.token}` },
-      });
+      })
 
-      const json = await response.json();
+      const json = await response.json()
       if (response.ok) {
-        setTeams(json);
+        setTeams(json)
       }
 
       if (!response.ok) {
-        console.log("Unauthorized");
+        console.log('Unauthorized')
       }
-    };
+    }
 
-    if (user) getAllTeams();
-  }, [user]);
+    if (user) getAllTeams()
+  }, [user])
 
   const totalPoints = (won, wo, lo) => {
-    const total = won * 3 + wo * 2 + lo;
-    return total;
-  };
+    const total = won * 3 + wo * 2 + lo
+    return total
+  }
 
   const totalGames = (won, lost) => {
-    const total = won + lost;
-    return total;
-  };
+    const total = won + lost
+    return total
+  }
 
   return (
     <div className={styles.teamWrapper}>
@@ -63,7 +63,7 @@ const Teams = () => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Teams;
+export default Teams

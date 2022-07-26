@@ -1,11 +1,9 @@
-import styles from './Match.module.scss';
+import styles from './Match.module.scss'
 
 const Match = (match) => {
   return (
     <div className={styles.container}>
-      <div className={styles.time}>
-        {match.startingTime}
-      </div>
+      <div className={styles.time}>{match.startingTime}</div>
       <div className={styles.team}>
         {match.homeTeam.country}
         <img src={match.homeTeam.flag} alt="flag" />
@@ -22,11 +20,11 @@ const Match = (match) => {
         <div>
           <div>
             <b>TEAM 1</b>
-            <input type="text" placeholder='0'/>
+            <input type="text" placeholder="0" />
           </div>
           <div>
             <b>TEAM 2</b>
-            <input type="text" placeholder='0'/>
+            <input type="text" placeholder="0" />
           </div>
         </div>
       </div>

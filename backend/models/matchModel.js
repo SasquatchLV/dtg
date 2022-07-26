@@ -1,16 +1,16 @@
-const Team = require('./teamModel');
-const mongoose = require("mongoose");
+const Team = require("./teamModel")
+const mongoose = require("mongoose")
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const teamSchema = new Schema({
   country: {
     type: String,
-    required: true
+    required: true,
   },
   flag: {
     type: String,
-    required: true
+    required: true,
   },
   gamesWon: {
     type: Number,
@@ -36,7 +36,7 @@ const usersParticipatingSchema = new Schema({
     home: Number,
     away: Number,
   },
-});
+})
 
 const matchSchema = new Schema({
   title: {
@@ -68,6 +68,6 @@ const matchSchema = new Schema({
     immutable: true,
     default: () => new Date(),
   },
-});
+})
 
-module.exports = mongoose.model("Match", matchSchema);
+module.exports = mongoose.model("Match", matchSchema)

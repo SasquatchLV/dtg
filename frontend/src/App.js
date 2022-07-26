@@ -1,19 +1,21 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthContext } from "./hooks/useAuthContext";
+import {
+  BrowserRouter, Routes, Route, Navigate,
+} from 'react-router-dom'
+import { useAuthContext } from './hooks/useAuthContext'
 
 // pages & components
-import Login from "./pages/Login/Login";
-import Header from "./components/Header/Header";
-import AdminPanel from "./pages/Admin/AdminPanel";
-import Matches from "./pages/Matches/Matches";
-import Teams from "./pages/Teams/Teams";
+import Login from './pages/Login/Login'
+import Header from './components/Header/Header'
+import AdminPanel from './pages/Admin/AdminPanel'
+import Matches from './pages/Matches/Matches'
+import Teams from './pages/Teams/Teams'
 
 function App() {
-  const { user } = useAuthContext();
-  const isAdmin = user?.roles?.includes(2000);
+  const { user } = useAuthContext()
+  const isAdmin = user?.roles?.includes(2000)
 
   return (
-    <div className="App">
+    <div className="app">
       <BrowserRouter>
         {user && <Header />}
         <div className="pages">
@@ -38,7 +40,7 @@ function App() {
         </div>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import styles from './AdminPanel.module.scss';
-import MatchOverview from './MatchOverview';
-import TeamOverview from './TeamOverview';
-import UserOverview from './UserOverview';
+import { useState } from 'react'
+import styles from './AdminPanel.module.scss'
+import MatchOverview from './MatchOverview'
+import TeamOverview from './TeamOverview'
+import UserOverview from './UserOverview'
 
 const AdminPanel = () => {
-  const [activePanel, setActivePanel] = useState('Match Overview');
+  const [activePanel, setActivePanel] = useState('Match Overview')
 
   const actions = [
     {
@@ -23,14 +23,16 @@ const AdminPanel = () => {
       title: 'User Overview',
       handleClick: () => setActivePanel('User Overview'),
     },
-  ];
+  ]
 
   return (
     <div className={styles.container}>
       <div className={styles.actions}>
         {actions.map(({ id, title, handleClick }) => (
           <button
-            className={activePanel === title ? styles.activeBtn : styles.actionBtn}
+            className={
+              activePanel === title ? styles.activeBtn : styles.actionBtn
+            }
             onClick={handleClick}
             key={id}
           >
@@ -43,6 +45,6 @@ const AdminPanel = () => {
       {activePanel === 'User Overview' && <UserOverview />}
     </div>
   )
-};
+}
 
-export default AdminPanel;
+export default AdminPanel

@@ -1,7 +1,5 @@
-import React from "react";
+import React from 'react'
 
-const Matches = () => {
-  return <div>Matches</div>;
-};
+const Matches = () => <div>Matches</div>
 
-export default Matches;
+export default Matches

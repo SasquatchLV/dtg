@@ -1,22 +1,22 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../../hooks/useLogout'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import styles from './Header.module.scss';
-import Navigation from '../Navigation/Navigation';
+import styles from './Header.module.scss'
+import Navigation from '../Navigation/Navigation'
 
 const Header = () => {
   const { logout } = useLogout()
   const { user } = useAuthContext()
-  const navigate = useNavigate();
-  const isAdmin = user?.roles?.includes(2000);
+  const navigate = useNavigate()
+  const isAdmin = user?.roles?.includes(2000)
 
   const handleLogOut = () => {
     logout()
-  };
+  }
 
   const handleAdmin = () => {
     navigate('/admin')
-  };
+  }
 
   return (
     <>
@@ -26,17 +26,12 @@ const Header = () => {
             {user && (
               <div className={styles.actions}>
                 <span>{user.email}</span>
-                {isAdmin &&
-                  <button
-                    className={styles.adminBtn}
-                    onClick={handleAdmin}
-                  >
+                {isAdmin && (
+                  <button className={styles.adminBtn} onClick={handleAdmin}>
                     Admin Panel
-                  </button>}
-                <button
-                  className={styles.logoutBtn}
-                  onClick={handleLogOut}
-                >
+                  </button>
+                )}
+                <button className={styles.logoutBtn} onClick={handleLogOut}>
                   Log out
                 </button>
               </div>
@@ -49,4 +44,4 @@ const Header = () => {
   )
 }
 
-export default Header;
+export default Header

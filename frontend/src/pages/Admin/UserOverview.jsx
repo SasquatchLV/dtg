@@ -1,62 +1,62 @@
-import { useState, useEffect } from 'react';
-import Signup from '../../components/Signup/Signup';
-import { useAuthContext } from "../../hooks/useAuthContext";
-import { usePromote } from "../../hooks/usePromote";
-import styles from './AdminPanel.module.scss';
+import { useState, useEffect } from 'react'
+import Signup from '../../components/Signup/Signup'
+import { useAuthContext } from '../../hooks/useAuthContext'
+import { usePromote } from '../../hooks/usePromote'
+import styles from './AdminPanel.module.scss'
 
 const UserOverview = () => {
-  const [activeUser, setActiveUser] = useState({});
-  const [selectionUsers, setSelectionUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
-  const [error, setError] = useState();
-  const [writtenEmail, setWrittenEmail] = useState('');
-  const { user } = useAuthContext();
-  const { promoteUser, demoteUser, deleteUser } = usePromote();
+  const [activeUser, setActiveUser] = useState({})
+  const [selectionUsers, setSelectionUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState('')
+  const [error, setError] = useState()
+  const [writtenEmail, setWrittenEmail] = useState('')
+  const { user } = useAuthContext()
+  const { promoteUser, demoteUser, deleteUser } = usePromote()
 
-  const userFound = Object.keys(activeUser).length;
+  const userFound = Object.keys(activeUser).length
 
   const icons = [
     {
       title: 'Promote',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3050/3050304.png',
       handleClick: () => {
-        promoteUser(activeUser.email);
-        setSelectedUser(activeUser.email);
-      }
+        promoteUser(activeUser.email)
+        setSelectedUser(activeUser.email)
+      },
     },
     {
       title: 'Demote',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/727/727358.png',
       handleClick: () => {
-        demoteUser(activeUser.email);
-        setSelectedUser(activeUser.email);
-      }
+        demoteUser(activeUser.email)
+        setSelectedUser(activeUser.email)
+      },
     },
     {
       title: 'Delete',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3221/3221845.png',
       handleClick: () => {
-        deleteUser(activeUser.email);
-        setActiveUser({});
-      }
+        deleteUser(activeUser.email)
+        setActiveUser({})
+      },
     },
-  ];
+  ]
 
   const fetchUsers = async () => {
-    const response = await fetch("/api/user/all", {
+    const response = await fetch('/api/user/all', {
       headers: { Authorization: `Bearer ${user.token}` },
-    });
+    })
 
-    const json = await response.json();
+    const json = await response.json()
 
     if (response.ok) {
-      setSelectionUsers(json);
+      setSelectionUsers(json)
     }
 
     if (!response.ok) {
-      setError(json.error);
+      setError(json.error)
     }
-  };
+  }
 
   const fetchUser = async (email) => {
     setError('')
@@ -66,12 +66,12 @@ const UserOverview = () => {
         Authorization: `Bearer ${user.token}`,
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    const json = await response.json();
+    const json = await response.json()
 
     if (response.ok) setActiveUser(json)
-    console.log(json);
+    console.log(json)
     if (!response.ok) {
       setError(json.error)
       setActiveUser({})
@@ -80,27 +80,27 @@ const UserOverview = () => {
 
   useEffect(() => {
     if (user) {
-      fetchUsers();
+      fetchUsers()
     }
-  }, [user]);
+  }, [user])
 
   useEffect(() => {
     if (selectedUser) {
-      console.log(selectedUser);
-      fetchUser(selectedUser);
-      setSelectedUser('');
-      setWrittenEmail('');
+      console.log(selectedUser)
+      fetchUser(selectedUser)
+      setSelectedUser('')
+      setWrittenEmail('')
     }
   }, [selectedUser])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    await fetchUser(writtenEmail);
+    await fetchUser(writtenEmail)
 
-    setSelectedUser('');
-    setWrittenEmail('');
-  };
+    setSelectedUser('')
+    setWrittenEmail('')
+  }
 
   return (
     <div className={styles.userOverview}>
@@ -116,20 +116,14 @@ const UserOverview = () => {
             placeholder="Search..."
             required
           />
-          <button
-            className={styles.findBtn}
-            type="submit"
-          >
+          <button className={styles.findBtn} type="submit">
             Find
           </button>
           <label>Select user</label>
           <select onChange={(e) => setSelectedUser(e.target.value)}>
-            <option value=''>Select</option>
+            <option value="">Select</option>
             {selectionUsers.map(({ email }) => (
-              <option
-                value={email}
-                key={email}
-              >
+              <option value={email} key={email}>
                 {email}
               </option>
             ))}
@@ -140,19 +134,28 @@ const UserOverview = () => {
       {userFound ? (
         <div className={styles.userProfile}>
           <div className={styles.userLeft}>
-            <img className={styles.userAvatar} src={activeUser.avatar} alt="avatar" />
+            <img
+              className={styles.userAvatar}
+              src={activeUser.avatar}
+              alt="avatar"
+            />
             <div className={styles.leftBottom}>
-              <span>
-                {`Points: ${activeUser.points}`}
-              </span>
+              <span>{`Points: ${activeUser.points}`}</span>
             </div>
           </div>
           <div className={styles.userRight}>
             <div className={styles.userEmail}>
               <h3>{activeUser.email}</h3>
               <div className={styles.userIcons}>
-                {icons.map(({title, imgLink, handleClick}) => (
-                  <img className={styles.icon} src={imgLink} onClick={handleClick} key={title} alt='icon'/>
+                {icons.map(({ title, imgLink, handleClick }) => (
+                  <div onClick={handleClick}>
+                    <img
+                      className={styles.icon}
+                      src={imgLink}
+                      key={title}
+                      alt="icon"
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -161,7 +164,11 @@ const UserOverview = () => {
               <li>
                 <span>Role</span>
                 <span>
-                  {Object.keys(activeUser.roles)[Object.keys(activeUser.roles).length - 1]}
+                  {
+                    Object.keys(activeUser.roles)[
+                      Object.keys(activeUser.roles).length - 1
+                    ]
+                  }
                 </span>
               </li>
               <li>
@@ -180,4 +187,4 @@ const UserOverview = () => {
   )
 }
 
-export default UserOverview;
+export default UserOverview

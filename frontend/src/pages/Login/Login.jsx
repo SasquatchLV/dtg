@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { useLogin } from "../../hooks/useLogin";
-import styles from "./Login.module.scss";
+import { useState } from 'react'
+import { useLogin } from '../../hooks/useLogin'
+import styles from './Login.module.scss'
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login, error, isLoading } = useLogin();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { login, error, isLoading } = useLogin()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    await login(email, password);
-  };
+    await login(email, password)
+  }
 
   return (
     <div className={styles.container}>
@@ -40,7 +40,7 @@ const Login = () => {
         {error && <div className={styles.error}>{error}</div>}
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

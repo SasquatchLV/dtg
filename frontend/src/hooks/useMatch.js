@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
 
-export const useMatch= () => {
+export const useMatch = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
-  const { user } = useAuthContext();
+  const { user } = useAuthContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime) => {
     setIsLoading(true)
@@ -16,19 +16,19 @@ export const useMatch= () => {
         Authorization: `Bearer ${user.token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ homeTeam, awayTeam, startingTime })
+      body: JSON.stringify({ homeTeam, awayTeam, startingTime }),
     })
-    const json = await response.json();
+    const json = await response.json()
 
     if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
+      setIsLoading(false)
+      setError(json.error)
     }
     if (response.ok) {
-      console.log(`Match created`);
+      console.log('Match created')
 
       // update loading state
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
