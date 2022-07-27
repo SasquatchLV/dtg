@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
+import { formatUTC } from '../../utils/formatUTC'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatch } from '../../hooks/useMatch'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -8,11 +9,10 @@ import MatchCard from '../../components/MatchCard/MatchCard'
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
-  const [unsettledMatches, setUnsettledMatches] = useState([])
   const [homeTeam, setHomeTeam] = useState({})
   const [awayTeam, setAwayTeam] = useState({})
   const [startingTime, setStartingTime] = useState(new Date())
-  const { createMatch } = useMatch()
+  const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
 
   const getAllTeams = async () => {
@@ -23,21 +23,6 @@ const MatchOverview = () => {
     const json = await response.json()
     if (response.ok) {
       setTeams(json)
-    }
-  }
-
-  const getAllMatches = async () => {
-    const response = await fetch('/api/match/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-    if (response.ok) {
-      const matchesWithNoScore = json.filter((match) => (
-        match.finished && !match.homeTeamScore && !match.awayTeamScore && !match.overTime
-      ))
-
-      setUnsettledMatches(matchesWithNoScore)
     }
   }
 
@@ -52,20 +37,6 @@ const MatchOverview = () => {
     e.preventDefault()
 
     await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
-  }
-
-  const formatUTC = (dateInt, addOffset = false) => {
-    const date = (!dateInt || dateInt.length < 1) ? new Date() : new Date(dateInt)
-
-    if (typeof dateInt === 'string') {
-      return date
-    }
-
-    const offset = addOffset ? date.getTimezoneOffset() : -(date.getTimezoneOffset())
-    const offsetDate = new Date()
-    offsetDate.setTime(date.getTime() + offset * 60000)
-
-    return offsetDate
   }
 
   return (
@@ -103,6 +74,7 @@ const MatchOverview = () => {
             dateFormat="MMMM d, yyyy h:mmaa"
             selected={formatUTC(startingTime, true)}
             onChange={(date) => setStartingTime(formatUTC(date))}
+            required
           />
           <button className={styles.addBtn} type="submit">
             Add Match

@@ -4,6 +4,7 @@ import { useAuthContext } from './useAuthContext'
 export const useMatch = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
+  const [unsettledMatches, setUnsettledMatches] = useState([])
   const { user } = useAuthContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime) => {
@@ -112,7 +113,22 @@ export const useMatch = () => {
     }
   }
 
+  const getAllMatches = async () => {
+    const response = await fetch('/api/match/all', {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+    if (response.ok) {
+      const matchesWithNoScore = json.filter((match) => (
+        match.finished && !match.homeTeamScore && !match.awayTeamScore && !match.overTime
+      ))
+
+      setUnsettledMatches(matchesWithNoScore)
+    }
+  }
+
   return {
-    createMatch, makePrediction, finishMatch, publishResult, isLoading, error,
+    createMatch, makePrediction, finishMatch, publishResult, isLoading, error, getAllMatches, unsettledMatches,
   }
 }

@@ -67,7 +67,9 @@ const MatchCard = ({
           </div>
           {hasMatchScore ? (
             <div className={styles.result}>
-              <h4>{`${homeTeamScore} - ${awayTeamScore}`}</h4>
+              <b>{`${homeTeamScore} `}</b>
+              <b>-</b>
+              <b>{`${awayTeamScore}`}</b>
             </div>
           ) : (
             <div className={styles.result}>
