@@ -8,7 +8,7 @@ import MatchCard from '../../components/MatchCard/MatchCard'
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
-  const [matches, setMatches] = useState([])
+  const [unsettledMatches, setUnsettledMatches] = useState([])
   const [homeTeam, setHomeTeam] = useState({})
   const [awayTeam, setAwayTeam] = useState({})
   const [startingTime, setStartingTime] = useState(new Date())
@@ -33,7 +33,11 @@ const MatchOverview = () => {
 
     const json = await response.json()
     if (response.ok) {
-      setMatches(json)
+      const matchesWithNoScore = json.filter((match) => (
+        match.finished && !match.homeTeamScore && !match.awayTeamScore && !match.overTime
+      ))
+
+      setUnsettledMatches(matchesWithNoScore)
     }
   }
 
@@ -48,6 +52,20 @@ const MatchOverview = () => {
     e.preventDefault()
 
     await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
+  }
+
+  const formatUTC = (dateInt, addOffset = false) => {
+    const date = (!dateInt || dateInt.length < 1) ? new Date() : new Date(dateInt)
+
+    if (typeof dateInt === 'string') {
+      return date
+    }
+
+    const offset = addOffset ? date.getTimezoneOffset() : -(date.getTimezoneOffset())
+    const offsetDate = new Date()
+    offsetDate.setTime(date.getTime() + offset * 60000)
+
+    return offsetDate
   }
 
   return (
@@ -83,28 +101,34 @@ const MatchOverview = () => {
           <DatePicker
             showTimeSelect
             dateFormat="MMMM d, yyyy h:mmaa"
-            selected={startingTime}
-            onChange={(startTime) => setStartingTime(startTime)}
+            selected={formatUTC(startingTime, true)}
+            onChange={(date) => setStartingTime(formatUTC(date))}
           />
           <button className={styles.addBtn} type="submit">
             Add Match
           </button>
         </form>
       </div>
-      {matches && (
-      <div className={styles.matchWrapper}>
-        {matches.map((match) => (
-          <MatchCard
-            startingTime={match.startingTime}
-            homeTeam={match.homeTeam}
-            homeTeamScore={match.homeTeamScore}
-            awayTeam={match.awayTeam}
-            awayTeamScore={match.awayTeamScore}
-            key={Math.random(100) * 1.5}
-          />
-        ))}
-      </div>
-      )}
+      {unsettledMatches ? (
+        <div className={styles.matchWrapper}>
+          <h2 className={styles.matchDesc}>
+            Please add the final result to the following matches:
+          </h2>
+          {unsettledMatches.map((match) => (
+            <MatchCard
+              startingTime={match.startingTime}
+              homeTeam={match.homeTeam}
+              homeTeamScore={match.homeTeamScore}
+              awayTeam={match.awayTeam}
+              awayTeamScore={match.awayTeamScore}
+              matchId={match._id}
+              usersParticipating={match.usersParticipating}
+              title={match.title}
+              key={match._id}
+            />
+          ))}
+        </div>
+      ) : <h1>No unsettled matches to be found</h1>}
     </div>
   )
 }

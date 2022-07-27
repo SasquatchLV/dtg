@@ -48,46 +48,49 @@ const createMatch = async (req, res) => {
   }
 }
 
-// delete a match
-const deleteMatch = async (req, res) => {
-  const { id } = req.params
+// get user prediction
+const makePrediction = async (req, res) => {
+  try {
+    const { _id, email, homeScore, awayScore, ot } = req.body
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such workout" })
+    const userPrediction = await Match.prediction(_id, email, homeScore, awayScore, ot)
+
+    res.status(200).json(userPrediction)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
   }
-
-  const workout = await Workout.findOneAndDelete({ _id: id })
-
-  if (!workout) {
-    return res.status(400).json({ error: "No such workout" })
-  }
-
-  res.status(200).json(workout)
 }
 
-// update a match
-const updateMatch = async (req, res) => {
-  const { id } = req.params
+// update finished match
+const finishMatch = async (req, res) => {
+  try {
+    const { _id } = req.body
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such workout" })
+    const match = await Match.finish(_id)
+
+    res.status(200).json(match)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
   }
+}
 
-  const workout = await Workout.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
-    }
-  )
+// publish final result of the game
+const publishMatch = async (req, res) => {
+  try {
+    const { _id, homeScore, awayScore, ot } = req.body
 
-  if (!workout) {
-    return res.status(400).json({ error: "No such workout" })
+    const matchResult = await Match.setResult(_id, homeScore, awayScore, ot)
+
+    res.status(200).json(matchResult)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
   }
-
-  res.status(200).json(workout)
 }
 
 module.exports = {
   getAllMatches,
   createMatch,
+  makePrediction,
+  finishMatch,
+  publishMatch
 }

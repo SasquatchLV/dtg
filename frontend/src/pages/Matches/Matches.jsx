@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import MatchCard from '../../components/MatchCard/MatchCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import styles from '../Admin/AdminPanel.module.scss'
+import styles from './Matches.module.scss'
 
 const Matches = () => {
-  const [matches, setMatches] = useState([])
+  const [unfinishedMatches, setUnfinishedMatches] = useState([])
+  const [finishedMatches, setFinishedMatches] = useState([])
   const { user } = useAuthContext()
 
   useEffect(() => {
@@ -17,7 +18,12 @@ const Matches = () => {
       const json = await response.json()
 
       if (response.ok) {
-        setMatches(json)
+        const matchesWithScore = json.filter((match) => (
+          match.finished && (match.homeTeamScore || match.awayTeamScore)
+        ))
+
+        setFinishedMatches(matchesWithScore)
+        setUnfinishedMatches(json.filter((match) => !match.finished))
       }
 
       if (!response.ok) {
@@ -39,24 +45,50 @@ const Matches = () => {
   }, [user])
 
   return (
-    <>
-      {matches && (
-      <div className={styles.matchWrapper}>
-        {matches.map(({
-          startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id,
-        }) => (
-          <MatchCard
-            startingTime={startingTime}
-            homeTeam={homeTeam}
-            homeTeamScore={homeTeamScore}
-            awayTeam={awayTeam}
-            awayTeamScore={awayTeamScore}
-            key={_id}
-          />
-        ))}
+    <div className={styles.container}>
+      <div className={styles.matches}>
+        {unfinishedMatches.length ? (
+          <div className={styles.matchWrapper}>
+            <h1>Upcoming games</h1>
+            {unfinishedMatches.map(({
+              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title,
+            }) => (
+              <MatchCard
+                startingTime={startingTime}
+                homeTeam={homeTeam}
+                homeTeamScore={homeTeamScore}
+                awayTeam={awayTeam}
+                awayTeamScore={awayTeamScore}
+                matchId={_id}
+                usersParticipating={usersParticipating}
+                title={title}
+                key={_id}
+              />
+            ))}
+          </div>
+        ) : (<h1>No upcoming matches to be found</h1>)}
+        {finishedMatches.length ? (
+          <div className={styles.matchWrapper}>
+            <h1>Finished games</h1>
+            {finishedMatches.map(({
+              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title,
+            }) => (
+              <MatchCard
+                startingTime={startingTime}
+                homeTeam={homeTeam}
+                homeTeamScore={homeTeamScore}
+                awayTeam={awayTeam}
+                awayTeamScore={awayTeamScore}
+                matchId={_id}
+                usersParticipating={usersParticipating}
+                title={title}
+                key={_id}
+              />
+            ))}
+          </div>
+        ) : <h1>No finished matches to be found</h1>}
       </div>
-      )}
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,28 @@
+.container {
+    padding: 1rem;
+}
+
+.matches {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-content: center;
+    column-gap: 2rem;
+}
+
+.matchOverview {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: 40% 60%;
+    justify-content: space-between;
+    column-gap: 2rem;
+    margin-top: 1rem;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 1rem;
+}
+
+h5 {
+    text-align: center;
+}

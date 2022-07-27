@@ -1,5 +1,7 @@
 const express = require("express")
-const { createMatch, getAllMatches } = require("../controllers/matchController")
+const { 
+    createMatch, getAllMatches, makePrediction, finishMatch, publishMatch
+} = require("../controllers/matchController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
 const ROLE_LIST = require("../config/rolesList")
@@ -8,6 +10,15 @@ const router = express.Router()
 
 // require auth for all workout routes
 router.use(requireAuth)
+
+// make prediction of the match outcome
+router.post("/predict", verifyRoles(ROLE_LIST.User), makePrediction)
+
+// match updates as finished
+router.post("/finish", verifyRoles(ROLE_LIST.User), finishMatch)
+
+// make prediction of the match outcome
+router.post("/publish", verifyRoles(ROLE_LIST.Admin), publishMatch)
 
 // create a new match
 router.get("/all", verifyRoles(ROLE_LIST.User), getAllMatches)
