@@ -1,4 +1,5 @@
 const Match = require("../models/matchModel")
+const Team = require("../models/teamModel")
 const mongoose = require("mongoose")
 
 // get all matches
@@ -79,9 +80,34 @@ const publishMatch = async (req, res) => {
   try {
     const { _id, homeScore, awayScore, ot } = req.body
 
-    const matchResult = await Match.setResult(_id, homeScore, awayScore, ot)
+    const match = await Match.setResult(_id, homeScore, awayScore, ot)
 
-    res.status(200).json(matchResult)
+    let homePoints = 0
+    let awayPoints = 0
+
+    if (homeScore > awayScore) {
+      if (!ot) {
+        homePoints += 3
+      } else {
+        homePoints += 2
+        awayPoints += 1
+      }
+    } else {
+      if (!ot) {
+        awayPoints += 3
+      } else {
+        awayPoints += 2
+        homePoints += 1
+      }
+    }
+
+    const homeTeam = match.homeTeam._id
+    const awayTeam = match.awayTeam._id
+
+    await Team.updatePoints(homeTeam, homePoints)
+    await Team.updatePoints(awayTeam, awayPoints)
+
+    res.status(200).json(match)
   } catch (error) {
     res.status(400).json({ error: error.message })
   }

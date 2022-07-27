@@ -4,16 +4,13 @@ import { formatDistance, getTime } from 'date-fns'
 import styles from './MatchCard.module.scss'
 import { useMatch } from '../../hooks/useMatch'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import FinalResult from './FinalResult'
+import PredictResult from './PredictResult'
 
 const MatchCard = ({
   startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title,
 }) => {
-  const { makePrediction, finishMatch, publishResult } = useMatch()
-  const [homeScore, setHomeScore] = useState(0)
-  const [awayScore, setAwayScore] = useState(0)
-  const [finalHomeScore, setFinalHomeScore] = useState(0)
-  const [finalAwayScore, setFinalAwayScore] = useState(0)
-  const [hasOvertime, setHasOvertime] = useState(false)
+  const { finishMatch } = useMatch()
 
   const time = startingTime.split('').slice(12, 17)
   const date = startingTime.split('').slice(1, 11)
@@ -40,18 +37,6 @@ const MatchCard = ({
     }
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    await makePrediction(matchId, homeScore, awayScore, hasOvertime)
-  }
-
-  const handlePublish = async (e) => {
-    e.preventDefault()
-
-    await publishResult(matchId, finalHomeScore, finalAwayScore, hasOvertime)
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.time}>
@@ -65,6 +50,7 @@ const MatchCard = ({
             <span>{homeTeam.country}</span>
             <img src={homeTeam.flag} alt="flag" className={styles.flag} />
           </div>
+
           {hasMatchScore ? (
             <div className={styles.result}>
               <b>{`${homeTeamScore} `}</b>
@@ -76,6 +62,7 @@ const MatchCard = ({
               <b> - </b>
             </div>
           )}
+
           <div className={styles.team2}>
             <img src={awayTeam.flag} alt="flag" className={styles.flag} />
             {awayTeam.country}
@@ -88,72 +75,14 @@ const MatchCard = ({
           })}
         </span>
       </div>
+
       {!alreadyParticipated ? (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
-            <div className={styles.inputWrapper}>
-              <div className={styles.inputTop}>
-                <div className={styles.inputBox}>
-                  <span>TEAM 1</span>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={homeScore}
-                    onChange={(e) => setHomeScore(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className={styles.inputBox}>
-                  <span>TEAM 2</span>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={awayScore}
-                    onChange={(e) => setAwayScore(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <button
-                className={styles.predictBtn}
-                onClick={handleSubmit}
-              >
-                SUBMIT
-              </button>
-            </div>
+            <PredictResult matchId={matchId} />
           ) : (
             !isMatchPublished ? (
-              <div className={styles.inputWrapper}>
-                <h4>Add final result</h4>
-                <div className={styles.inputTop}>
-                  <div className={styles.inputBox}>
-                    <span>TEAM 1</span>
-                    <input
-                      type="number"
-                      placeholder="0"
-                      value={finalHomeScore}
-                      onChange={(e) => setFinalHomeScore(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className={styles.inputBox}>
-                    <span>TEAM 2</span>
-                    <input
-                      type="number"
-                      placeholder="0"
-                      value={finalAwayScore}
-                      onChange={(e) => setFinalAwayScore(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <button
-                  className={styles.predictBtn}
-                  onClick={handlePublish}
-                >
-                  Publish
-                </button>
-              </div>
+              <FinalResult matchId={matchId} />
             ) : (
               <h5>Points distributed</h5>
             )

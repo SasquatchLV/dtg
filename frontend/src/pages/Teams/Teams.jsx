@@ -25,11 +25,6 @@ const Teams = () => {
     if (user) getAllTeams()
   }, [user])
 
-  const totalPoints = (won, wo, lo) => {
-    const total = won * 3 + wo * 2 + lo
-    return total
-  }
-
   const totalGames = (won, lost) => {
     const total = won + lost
     return total
@@ -58,7 +53,7 @@ const Teams = () => {
             {totalGames(team.gamesWon, team.gamesLost)}
           </span>
           <span className={styles.countryPoints}>
-            {totalPoints(team.gamesWon, team.gamesWO, team.gamesLO)}
+            {team.points}
           </span>
         </div>
       ))}

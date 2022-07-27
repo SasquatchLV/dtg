@@ -11,6 +11,7 @@ const MatchOverview = () => {
   const [teams, setTeams] = useState([])
   const [homeTeam, setHomeTeam] = useState({})
   const [awayTeam, setAwayTeam] = useState({})
+  const [created, setCreated] = useState(false)
   const [startingTime, setStartingTime] = useState(new Date())
   const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
@@ -37,12 +38,14 @@ const MatchOverview = () => {
     e.preventDefault()
 
     await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
+
+    setCreated(true)
   }
 
   return (
     <div className={styles.matchOverview}>
       <div className={styles.matchActions}>
-        <form className={styles.matchForm} onSubmit={handleSubmit}>
+        <form className={styles.matchForm} onSubmit={(e) => handleSubmit(e)}>
           <h3>Add a new match</h3>
           <label>Home Team</label>
           <select
@@ -79,6 +82,7 @@ const MatchOverview = () => {
           <button className={styles.addBtn} type="submit">
             Add Match
           </button>
+          {created && <h4>Match Created</h4>}
         </form>
       </div>
       {unsettledMatches ? (
