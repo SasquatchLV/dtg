@@ -1,6 +1,8 @@
 import {
   BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 import { useAuthContext } from './hooks/useAuthContext'
 
 // pages & components
@@ -39,6 +41,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   )
 }

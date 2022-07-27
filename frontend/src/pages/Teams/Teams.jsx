@@ -47,7 +47,7 @@ const Teams = () => {
         <span>Points</span>
       </div>
       {teams.map((team) => (
-        <div className={styles.teamRow} key={team.countryName}>
+        <div className={styles.teamRow} key={team._id}>
           <img className={styles.flagIcon} src={team.flag} alt="icon" />
           <span className={styles.countryName}>{team.country}</span>
           <span className={styles.countryInfo}>{team.gamesWon}</span>

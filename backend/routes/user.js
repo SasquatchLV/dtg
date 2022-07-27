@@ -17,13 +17,11 @@ const router = express.Router()
 // login route
 router.post("/login", loginUser)
 
-// register a user route
-router.post("/signup", signupUser)
-
-// require auth for all routes below
+// require auth for all workout routes
 router.use(requireAuth)
 
-// only admin routes
+// register a user route
+router.post("/signup", verifyRoles(ROLE_LIST.Admin),signupUser)
 
 // give admin access route
 router.post("/promote/:email", verifyRoles(ROLE_LIST.Admin), promoteUser)

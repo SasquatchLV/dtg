@@ -1,14 +1,13 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { useAuthContext } from './useAuthContext'
 
 export const usePromote = () => {
-  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
   const { user } = useAuthContext()
 
   const promoteUser = async (email) => {
     setIsLoading(true)
-    setError(null)
 
     const response = await fetch(`/api/user/promote/${email}`, {
       method: 'POST',
@@ -22,10 +21,26 @@ export const usePromote = () => {
 
     if (!response.ok) {
       setIsLoading(false)
-      setError(json.error)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
     }
     if (response.ok) {
-      console.log(`User ${email} promoted`)
+      toast.success(`User ${email} promoted`, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
 
       // update loading state
       setIsLoading(false)
@@ -34,11 +49,18 @@ export const usePromote = () => {
 
   const demoteUser = async (email) => {
     setIsLoading(true)
-    setError(null)
 
     if (email === user.email) {
       setIsLoading(false)
-      setError("You can't demote yourself")
+      toast.error('You can\'t demote yourself', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
       return
     }
 
@@ -54,10 +76,26 @@ export const usePromote = () => {
 
     if (!response.ok) {
       setIsLoading(false)
-      setError(json.error)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
     }
     if (response.ok) {
-      console.log(`User ${email} demoted`)
+      toast.success(`User ${email} demoted`, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
 
       // update loading state
       setIsLoading(false)
@@ -66,11 +104,18 @@ export const usePromote = () => {
 
   const deleteUser = async (id) => {
     setIsLoading(true)
-    setError(null)
 
     if (id === user._id) {
       setIsLoading(false)
-      setError("You can't delete yourself")
+      toast.error('You can\'t delete yourself', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
       return
     }
 
@@ -84,10 +129,26 @@ export const usePromote = () => {
     const json = await response.json()
     if (!response.ok) {
       setIsLoading(false)
-      setError(json.error)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
     }
     if (response.ok) {
-      console.log(`${id} deleted from db`)
+      toast.success(`${id} deleted from db`, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
 
       // update loading state
       setIsLoading(false)
@@ -95,6 +156,6 @@ export const usePromote = () => {
   }
 
   return {
-    promoteUser, demoteUser, deleteUser, isLoading, error, setError,
+    promoteUser, demoteUser, deleteUser, isLoading,
   }
 }

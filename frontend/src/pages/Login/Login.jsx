@@ -5,7 +5,7 @@ import styles from './Login.module.scss'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { login, error, isLoading } = useLogin()
+  const { login, isLoading } = useLogin()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -37,7 +37,6 @@ const Login = () => {
         <button className={styles.loginBtn} disabled={isLoading}>
           Log in
         </button>
-        {error && <div className={styles.error}>{error}</div>}
       </form>
     </div>
   )

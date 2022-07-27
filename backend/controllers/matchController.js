@@ -6,8 +6,11 @@ const getAllMatches = async (req, res) => {
   try {
     const matches = await Match.find()
 
-    if (!matches)
-      return res.status(204).json({ message: "No upcoming matches" })
+    if (matches.length === 0) {
+      return res.status(404).json({
+        error: "No upcoming matches",
+      })
+    }
 
     res.status(200).json(matches)
   } catch (error) {

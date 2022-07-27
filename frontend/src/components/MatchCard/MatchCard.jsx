@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { formatDistance, getTime } from 'date-fns'
 import styles from './MatchCard.module.scss'
 
 const MatchCard = ({
@@ -6,13 +7,25 @@ const MatchCard = ({
 }) => {
   const [predictionActive, setPredictionActive] = useState(false)
   const time = startingTime.split('').slice(12, 17)
-  const date = startingTime.split('').slice(6, 11)
+  const date = startingTime.split('').slice(1, 11)
+  const fullDate = new Date(`${date.join('')} ${time.join('')}`)
+
+  const isMatchFinished = getTime(fullDate) < getTime(new Date())
 
   return (
     <div className={styles.container}>
       <div className={styles.time}>
-        <h4>{time}</h4>
+        <h4>
+          {time}
+        </h4>
         <span>{date}</span>
+        <span>
+          {' '}
+          {isMatchFinished ? 'Finished' : formatDistance(fullDate, new Date(), {
+            addSuffix: true,
+            includeSeconds: true,
+          })}
+        </span>
       </div>
       <div className={styles.teams}>
         <div className={styles.team1}>

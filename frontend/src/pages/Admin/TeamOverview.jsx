@@ -100,7 +100,7 @@ const TeamOverview = () => {
           <span>Points</span>
         </div>
         {teams.map((team) => (
-          <div className={styles.teamRow} key={team.country}>
+          <div key={team._id} className={styles.teamRow}>
             <img className={styles.flagIcon} src={team.flag} alt="icon" />
             <span className={styles.countryName}>{team.country}</span>
             <span className={styles.countryInfo}>{team.gamesWon}</span>

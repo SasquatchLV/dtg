@@ -169,7 +169,7 @@ const UserOverview = () => {
                 </span>
               </li>
               <li>
-                <span>Profile Made:</span>
+                <span>Registered:</span>
                 <span>{activeUser.createdAt.slice(0, 10)}</span>
               </li>
             </ul>
