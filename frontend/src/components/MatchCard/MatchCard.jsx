@@ -9,10 +9,10 @@ const MatchCard = ({
   startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title,
 }) => {
   const { makePrediction, finishMatch, publishResult } = useMatch()
-  const [homeScore, setHomeScore] = useState()
-  const [awayScore, setAwayScore] = useState()
-  const [finalHomeScore, setFinalHomeScore] = useState()
-  const [finalAwayScore, setFinalAwayScore] = useState()
+  const [homeScore, setHomeScore] = useState(0)
+  const [awayScore, setAwayScore] = useState(0)
+  const [finalHomeScore, setFinalHomeScore] = useState(0)
+  const [finalAwayScore, setFinalAwayScore] = useState(0)
   const [hasOvertime, setHasOvertime] = useState(false)
 
   const time = startingTime.split('').slice(12, 17)
@@ -25,6 +25,10 @@ const MatchCard = ({
   const isAdmin = user?.roles?.includes(2000)
 
   const alreadyParticipated = usersParticipating.some((obj) => obj.email === user.email)
+
+  const indexOfUser = usersParticipating?.findIndex((obj) => obj.email === user.email)
+
+  const usersBet = usersParticipating[indexOfUser]
 
   const hasMatchScore = homeTeamScore || awayTeamScore
 
@@ -155,7 +159,9 @@ const MatchCard = ({
         </div>
       ) : (
         <h5 className={styles.info}>
-          <i>You`ve already participated in this match</i>
+          <i>You`ve participated</i>
+          <p>Predicted Score:</p>
+          <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
         </h5>
       )}
     </div>
