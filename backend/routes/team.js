@@ -5,7 +5,8 @@ const {
   removeTeam,
 } = require("../controllers/teamController")
 const requireAuth = require("../middleware/requireAuth")
-const requireAdmin = require("../middleware/requireAdmin")
+const verifyRoles = require("../middleware/verifyRoles")
+const ROLE_LIST = require("../config/rolesList")
 
 const router = express.Router()
 
@@ -15,13 +16,10 @@ router.use(requireAuth)
 // GET all teams
 router.get("/all", getAllTeams)
 
-// only admin routes
-router.use(requireAdmin)
-
 // POST a new team
-router.post("/new", addNewTeam)
+router.post("/new", verifyRoles(ROLE_LIST.Admin), addNewTeam)
 
 // DELETE a team
-router.delete("/:id", removeTeam)
+router.delete("/:id", verifyRoles(ROLE_LIST.Admin), removeTeam)
 
 module.exports = router

@@ -1,0 +1,145 @@
+// team overview
+
+.teamOverview {
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: 30% 60%;
+  justify-content: space-between;
+  column-gap: 5rem;
+  margin-top: 1rem;
+}
+
+.teamWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.teamData {
+  display: grid;
+  grid-template-columns: 1fr repeat(6, 10%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.teamRow {
+  display: grid;
+  grid-template-columns: 0.2fr 0.8fr repeat(6, 10%);
+  align-items: center;
+  padding: 0.2rem;
+  background-color: #cbe3e1;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.flagIcon {
+  width: 45px;
+}
+
+.countryName,
+.countryPoints {
+  font-weight: 600;
+}
+
+.countryName,
+.countryInfo,
+.countryPoints {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.countryInfo,
+.countryPoints {
+  text-align: center;
+}
+
+.teamActions {
+  // some styles here?
+
+  & .deleteButton {
+    // some styles here
+  }
+}
+
+.teamForm {
+  max-width: 350px;
+  width: 100%;
+  min-height: 250px;
+  background-color: #0338341f;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 35px;
+}
+
+.teamForm * {
+  font-family: 'Poppins', sans-serif;
+  color: #033834;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.teamForm h3 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+}
+
+.teamForm label {
+  display: block;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.teamForm input {
+  display: block;
+  height: 50px;
+  max-width: 330px;
+  width: 100%;
+  background-color: #03383443;
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+::placeholder {
+  color: #033834;
+}
+
+.addBtn {
+  margin: 10px 0 0 0;
+  width: 100%;
+  background-color: #033834;
+  color: #eefaf9;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .teamOverview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 2rem;
+  }
+}

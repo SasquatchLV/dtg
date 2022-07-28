@@ -5,8 +5,14 @@ const mongoose = require("mongoose")
 const getAllTeams = async (req, res) => {
   try {
     const teams = await Team.find()
-    if (!teams) return res.status(204).json({ message: "No teams found" })
-    res.status(200).json(teams)
+    if (!teams) return res.status(204).json({ error: "No teams found" })
+
+    // Sort teams by points
+    const sortedTeams = teams.sort((a, b) => {
+      return b.points - a.points
+    }
+    )
+    res.status(200).json(sortedTeams)
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -38,7 +44,7 @@ const addNewTeam = async (req, res) => {
   }
 }
 
-// delete a workout
+// delete a team
 const removeTeam = async (req, res) => {
   const { id } = req.params
 
@@ -46,13 +52,19 @@ const removeTeam = async (req, res) => {
     return res.status(404).json({ error: "No such team exists in db" })
   }
 
-  const team = await Team.findOneAndDelete({ _id: id })
+  const team = await Team.findOne({ _id: id })
 
   if (!team) {
     return res.status(400).json({ error: "No such team exists in db" })
   }
 
-  res.status(200).json(team)
+  try {
+    await Team.deleteOne({ _id: id })
+
+    res.status(200).json({ message: `Team ${team.country} deleted successfully!` })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
 }
 
 module.exports = {

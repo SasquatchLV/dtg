@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import styles from '../Admin/AdminPanel.module.scss'
 
 const Teams = () => {
@@ -13,22 +15,26 @@ const Teams = () => {
       })
 
       const json = await response.json()
+
       if (response.ok) {
         setTeams(json)
       }
 
       if (!response.ok) {
-        console.log('Unauthorized')
+        toast.error(json.error, {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+        })
       }
     }
 
     if (user) getAllTeams()
   }, [user])
-
-  const totalGames = (won, lost) => {
-    const total = won + lost
-    return total
-  }
 
   return (
     <div className={styles.teamWrapper}>
@@ -41,21 +47,20 @@ const Teams = () => {
         <span>GP</span>
         <span>Points</span>
       </div>
-      {teams.map((team) => (
-        <div className={styles.teamRow} key={team._id}>
-          <img className={styles.flagIcon} src={team.flag} alt="icon" />
-          <span className={styles.countryName}>{team.country}</span>
-          <span className={styles.countryInfo}>{team.gamesWon}</span>
-          <span className={styles.countryInfo}>{team.gamesLost}</span>
-          <span className={styles.countryInfo}>{team.gamesWO}</span>
-          <span className={styles.countryInfo}>{team.gamesLO}</span>
-          <span className={styles.countryInfo}>
-            {totalGames(team.gamesWon, team.gamesLost)}
-          </span>
-          <span className={styles.countryPoints}>
-            {team.points}
-          </span>
-        </div>
+      {teams.map(({
+        _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+      }) => (
+        <TeamsCard
+          key={_id}
+          _id={_id}
+          country={country}
+          flag={flag}
+          gamesWon={gamesWon}
+          gamesLost={gamesLost}
+          gamesWO={gamesWO}
+          gamesLO={gamesLO}
+          points={points}
+        />
       ))}
     </div>
   )

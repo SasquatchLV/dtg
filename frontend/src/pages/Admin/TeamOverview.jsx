@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
+import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './AdminPanel.module.scss'
 
@@ -20,13 +22,16 @@ const TeamOverview = () => {
     }
 
     if (!response.ok) {
-      console.log('Unauthorized')
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
     }
-  }
-
-  const totalGames = (won, lost) => {
-    const total = won + lost
-    return total
   }
 
   const addTeam = async () => {
@@ -94,21 +99,21 @@ const TeamOverview = () => {
           <span>GP</span>
           <span>Points</span>
         </div>
-        {teams.map((team) => (
-          <div key={team._id} className={styles.teamRow}>
-            <img className={styles.flagIcon} src={team.flag} alt="icon" />
-            <span className={styles.countryName}>{team.country}</span>
-            <span className={styles.countryInfo}>{team.gamesWon}</span>
-            <span className={styles.countryInfo}>{team.gamesLost}</span>
-            <span className={styles.countryInfo}>{team.gamesWO}</span>
-            <span className={styles.countryInfo}>{team.gamesLO}</span>
-            <span className={styles.countryInfo}>
-              {totalGames(team.gamesWon, team.gamesLost)}
-            </span>
-            <span className={styles.countryPoints}>
-              {team.points}
-            </span>
-          </div>
+        {teams.map(({
+          _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, id,
+        }) => (
+          <TeamsCard
+            key={_id}
+            id={_id}
+            _id={id}
+            country={country}
+            flag={flag}
+            gamesWon={gamesWon}
+            gamesLost={gamesLost}
+            gamesWO={gamesWO}
+            gamesLO={gamesLO}
+            points={points}
+          />
         ))}
       </div>
     </div>
