@@ -50,6 +50,11 @@ const TeamsCard = ({
   return (
 
     <div className={styles.teamRow}>
+      {isAdmin && (
+      <button className={styles.delete} onClick={() => handleDelete(_id)}>
+        <img src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png" alt="delete" className={styles.deleteImg} />
+      </button>
+      )}
       <img className={styles.flagIcon} src={flag} alt="icon" />
       <span className={styles.countryName}>{country}</span>
       <span className={styles.countryInfo}>{gamesWon}</span>
@@ -62,11 +67,6 @@ const TeamsCard = ({
       <span className={styles.countryPoints}>
         {points}
       </span>
-      {isAdmin && (
-        <div className={styles.teamActions}>
-          <button className={styles.deleteButton} onClick={() => handleDelete(_id)}>Delete</button>
-        </div>
-      )}
     </div>
 
   )

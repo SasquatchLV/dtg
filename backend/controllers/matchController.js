@@ -1,6 +1,8 @@
 const Match = require("../models/matchModel")
 const Team = require("../models/teamModel")
+const UserModel = require("../models/userModel")
 const mongoose = require("mongoose")
+const { User } = require("../config/rolesList")
 
 // get all matches
 const getAllMatches = async (req, res) => {
@@ -82,6 +84,11 @@ const publishMatch = async (req, res) => {
 
     const match = await Match.setResult(_id, homeScore, awayScore, ot)
 
+    const { usersParticipating } = match
+
+    await usersParticipating.forEach(({ email, homeTeamScore, awayTeamScore, overTime }) => (
+      UserModel.determinePoints(email, homeTeamScore, awayTeamScore, overTime, homeScore, awayScore, ot)))
+
     let homePoints = 0
     let awayPoints = 0
 
@@ -113,10 +120,34 @@ const publishMatch = async (req, res) => {
   }
 }
 
+// delete a team
+const removeMatch = async (req, res) => {
+  const { id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "No such match exists in db" })
+  }
+
+  const match = await Match.findOne({ _id: id })
+
+  if (!match) {
+    return res.status(400).json({ error: "No such match exists in db" })
+  }
+
+  try {
+    await Match.deleteOne({ _id: id })
+
+    res.status(200).json({ message: `Match deleted successfully!` })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 module.exports = {
   getAllMatches,
   createMatch,
   makePrediction,
   finishMatch,
-  publishMatch
+  publishMatch,
+  removeMatch
 }

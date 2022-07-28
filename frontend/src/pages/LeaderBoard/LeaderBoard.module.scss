@@ -1,0 +1,15 @@
+.container {
+    padding: 1rem;
+}
+
+.users { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.userWrapper {
+    max-width: 350px;
+    width: 100%;
+}

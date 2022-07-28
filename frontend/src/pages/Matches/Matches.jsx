@@ -51,7 +51,7 @@ const Matches = () => {
           <div className={styles.matchWrapper}>
             <h1>Upcoming games</h1>
             {unfinishedMatches.map(({
-              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title,
+              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title, overTime,
             }) => (
               <MatchCard
                 startingTime={startingTime}
@@ -63,6 +63,7 @@ const Matches = () => {
                 usersParticipating={usersParticipating}
                 title={title}
                 key={_id}
+                ot={overTime}
               />
             ))}
           </div>
@@ -71,7 +72,7 @@ const Matches = () => {
           <div className={styles.matchWrapper}>
             <h1>Finished games</h1>
             {finishedMatches.map(({
-              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title,
+              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title, overTime,
             }) => (
               <MatchCard
                 startingTime={startingTime}
@@ -83,6 +84,7 @@ const Matches = () => {
                 usersParticipating={usersParticipating}
                 title={title}
                 key={_id}
+                ot={overTime}
               />
             ))}
           </div>

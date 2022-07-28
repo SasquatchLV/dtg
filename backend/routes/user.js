@@ -33,7 +33,7 @@ router.post("/demote/:email", verifyRoles(ROLE_LIST.Admin), demoteUser)
 router.post("/delete/:email", verifyRoles(ROLE_LIST.Admin), deleteUser)
 
 // get all users route
-router.get("/all", verifyRoles(ROLE_LIST.Admin), getAllUsers)
+router.get("/all", verifyRoles(ROLE_LIST.User), getAllUsers)
 
 // get single user route
 router.get("/:email", verifyRoles(ROLE_LIST.Admin), getSingleUser)

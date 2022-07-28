@@ -131,4 +131,32 @@ userSchema.statics.single = async function (email) {
   return user
 }
 
+// static promote method
+userSchema.statics.determinePoints = async function (email, homeScore, awayScore, ot, pHomeScore, pAwayScore, pOt) {
+  const user = await this.findOne({ email })
+
+  if (!user) {
+    throw Error("Can't find user with this email")
+  }
+
+  const winningTeam = (homeScore > awayScore) ? 'Home' : 'Away'
+  const pWinningTeam = (pHomeScore > pAwayScore) ? 'Home' : 'Away'
+
+  const pWinningDiff = Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
+
+  const winningDiff = Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
+
+  if (homeScore === pHomeScore && awayScore === pAwayScore) {
+    user.points += 3
+  } else if (winningTeam === pWinningTeam && winningDiff === pWinningDiff) {
+    user.points += 2
+  } else if (winningTeam === pWinningTeam) {
+    user.points += 1
+  }
+
+  await user.save()
+
+  return user
+}
+
 module.exports = mongoose.model("User", userSchema)

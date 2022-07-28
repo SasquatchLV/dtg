@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { formatDistance, getTime } from 'date-fns'
 import styles from './MatchCard.module.scss'
 import { useMatch } from '../../hooks/useMatch'
@@ -8,10 +9,10 @@ import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
 
 const MatchCard = ({
-  startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title,
+  startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title, ot,
 }) => {
   const { finishMatch } = useMatch()
-
+  const [isDeleted, setIsDeleted] = useState(false)
   const time = startingTime.split('').slice(12, 17)
   const date = startingTime.split('').slice(1, 11)
   const fullDate = new Date(`${date.join('')} ${time.join('')}`)
@@ -37,8 +38,43 @@ const MatchCard = ({
     }
   }, [])
 
+  const handleDelete = async (id) => {
+    const response = await fetch(`/api/match/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+
+    if (response.ok) {
+      toast.success(json.message, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+    }
+
+    setIsDeleted(true)
+  }
+
   return (
     <div className={styles.container}>
+      {isAdmin && (!isDeleted
+        ? (
+          <button className={styles.delete} onClick={() => handleDelete(matchId)}>
+            <img
+              src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
+              alt="delete"
+              className={styles.deleteImg}
+            />
+          </button>
+        )
+        : <h4 className={styles.deleted}>Deleted</h4>
+      )}
       <div className={styles.time}>
         <h4>{time}</h4>
         <span>{date.slice(5)}</span>
@@ -50,12 +86,14 @@ const MatchCard = ({
             <span>{homeTeam.country}</span>
             <img src={homeTeam.flag} alt="flag" className={styles.flag} />
           </div>
-
           {hasMatchScore ? (
-            <div className={styles.result}>
-              <b>{`${homeTeamScore} `}</b>
-              <b>-</b>
-              <b>{`${awayTeamScore}`}</b>
+            <div className={styles.resultBox}>
+              <div className={styles.result}>
+                <b>{`${homeTeamScore} `}</b>
+                <b>-</b>
+                <b>{`${awayTeamScore}`}</b>
+              </div>
+              {ot && <p>OT</p>}
             </div>
           ) : (
             <div className={styles.result}>
@@ -79,10 +117,10 @@ const MatchCard = ({
       {!alreadyParticipated ? (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
-            <PredictResult matchId={matchId} />
+            !isAdmin ? <PredictResult matchId={matchId} /> : <h4>Admin does no participate</h4>
           ) : (
             !isMatchPublished ? (
-              <FinalResult matchId={matchId} />
+              isAdmin && <FinalResult matchId={matchId} />
             ) : (
               <h5>Points distributed</h5>
             )

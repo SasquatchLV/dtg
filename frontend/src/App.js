@@ -11,6 +11,7 @@ import Header from './components/Header/Header'
 import AdminPanel from './pages/Admin/AdminPanel'
 import Matches from './pages/Matches/Matches'
 import Teams from './pages/Teams/Teams'
+import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
 
 function App() {
   const { user } = useAuthContext()
@@ -38,6 +39,7 @@ function App() {
             />
             <Route path="/matches" element={<Matches />} />
             <Route path="/teams" element={<Teams />} />
+            <Route path="/leaderboard" element={<LeaderBoard />} />
           </Routes>
         </div>
       </BrowserRouter>

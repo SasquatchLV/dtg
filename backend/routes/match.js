@@ -1,6 +1,6 @@
 const express = require("express")
 const { 
-    createMatch, getAllMatches, makePrediction, finishMatch, publishMatch
+    createMatch, getAllMatches, makePrediction, finishMatch, publishMatch, removeMatch,
 } = require("../controllers/matchController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -25,5 +25,8 @@ router.get("/all", verifyRoles(ROLE_LIST.User), getAllMatches)
 
 // create a new match
 router.post("/new", verifyRoles(ROLE_LIST.Admin), createMatch)
+
+// DELETE match
+router.delete("/:id", verifyRoles(ROLE_LIST.Admin), removeMatch)
 
 module.exports = router
