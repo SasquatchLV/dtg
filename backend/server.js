@@ -3,6 +3,7 @@ require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
 const path = require("path")
+const morganChalk = require("./middleware/morgan")
 const userRoutes = require("./routes/user")
 const teamRoutes = require("./routes/team")
 const matchRoutes = require("./routes/match")
@@ -12,6 +13,9 @@ const credentials = require("./middleware/credentials")
 
 // express app
 const app = express()
+
+// Morgan logging
+app.use(morganChalk)
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement

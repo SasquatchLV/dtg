@@ -100,10 +100,9 @@ const MatchCard = ({
               <b> - </b>
             </div>
           )}
-
-          <div className={styles.team2}>
+          <div className={styles.team1}>
             <img src={awayTeam.flag} alt="flag" className={styles.flag} />
-            {awayTeam.country}
+            <span>{awayTeam.country}</span>
           </div>
         </div>
         <span className={styles.timeRemaining}>
