@@ -83,7 +83,9 @@ const MatchCard = ({
         <h6>{title}</h6>
         <div className={styles.teams}>
           <div className={styles.team1}>
-            <span>{homeTeam.country}</span>
+            <span>
+              {homeTeam.country}
+            </span>
             <img src={homeTeam.flag} alt="flag" className={styles.flag} />
           </div>
           {hasMatchScore ? (
@@ -100,10 +102,11 @@ const MatchCard = ({
               <b> - </b>
             </div>
           )}
-
           <div className={styles.team2}>
             <img src={awayTeam.flag} alt="flag" className={styles.flag} />
-            {awayTeam.country}
+            <span>
+              {awayTeam.country}
+            </span>
           </div>
         </div>
         <span className={styles.timeRemaining}>
