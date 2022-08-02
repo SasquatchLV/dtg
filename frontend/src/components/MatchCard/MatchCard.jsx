@@ -1,7 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { formatDistance, getTime, format as dateFnsFormat } from 'date-fns'
+import {
+  formatDistance, getTime, getHours, getMinutes, format as dateFnsFormat,
+} from 'date-fns'
 import locale from 'date-fns/locale/lv'
 import styles from './MatchCard.module.scss'
 import { useMatch } from '../../hooks/useMatch'
@@ -22,21 +24,26 @@ const MatchCard = ({
 }) => {
   const { finishMatch } = useMatch()
   const [isDeleted, setIsDeleted] = useState(false)
-  const time = startingTime.split('').slice(12, 17)
-  const date = startingTime.split('').slice(1, 11)
-  const fullDate = new Date(`${date.join('')} ${time.join('')}`)
   const { user } = useAuthContext()
+
+  function formatDate(data, format = 'dd.MM.yyyy HH:mm:ss') {
+    const dateFull = typeof data === 'string' ? Date.parse(data) : data
+
+    return dateFnsFormat(dateFull, format, { locale })
+  }
+
+  const fullDate = formatDate(startingTime)
 
   const isMatchFinished = getTime(fullDate) < getTime(new Date())
 
   const isAdmin = user?.roles?.includes(2000)
 
   const alreadyParticipated = usersParticipating.some(
-    (obj) => obj.email === user.email
+    (obj) => obj.email === user.email,
   )
 
   const indexOfUser = usersParticipating?.findIndex(
-    (obj) => obj.email === user.email
+    (obj) => obj.email === user.email,
   )
 
   const usersBet = usersParticipating[indexOfUser]
@@ -44,12 +51,6 @@ const MatchCard = ({
   const hasMatchScore = homeTeamScore || awayTeamScore
 
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
-
-  function formatDate(data, format = 'dd.MM.yyyy HH:mm:ss') {
-    const date = typeof data === 'string' ? Date.parse(data) : data
-
-    return dateFnsFormat(date, format, { locale })
-  }
 
   useEffect(() => {
     if (isMatchFinished) {
@@ -82,8 +83,8 @@ const MatchCard = ({
 
   return (
     <div className={styles.container}>
-      {isAdmin &&
-        (!isDeleted ? (
+      {isAdmin
+        && (!isDeleted ? (
           <button
             className={styles.delete}
             onClick={() => handleDelete(matchId)}
@@ -98,8 +99,8 @@ const MatchCard = ({
           <h4 className={styles.deleted}>Deleted</h4>
         ))}
       <div className={styles.time}>
-        <h4>{time}</h4>
-        <span>{date.slice(5)}</span>
+        {/* <h4>{dateFnsFormat(new Date(fullDate), 'HH:mm')}</h4>
+        <span>{dateFnsFormat(new Date(fullDate), 'dd.MM.yyyy')}</span> */}
       </div>
       <div className={styles.middle}>
         <h6>{title}</h6>
@@ -131,11 +132,10 @@ const MatchCard = ({
         <span className={styles.timeRemaining}>
           {/* {isMatchFinished
             ? 'Finished'
-            : formatDistance(fullDate, new Date(), {
+            : formatDistance(fullDate, new Date(),
                 addSuffix: true,
                 includeSeconds: true,
               })} */}
-          {formatDate(startingTime)}
         </span>
       </div>
 

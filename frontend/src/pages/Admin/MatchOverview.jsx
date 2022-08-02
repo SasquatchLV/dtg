@@ -37,7 +37,7 @@ const MatchOverview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
+    await createMatch(homeTeam, awayTeam, startingTime)
 
     setCreated(true)
   }
@@ -74,9 +74,9 @@ const MatchOverview = () => {
           <label>Starting time</label>
           <DatePicker
             showTimeSelect
-            dateFormat="MMMM d, yyyy h:mmaa"
-            selected={formatUTC(startingTime, true)}
-            onChange={(date) => setStartingTime(formatUTC(date))}
+            dateFormat="dd.MM.yyyy HH:mm:ss"
+            selected={startingTime}
+            onChange={(date) => setStartingTime(date)}
             required
           />
           <button className={styles.addBtn} type="submit">
