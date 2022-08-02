@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
+import lv from 'date-fns/locale/lv'
 import { formatUTC } from '../../utils/formatUTC'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatch } from '../../hooks/useMatch'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './AdminPanel.module.scss'
 import MatchCard from '../../components/MatchCard/MatchCard'
+
+registerLocale('lv', lv)
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
@@ -37,7 +40,7 @@ const MatchOverview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await createMatch(homeTeam, awayTeam, JSON.stringify(startingTime))
+    await createMatch(homeTeam, awayTeam, startingTime)
 
     setCreated(true)
   }
@@ -74,9 +77,10 @@ const MatchOverview = () => {
           <label>Starting time</label>
           <DatePicker
             showTimeSelect
-            dateFormat="MMMM d, yyyy h:mmaa"
-            selected={formatUTC(startingTime, true)}
-            onChange={(date) => setStartingTime(formatUTC(date))}
+            dateFormat="dd.MM.yyyy HH:mm"
+            locale="lv"
+            selected={startingTime}
+            onChange={(date) => setStartingTime(date)}
             required
           />
           <button className={styles.addBtn} type="submit">
@@ -104,7 +108,9 @@ const MatchOverview = () => {
             />
           ))}
         </div>
-      ) : <h1>No unsettled matches to be found</h1>}
+      ) : (
+        <h1>No unsettled matches to be found</h1>
+      )}
     </div>
   )
 }

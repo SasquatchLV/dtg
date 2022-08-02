@@ -10,6 +10,10 @@ const Matches = () => {
   const { user } = useAuthContext()
 
   useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+    console.log(timezone)
+
     const getAllMatches = async () => {
       const response = await fetch('/api/match/all', {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -18,9 +22,9 @@ const Matches = () => {
       const json = await response.json()
 
       if (response.ok) {
-        const matchesWithScore = json.filter((match) => (
-          match.finished && (match.homeTeamScore || match.awayTeamScore)
-        ))
+        const matchesWithScore = json.filter(
+          (match) => match.finished && (match.homeTeamScore || match.awayTeamScore),
+        )
 
         setFinishedMatches(matchesWithScore)
         setUnfinishedMatches(json.filter((match) => !match.finished))
@@ -50,45 +54,69 @@ const Matches = () => {
         {unfinishedMatches.length ? (
           <div className={styles.matchWrapper}>
             <h1>Upcoming games</h1>
-            {unfinishedMatches.map(({
-              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title, overTime,
-            }) => (
-              <MatchCard
-                startingTime={startingTime}
-                homeTeam={homeTeam}
-                homeTeamScore={homeTeamScore}
-                awayTeam={awayTeam}
-                awayTeamScore={awayTeamScore}
-                matchId={_id}
-                usersParticipating={usersParticipating}
-                title={title}
-                key={_id}
-                ot={overTime}
-              />
-            ))}
+            {unfinishedMatches.map(
+              ({
+                startingTime,
+                homeTeam,
+                homeTeamScore,
+                awayTeam,
+                awayTeamScore,
+                _id,
+                usersParticipating,
+                title,
+                overTime,
+              }) => (
+                <MatchCard
+                  startingTime={startingTime}
+                  homeTeam={homeTeam}
+                  homeTeamScore={homeTeamScore}
+                  awayTeam={awayTeam}
+                  awayTeamScore={awayTeamScore}
+                  matchId={_id}
+                  usersParticipating={usersParticipating}
+                  title={title}
+                  key={_id}
+                  ot={overTime}
+                />
+              ),
+            )}
           </div>
-        ) : (<h1>No upcoming matches to be found</h1>)}
+        ) : (
+          <h1>No upcoming matches to be found</h1>
+        )}
         {finishedMatches.length ? (
           <div className={styles.matchWrapper}>
             <h1>Finished games</h1>
-            {finishedMatches.map(({
-              startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, _id, usersParticipating, title, overTime,
-            }) => (
-              <MatchCard
-                startingTime={startingTime}
-                homeTeam={homeTeam}
-                homeTeamScore={homeTeamScore}
-                awayTeam={awayTeam}
-                awayTeamScore={awayTeamScore}
-                matchId={_id}
-                usersParticipating={usersParticipating}
-                title={title}
-                key={_id}
-                ot={overTime}
-              />
-            ))}
+            {finishedMatches.map(
+              ({
+                startingTime,
+                homeTeam,
+                homeTeamScore,
+                awayTeam,
+                awayTeamScore,
+                _id,
+                usersParticipating,
+                title,
+                overTime,
+              }) => (
+                <MatchCard
+                  startingTime={startingTime}
+                  homeTeam={homeTeam}
+                  homeTeamScore={homeTeamScore}
+                  awayTeam={awayTeam}
+                  awayTeamScore={awayTeamScore}
+                  matchId={_id}
+                  usersParticipating={usersParticipating}
+                  title={title}
+                  key={_id}
+                  ot={overTime}
+                />
+              ),
+            )}
           </div>
-        ) : <h1>No finished matches to be found</h1>}
+        ) : (
+          <h1>No finished matches to be found</h1>
+        )}
       </div>
     </div>
   )

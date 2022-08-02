@@ -1,17 +1,23 @@
-const Match = require("../models/matchModel")
-const Team = require("../models/teamModel")
-const UserModel = require("../models/userModel")
-const mongoose = require("mongoose")
-const { User } = require("../config/rolesList")
+const Match = require('../models/matchModel')
+const Team = require('../models/teamModel')
+const UserModel = require('../models/userModel')
+const format = require('date-fns/format')
+const mongoose = require('mongoose')
+const { User } = require('../config/rolesList')
 
 // get all matches
 const getAllMatches = async (req, res) => {
+  // get locale from req header
+  const locale = req.headers
+
+  console.log('locale', locale)
+
   try {
     const matches = await Match.find()
 
     if (matches.length === 0) {
       return res.status(404).json({
-        error: "No upcoming matches",
+        error: 'No upcoming matches',
       })
     }
 
@@ -28,23 +34,32 @@ const createMatch = async (req, res) => {
   let emptyFields = []
 
   if (!homeTeam) {
-    emptyFields.push("Home Team")
+    emptyFields.push('Home Team')
   }
   if (!awayTeam) {
-    emptyFields.push("Away Team")
+    emptyFields.push('Away Team')
   }
   if (!startingTime) {
-    emptyFields.push("Date")
+    emptyFields.push('Date')
   }
   if (emptyFields.length > 0) {
     return res
-      .status(400)
-      .json({ error: "Please fill in all the fields", emptyFields })
+      .status(408)
+      .json({ error: 'Please fill in all the fields', emptyFields })
   }
+
+  const startTime = format(new Date(startingTime), 'HH:mm')
+  const startDate = format(new Date(startingTime), 'dd.MM.yyyy')
 
   // add doc to db
   try {
-    const match = await Match.create({ homeTeam, awayTeam, startingTime })
+    const match = await Match.create({
+      homeTeam,
+      awayTeam,
+      startingTime,
+      startTime,
+      startDate,
+    })
     res.status(200).json(match)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -56,7 +71,13 @@ const makePrediction = async (req, res) => {
   try {
     const { _id, email, homeScore, awayScore, ot } = req.body
 
-    const userPrediction = await Match.prediction(_id, email, homeScore, awayScore, ot)
+    const userPrediction = await Match.prediction(
+      _id,
+      email,
+      homeScore,
+      awayScore,
+      ot
+    )
 
     res.status(200).json(userPrediction)
   } catch (error) {
@@ -86,8 +107,16 @@ const publishMatch = async (req, res) => {
 
     const { usersParticipating } = match
 
-    await usersParticipating.forEach(({ email, homeTeamScore, awayTeamScore }) => (
-      UserModel.determinePoints(email, homeScore, awayScore, homeTeamScore, awayTeamScore)))
+    await usersParticipating.forEach(
+      ({ email, homeTeamScore, awayTeamScore }) =>
+        UserModel.determinePoints(
+          email,
+          homeScore,
+          awayScore,
+          homeTeamScore,
+          awayTeamScore
+        )
+    )
 
     let homePoints = 0
     let awayPoints = 0
@@ -125,13 +154,13 @@ const removeMatch = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "No such match exists in db" })
+    return res.status(404).json({ error: 'No such match exists in db' })
   }
 
   const match = await Match.findOne({ _id: id })
 
   if (!match) {
-    return res.status(400).json({ error: "No such match exists in db" })
+    return res.status(400).json({ error: 'No such match exists in db' })
   }
 
   try {
@@ -149,5 +178,5 @@ module.exports = {
   makePrediction,
   finishMatch,
   publishMatch,
-  removeMatch
+  removeMatch,
 }
