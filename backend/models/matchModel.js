@@ -1,5 +1,5 @@
-const Team = require("./teamModel")
-const mongoose = require("mongoose")
+const Team = require('./teamModel')
+const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
@@ -34,13 +34,13 @@ const usersParticipatingSchema = new Schema({
   email: String,
   homeTeamScore: Number,
   awayTeamScore: Number,
-  overTime: Boolean
+  overTime: Boolean,
 })
 
 const matchSchema = new Schema({
   title: {
     type: String,
-    default: "Regular game",
+    default: 'Regular game',
   },
   homeTeam: {
     type: teamSchema,
@@ -48,7 +48,7 @@ const matchSchema = new Schema({
   },
   homeTeamScore: {
     type: Number,
-    default: 0
+    default: 0,
   },
   awayTeam: {
     type: teamSchema,
@@ -56,7 +56,7 @@ const matchSchema = new Schema({
   },
   awayTeamScore: {
     type: Number,
-    default: 0
+    default: 0,
   },
   usersParticipating: [usersParticipatingSchema],
   overTime: {
@@ -67,9 +67,15 @@ const matchSchema = new Schema({
     type: String,
     required: true,
   },
+  startTime: {
+    type: String,
+  },
+  startDate: {
+    type: String,
+  },
   finished: {
     type: Boolean,
-    default: false
+    default: false,
   },
   createdAt: {
     type: Date,
@@ -79,7 +85,13 @@ const matchSchema = new Schema({
 })
 
 // static prediction method
-matchSchema.statics.prediction = async function (_id, email, homeScore, awayScore, ot) {
+matchSchema.statics.prediction = async function (
+  _id,
+  email,
+  homeScore,
+  awayScore,
+  ot
+) {
   const match = await this.findOne({ _id })
 
   if (!match) {
@@ -90,7 +102,7 @@ matchSchema.statics.prediction = async function (_id, email, homeScore, awayScor
     email: email,
     homeTeamScore: homeScore,
     awayTeamScore: awayScore,
-    overTime: ot
+    overTime: ot,
   }
 
   match.usersParticipating = [...match.usersParticipating, userPrediction]
@@ -132,4 +144,4 @@ matchSchema.statics.setResult = async function (_id, homeScore, awayScore, ot) {
   return match
 }
 
-module.exports = mongoose.model("Match", matchSchema)
+module.exports = mongoose.model('Match', matchSchema)

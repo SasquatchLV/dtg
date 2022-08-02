@@ -9,22 +9,35 @@ import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
 
 const MatchCard = ({
-  startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title, ot,
+  startingTime,
+  homeTeam,
+  homeTeamScore,
+  awayTeam,
+  awayTeamScore,
+  matchId,
+  usersParticipating,
+  title,
+  ot,
 }) => {
   const { finishMatch } = useMatch()
   const [isDeleted, setIsDeleted] = useState(false)
   const time = startingTime.split('').slice(12, 17)
   const date = startingTime.split('').slice(1, 11)
   const fullDate = new Date(`${date.join('')} ${time.join('')}`)
+
   const { user } = useAuthContext()
 
   const isMatchFinished = getTime(fullDate) < getTime(new Date())
 
   const isAdmin = user?.roles?.includes(2000)
 
-  const alreadyParticipated = usersParticipating.some((obj) => obj.email === user.email)
+  const alreadyParticipated = usersParticipating.some(
+    (obj) => obj.email === user.email,
+  )
 
-  const indexOfUser = usersParticipating?.findIndex((obj) => obj.email === user.email)
+  const indexOfUser = usersParticipating?.findIndex(
+    (obj) => obj.email === user.email,
+  )
 
   const usersBet = usersParticipating[indexOfUser]
 
@@ -63,18 +76,21 @@ const MatchCard = ({
 
   return (
     <div className={styles.container}>
-      {isAdmin && (!isDeleted
-        ? (
-          <button className={styles.delete} onClick={() => handleDelete(matchId)}>
+      {isAdmin
+        && (!isDeleted ? (
+          <button
+            className={styles.delete}
+            onClick={() => handleDelete(matchId)}
+          >
             <img
               src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
               alt="delete"
               className={styles.deleteImg}
             />
           </button>
-        )
-        : <h4 className={styles.deleted}>Deleted</h4>
-      )}
+        ) : (
+          <h4 className={styles.deleted}>Deleted</h4>
+        ))}
       <div className={styles.time}>
         <h4>{time}</h4>
         <span>{date.slice(5)}</span>
@@ -83,9 +99,7 @@ const MatchCard = ({
         <h6>{title}</h6>
         <div className={styles.teams}>
           <div className={styles.team1}>
-            <span>
-              {homeTeam.country}
-            </span>
+            <span>{homeTeam.country}</span>
             <img src={homeTeam.flag} alt="flag" className={styles.flag} />
           </div>
           {hasMatchScore ? (
@@ -104,29 +118,31 @@ const MatchCard = ({
           )}
           <div className={styles.team2}>
             <img src={awayTeam.flag} alt="flag" className={styles.flag} />
-            <span>
-              {awayTeam.country}
-            </span>
+            <span>{awayTeam.country}</span>
           </div>
         </div>
         <span className={styles.timeRemaining}>
-          {isMatchFinished ? 'Finished' : formatDistance(fullDate, new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })}
+          {/* {isMatchFinished
+            ? 'Finished'
+            : formatDistance(fullDate, new Date(), {
+              addSuffix: true,
+              includeSeconds: true,
+            })} */}
         </span>
       </div>
 
       {!alreadyParticipated ? (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
-            !isAdmin ? <PredictResult matchId={matchId} /> : <h4>Admin does no participate</h4>
-          ) : (
-            !isMatchPublished ? (
-              isAdmin && <FinalResult matchId={matchId} />
+            !isAdmin ? (
+              <PredictResult matchId={matchId} />
             ) : (
-              <h5>Points distributed</h5>
+              <h4>Admin does no participate</h4>
             )
+          ) : !isMatchPublished ? (
+            isAdmin && <FinalResult matchId={matchId} />
+          ) : (
+            <h5>Points distributed</h5>
           )}
         </div>
       ) : (
