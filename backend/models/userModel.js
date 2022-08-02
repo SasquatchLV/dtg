@@ -118,6 +118,21 @@ userSchema.statics.demote = async function (email) {
   return user
 }
 
+// static method to update avatar
+userSchema.statics.updateAvatar = async function (email, avatarLink) {
+  console.log(email, avatarLink)
+  const user = await this.findOne({ email })
+
+  if (!user) {
+    throw Error("Can't find user with this email")
+  }
+
+  user.avatar = avatarLink
+  await user.save()
+
+  return user
+}
+
 // static delete method
 userSchema.statics.delete = async function (email) {
   const user = await this.findOneAndDelete({ email })

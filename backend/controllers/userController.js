@@ -65,6 +65,19 @@ const demoteUser = async (req, res) => {
   }
 }
 
+// updates users avatar
+const updateUsersAvatar = async (req, res) => {
+  try {
+    const { email, avatarLink } = req.body
+
+    const user = await User.updateAvatar(email, avatarLink)
+
+    res.status(200).json({ user })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 // delete admin
 const deleteUser = async (req, res) => {
   try {
@@ -110,4 +123,5 @@ module.exports = {
   getAllUsers,
   getSingleUser,
   deleteUser,
+  updateUsersAvatar
 }

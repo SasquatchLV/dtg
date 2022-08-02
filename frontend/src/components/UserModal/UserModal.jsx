@@ -1,10 +1,19 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './UserModal.module.scss'
+import { avatars } from '../../data/avatars'
+import { usePromote } from '../../hooks/usePromote'
 
 const UserModal = () => {
+  const [avatarSelectionActive, setAvatarSelectionActive] = useState(false)
   const { user } = useAuthContext()
+  const { updateAvatar } = usePromote()
+
+  const handleSelection = async (avatarLink) => {
+    await updateAvatar(avatarLink)
+  }
 
   return (
     <div className={styles.container}>
@@ -14,9 +23,22 @@ const UserModal = () => {
           src={user.avatar}
           alt="avatar"
         />
-        <button>
+        <button onClick={() => setAvatarSelectionActive(!avatarSelectionActive)}>
           Change Avatar
         </button>
+        {avatarSelectionActive && (
+        <div className={styles.avatarWrapper}>
+          {avatars.map((avatar) => (
+            <img
+              key={avatar}
+              src={avatar}
+              alt="avatar"
+              className={styles.avatar}
+              onClick={() => handleSelection(avatar)}
+            />
+          ))}
+        </div>
+        )}
         <button>
           Change Password
         </button>
