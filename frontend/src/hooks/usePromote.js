@@ -6,6 +6,36 @@ export const usePromote = () => {
   const [isLoading, setIsLoading] = useState(null)
   const { user } = useAuthContext()
 
+  const fetchUser = async () => {
+    setIsLoading(true)
+    const { email, token } = user
+
+    const response = await fetch(`/api/user/${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      setIsLoading(false)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+    }
+
+    return json
+  }
+
   const promoteUser = async (email) => {
     setIsLoading(true)
 
@@ -200,7 +230,52 @@ export const usePromote = () => {
     }
   }
 
+  const changeUserPassword = async (newPass) => {
+    setIsLoading(true)
+
+    const { email, token } = user
+
+    const response = await fetch('/api/user/password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, newPass }),
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      setIsLoading(false)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+    }
+
+    if (response.ok) {
+      toast.success('Password has been changed', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+
+      // update loading state
+      setIsLoading(false)
+    }
+  }
+
   return {
-    promoteUser, demoteUser, deleteUser, updateAvatar, isLoading,
+    promoteUser, demoteUser, deleteUser, updateAvatar, isLoading, fetchUser, changeUserPassword,
   }
 }

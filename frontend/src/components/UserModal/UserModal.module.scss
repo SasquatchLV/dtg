@@ -107,3 +107,55 @@ button {
         opacity: 1;
     }
 }
+
+.passwordBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #cbe3e1;
+    min-width: max-content;
+}
+
+.passwordBox label {
+    color: #033834;
+    font-size: 14px;
+}
+
+.passwordBox input {
+    display: block;
+    height: 20px;
+    max-width: 100px;
+    width: 100%;
+    background-color: #30686343;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 300;
+}
+
+::placeholder {
+    color: #033834;
+}
+
+.confirm {
+    margin: 5px 0 0 0;
+    width: 100%;
+    background-color: #033834;
+    color: #EEFAF9;
+    padding: 5px 0;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        opacity: .8;
+    }
+}

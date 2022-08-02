@@ -52,6 +52,19 @@ const promoteUser = async (req, res) => {
   }
 }
 
+// give admin
+const changeUserPassword = async (req, res) => {
+  try {
+    const { email, newPass } = req.body
+
+    const user = await User.changePass(email, newPass)
+
+    res.status(200).json({ user })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 // remove admin
 const demoteUser = async (req, res) => {
   try {
@@ -123,5 +136,6 @@ module.exports = {
   getAllUsers,
   getSingleUser,
   deleteUser,
-  updateUsersAvatar
+  updateUsersAvatar,
+  changeUserPassword
 }

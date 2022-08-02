@@ -8,6 +8,7 @@ const {
   getSingleUser,
   deleteUser,
   updateUsersAvatar,
+  changeUserPassword,
 } = require("../controllers/userController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -39,7 +40,10 @@ router.post("/avatar", verifyRoles(ROLE_LIST.User), updateUsersAvatar)
 // get all users route
 router.get("/all", verifyRoles(ROLE_LIST.User), getAllUsers)
 
+// change password
+router.post("/password", verifyRoles(ROLE_LIST.User), changeUserPassword)
+
 // get single user route
-router.get("/:email", verifyRoles(ROLE_LIST.Admin), getSingleUser)
+router.get("/:email", verifyRoles(ROLE_LIST.User), getSingleUser)
 
 module.exports = router
