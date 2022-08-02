@@ -86,8 +86,8 @@ const publishMatch = async (req, res) => {
 
     const { usersParticipating } = match
 
-    await usersParticipating.forEach(({ email, homeTeamScore, awayTeamScore, overTime }) => (
-      UserModel.determinePoints(email, homeTeamScore, awayTeamScore, overTime, homeScore, awayScore, ot)))
+    await usersParticipating.forEach(({ email, homeTeamScore, awayTeamScore }) => (
+      UserModel.determinePoints(email, homeScore, awayScore, homeTeamScore, awayTeamScore)))
 
     let homePoints = 0
     let awayPoints = 0

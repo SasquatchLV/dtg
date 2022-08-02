@@ -37,29 +37,29 @@ const Home = () => {
       <div className={styles.home}>
         {users && (
           <div className={styles.users}>
-            {users.map((usr) => (
-              <div key={usr._id} className={styles.user}>
+            {users.map(({ _id, email, roles }) => (
+              <div key={_id} className={styles.user}>
                 <div className={styles.user}>
                   Email:
-                  {usr.email}
+                  {email}
                 </div>
                 <div className={styles.user__role}>
                   Roles:
                   {' '}
-                  {Object.keys(usr.roles)
+                  {Object.keys(roles)
                     .map((role) => role)
                     .join(', ')}
                 </div>
                 <div className={styles.user__promote}>
                   <button
                     className={styles.user__promote__button}
-                    onClick={() => promoteUser(usr.email)}
+                    onClick={() => promoteUser(email)}
                   >
                     Promote
                   </button>
                   <button
                     className={styles.user__promote__button}
-                    onClick={() => demoteUser(usr.email)}
+                    onClick={() => demoteUser(email)}
                   >
                     Demote
                   </button>
