@@ -13,9 +13,7 @@ const Header = () => {
   const navigate = useNavigate()
   const isAdmin = user?.roles?.includes(2000)
 
-  const handleAdmin = () => {
-    navigate('/admin')
-  }
+  const handleAdmin = () => navigate('/admin')
 
   const toggleUserModal = () => setUserModalActive(!userModalActive)
 

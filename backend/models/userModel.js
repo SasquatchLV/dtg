@@ -120,7 +120,6 @@ userSchema.statics.demote = async function (email) {
 
 // static method to update avatar
 userSchema.statics.updateAvatar = async function (email, avatarLink) {
-  console.log(email, avatarLink)
   const user = await this.findOne({ email })
 
   if (!user) {
@@ -133,9 +132,29 @@ userSchema.statics.updateAvatar = async function (email, avatarLink) {
   return user
 }
 
+// static method to change password
+userSchema.statics.changePass = async function (email, newPass) {
+  const user = await this.findOne({ email })
+
+  if (!user) {
+    throw Error("Can't find user with this email")
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  const hash = await bcrypt.hash(newPass, salt)
+
+  console.log(hash)
+
+  user.password = hash
+  await user.save()
+
+  return user
+}
+
 // static delete method
 userSchema.statics.delete = async function (email) {
   const user = await this.findOneAndDelete({ email })
+
   if (!user) {
     throw Error("Can't find user with this email")
   }
