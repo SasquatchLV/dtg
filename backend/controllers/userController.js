@@ -12,11 +12,12 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.login(email, password)
     const roles = Object.values(user.roles).filter(Boolean)
-
+    const { lastFiveGames, avatar, points } = user
+  
     // create a token
     const token = createToken(user._id)
 
-    res.status(200).json({ email, token, roles })
+    res.status(200).json({ email, token, roles, lastFiveGames, avatar, points })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -59,6 +60,19 @@ const demoteUser = async (req, res) => {
     await User.demote(email)
 
     res.status(200).json({ email })
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
+// updates users avatar
+const updateUsersAvatar = async (req, res) => {
+  try {
+    const { email, avatarLink } = req.body
+
+    const user = await User.updateAvatar(email, avatarLink)
+
+    res.status(200).json({ user })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -109,4 +123,5 @@ module.exports = {
   getAllUsers,
   getSingleUser,
   deleteUser,
+  updateUsersAvatar
 }

@@ -155,7 +155,52 @@ export const usePromote = () => {
     }
   }
 
+  const updateAvatar = async (avatarLink) => {
+    setIsLoading(true)
+
+    const { email, token } = user
+
+    const response = await fetch('/api/user/avatar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, avatarLink }),
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      setIsLoading(false)
+      toast.error(json.error, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+    }
+
+    if (response.ok) {
+      toast.success('Avatar has been changed', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      })
+
+      // update loading state
+      setIsLoading(false)
+    }
+  }
+
   return {
-    promoteUser, demoteUser, deleteUser, isLoading,
+    promoteUser, demoteUser, deleteUser, updateAvatar, isLoading,
   }
 }

@@ -7,6 +7,7 @@ const {
   getAllUsers,
   getSingleUser,
   deleteUser,
+  updateUsersAvatar,
 } = require("../controllers/userController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -21,7 +22,7 @@ router.post("/login", loginUser)
 router.use(requireAuth)
 
 // register a user route
-router.post("/signup", verifyRoles(ROLE_LIST.Admin),signupUser)
+router.post("/signup", verifyRoles(ROLE_LIST.Admin), signupUser)
 
 // give admin access route
 router.post("/promote/:email", verifyRoles(ROLE_LIST.Admin), promoteUser)
@@ -31,6 +32,9 @@ router.post("/demote/:email", verifyRoles(ROLE_LIST.Admin), demoteUser)
 
 // remove admin access route
 router.post("/delete/:email", verifyRoles(ROLE_LIST.Admin), deleteUser)
+
+// give new avatar to user
+router.post("/avatar", verifyRoles(ROLE_LIST.User), updateUsersAvatar)
 
 // get all users route
 router.get("/all", verifyRoles(ROLE_LIST.User), getAllUsers)

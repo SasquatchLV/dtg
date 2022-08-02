@@ -30,6 +30,10 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  lastFiveGames: {
+    type: Array,
+    default: []
+  },
   createdAt: {
     type: Date,
     immutable: true,
@@ -114,6 +118,21 @@ userSchema.statics.demote = async function (email) {
   return user
 }
 
+// static method to update avatar
+userSchema.statics.updateAvatar = async function (email, avatarLink) {
+  console.log(email, avatarLink)
+  const user = await this.findOne({ email })
+
+  if (!user) {
+    throw Error("Can't find user with this email")
+  }
+
+  user.avatar = avatarLink
+  await user.save()
+
+  return user
+}
+
 // static delete method
 userSchema.statics.delete = async function (email) {
   const user = await this.findOneAndDelete({ email })
@@ -132,26 +151,42 @@ userSchema.statics.single = async function (email) {
 }
 
 // static promote method
-userSchema.statics.determinePoints = async function (email, homeScore, awayScore, ot, pHomeScore, pAwayScore, pOt) {
+userSchema.statics.determinePoints = async function (email, homeScore, awayScore, pHomeScore, pAwayScore) {
   const user = await this.findOne({ email })
 
   if (!user) {
     throw Error("Can't find user with this email")
   }
 
+  const pWinningDiff = Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
+  const winningDiff = Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
+  
   const winningTeam = (homeScore > awayScore) ? 'Home' : 'Away'
   const pWinningTeam = (pHomeScore > pAwayScore) ? 'Home' : 'Away'
+  
+  const precisePrediction = (Number(homeScore) === pHomeScore && Number(awayScore)=== pAwayScore)
+  const preciseDiff = (winningTeam === pWinningTeam && winningDiff === pWinningDiff)
+  const preciseWinningTeam = winningTeam === pWinningTeam
 
-  const pWinningDiff = Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
+  const addGameToHistory = (points) => {
+    if (user.lastFiveGames.length === 5) {
+      user.lastFiveGames.pop()
+    }
+  
+    user.lastFiveGames.unshift(points)
+  }
 
-  const winningDiff = Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
-
-  if (homeScore === pHomeScore && awayScore === pAwayScore) {
-    user.points += 3
-  } else if (winningTeam === pWinningTeam && winningDiff === pWinningDiff) {
+  if (precisePrediction) {
+    user.points += 4
+    addGameToHistory('4p')
+  } else if (preciseDiff) {
     user.points += 2
-  } else if (winningTeam === pWinningTeam) {
+    addGameToHistory('2p')
+  } else if (preciseWinningTeam) {
     user.points += 1
+    addGameToHistory('1p')
+  } else {
+    addGameToHistory('0p')
   }
 
   await user.save()
