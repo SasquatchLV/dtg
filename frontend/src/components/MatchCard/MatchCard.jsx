@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { formatDistance, getTime } from 'date-fns'
+import { formatDistance, getTime, format as dateFnsFormat } from 'date-fns'
+import locale from 'date-fns/locale/lv'
 import styles from './MatchCard.module.scss'
 import { useMatch } from '../../hooks/useMatch'
 import { useAuthContext } from '../../hooks/useAuthContext'
@@ -9,7 +10,15 @@ import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
 
 const MatchCard = ({
-  startingTime, homeTeam, homeTeamScore, awayTeam, awayTeamScore, matchId, usersParticipating, title, ot,
+  startingTime,
+  homeTeam,
+  homeTeamScore,
+  awayTeam,
+  awayTeamScore,
+  matchId,
+  usersParticipating,
+  title,
+  ot,
 }) => {
   const { finishMatch } = useMatch()
   const [isDeleted, setIsDeleted] = useState(false)
@@ -22,15 +31,25 @@ const MatchCard = ({
 
   const isAdmin = user?.roles?.includes(2000)
 
-  const alreadyParticipated = usersParticipating.some((obj) => obj.email === user.email)
+  const alreadyParticipated = usersParticipating.some(
+    (obj) => obj.email === user.email
+  )
 
-  const indexOfUser = usersParticipating?.findIndex((obj) => obj.email === user.email)
+  const indexOfUser = usersParticipating?.findIndex(
+    (obj) => obj.email === user.email
+  )
 
   const usersBet = usersParticipating[indexOfUser]
 
   const hasMatchScore = homeTeamScore || awayTeamScore
 
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
+
+  function formatDate(data, format = 'dd.MM.yyyy HH:mm:ss') {
+    const date = typeof data === 'string' ? Date.parse(data) : data
+
+    return dateFnsFormat(date, format, { locale })
+  }
 
   useEffect(() => {
     if (isMatchFinished) {
@@ -63,18 +82,21 @@ const MatchCard = ({
 
   return (
     <div className={styles.container}>
-      {isAdmin && (!isDeleted
-        ? (
-          <button className={styles.delete} onClick={() => handleDelete(matchId)}>
+      {isAdmin &&
+        (!isDeleted ? (
+          <button
+            className={styles.delete}
+            onClick={() => handleDelete(matchId)}
+          >
             <img
               src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
               alt="delete"
               className={styles.deleteImg}
             />
           </button>
-        )
-        : <h4 className={styles.deleted}>Deleted</h4>
-      )}
+        ) : (
+          <h4 className={styles.deleted}>Deleted</h4>
+        ))}
       <div className={styles.time}>
         <h4>{time}</h4>
         <span>{date.slice(5)}</span>
@@ -107,23 +129,28 @@ const MatchCard = ({
           </div>
         </div>
         <span className={styles.timeRemaining}>
-          {isMatchFinished ? 'Finished' : formatDistance(fullDate, new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })}
+          {/* {isMatchFinished
+            ? 'Finished'
+            : formatDistance(fullDate, new Date(), {
+                addSuffix: true,
+                includeSeconds: true,
+              })} */}
+          {formatDate(startingTime)}
         </span>
       </div>
 
       {!alreadyParticipated ? (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
-            !isAdmin ? <PredictResult matchId={matchId} /> : <h4>Admin does no participate</h4>
-          ) : (
-            !isMatchPublished ? (
-              isAdmin && <FinalResult matchId={matchId} />
+            !isAdmin ? (
+              <PredictResult matchId={matchId} />
             ) : (
-              <h5>Points distributed</h5>
+              <h4>Admin does no participate</h4>
             )
+          ) : !isMatchPublished ? (
+            isAdmin && <FinalResult matchId={matchId} />
+          ) : (
+            <h5>Points distributed</h5>
           )}
         </div>
       ) : (
