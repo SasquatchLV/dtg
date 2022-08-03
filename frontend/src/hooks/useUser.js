@@ -10,7 +10,7 @@ export const useUser = () => {
     const bodyParams = { email, password }
     const successMsg = `User ${email} successfully created`
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const fetchUser = async () => {
@@ -19,7 +19,7 @@ export const useUser = () => {
     const bodyParams = {}
     const successMsg = ''
 
-    const json = fetchData(token, route, 'GET', bodyParams, successMsg)
+    const json = await fetchData(token, route, 'GET', bodyParams, successMsg)
 
     return json
   }
@@ -30,7 +30,7 @@ export const useUser = () => {
     const bodyParams = {}
     const successMsg = 'User promoted'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const demoteUser = async (email) => {
@@ -39,7 +39,7 @@ export const useUser = () => {
     const bodyParams = {}
     const successMsg = 'User demoted'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const deleteUser = async (id) => {
@@ -48,7 +48,7 @@ export const useUser = () => {
     const bodyParams = {}
     const successMsg = 'User deleted'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const updateAvatar = async (avatarLink) => {
@@ -57,19 +57,25 @@ export const useUser = () => {
     const bodyParams = { email, avatarLink }
     const successMsg = 'Avatar has been changed'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const changeUserPassword = async (newPass) => {
-    const { _id, token } = user
+    const { email, token } = user
     const route = 'user/password'
-    const bodyParams = { _id, newPass }
-    const successMsg = `Password changed to ${newPass}`
+    const bodyParams = { email, newPass }
+    const successMsg = 'Password changed'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   return {
-    promoteUser, demoteUser, deleteUser, updateAvatar, fetchUser, changeUserPassword, signupUser,
+    promoteUser,
+    demoteUser,
+    deleteUser,
+    updateAvatar,
+    fetchUser,
+    changeUserPassword,
+    signupUser,
   }
 }

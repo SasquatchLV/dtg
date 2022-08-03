@@ -1,8 +1,8 @@
-const User = require("../models/userModel")
-const jwt = require("jsonwebtoken")
+const User = require('../models/userModel')
+const jwt = require('jsonwebtoken')
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" })
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
 }
 
 // login a user
@@ -52,14 +52,14 @@ const promoteUser = async (req, res) => {
   }
 }
 
-// give admin
+// change password
 const changeUserPassword = async (req, res) => {
+  const { email, newPass } = req.body
+
   try {
-    const { _id, newPass } = req.body
+    await User.changePass(email, newPass)
 
-    const user = await User.changePass(_id, newPass)
-
-    res.status(200).json({ user })
+    res.status(200).json({ message: 'Password changed' })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -108,7 +108,7 @@ const deleteUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({})
-    if (!users) return res.status(204).json({ error: "No users found" })
+    if (!users) return res.status(204).json({ error: 'No users found' })
     res.status(200).json(users)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -124,7 +124,7 @@ const getSingleUser = async (req, res) => {
 
     res.status(200).json(user)
   } catch (error) {
-    res.status(400).json({ error: "No user found" })
+    res.status(400).json({ error: 'No user found' })
   }
 }
 
@@ -137,5 +137,5 @@ module.exports = {
   getSingleUser,
   deleteUser,
   updateUsersAvatar,
-  changeUserPassword
+  changeUserPassword,
 }

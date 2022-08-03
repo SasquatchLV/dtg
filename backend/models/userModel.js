@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const bcrypt = require("bcrypt")
-const validator = require("validator")
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const validator = require('validator')
 
 const Schema = mongoose.Schema
 
@@ -13,7 +13,7 @@ const userSchema = new Schema({
   avatar: {
     type: String,
     default:
-      "https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png",
+      'https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png',
   },
   password: {
     type: String,
@@ -32,7 +32,7 @@ const userSchema = new Schema({
   },
   lastFiveGames: {
     type: Array,
-    default: []
+    default: [],
   },
   createdAt: {
     type: Date,
@@ -45,19 +45,19 @@ const userSchema = new Schema({
 userSchema.statics.signup = async function (email, password) {
   // validation
   if (!email || !password) {
-    throw Error("All fields must be filled")
+    throw Error('All fields must be filled')
   }
   if (!validator.isEmail(email)) {
-    throw Error("Email not valid")
+    throw Error('Email not valid')
   }
   if (!validator.isStrongPassword(password)) {
-    throw Error("Password not strong enough")
+    throw Error('Password not strong enough')
   }
 
   const exists = await this.findOne({ email })
 
   if (exists) {
-    throw Error("Email already in use")
+    throw Error('Email already in use')
   }
 
   const salt = await bcrypt.genSalt(10)
@@ -71,7 +71,7 @@ userSchema.statics.signup = async function (email, password) {
 // static login method
 userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
-    throw Error("All fields must be filled")
+    throw Error('All fields must be filled')
   }
 
   const user = await this.findOne({ email })
@@ -81,7 +81,7 @@ userSchema.statics.login = async function (email, password) {
 
   const match = await bcrypt.compare(password, user.password)
   if (!match) {
-    throw Error("Incorrect password")
+    throw Error('Incorrect password')
   }
 
   return user
@@ -109,7 +109,7 @@ userSchema.statics.demote = async function (email) {
 
   // Check if user is an admin
   if (!user.roles.Admin) {
-    throw Error("This user is not an admin")
+    throw Error('This user is not an admin')
   }
 
   user.roles = { User: 1000 }
@@ -133,11 +133,11 @@ userSchema.statics.updateAvatar = async function (email, avatarLink) {
 }
 
 // static method to change password
-userSchema.statics.changePass = async function (_id, newPass) {
-  const user = await this.findOne({ _id })
+userSchema.statics.changePass = async function (email, newPass) {
+  const user = await this.findOne({ email })
 
   if (!validator.isStrongPassword(newPass)) {
-    throw Error("Password not strong enough")
+    throw Error('Password not strong enough')
   }
 
   const salt = await bcrypt.genSalt(10)
@@ -145,8 +145,7 @@ userSchema.statics.changePass = async function (_id, newPass) {
 
   user.password = hash
   await user.save()
-  
-  console.log(user)
+
   return user
 }
 
@@ -169,28 +168,38 @@ userSchema.statics.single = async function (email) {
 }
 
 // static promote method
-userSchema.statics.determinePoints = async function (email, homeScore, awayScore, pHomeScore, pAwayScore) {
+userSchema.statics.determinePoints = async function (
+  email,
+  homeScore,
+  awayScore,
+  pHomeScore,
+  pAwayScore
+) {
   const user = await this.findOne({ email })
 
   if (!user) {
     throw Error("Can't find user with this email")
   }
 
-  const pWinningDiff = Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
-  const winningDiff = Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
-  
-  const winningTeam = (homeScore > awayScore) ? 'Home' : 'Away'
-  const pWinningTeam = (pHomeScore > pAwayScore) ? 'Home' : 'Away'
-  
-  const precisePrediction = (Number(homeScore) === pHomeScore && Number(awayScore)=== pAwayScore)
-  const preciseDiff = (winningTeam === pWinningTeam && winningDiff === pWinningDiff)
+  const pWinningDiff =
+    Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
+  const winningDiff =
+    Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
+
+  const winningTeam = homeScore > awayScore ? 'Home' : 'Away'
+  const pWinningTeam = pHomeScore > pAwayScore ? 'Home' : 'Away'
+
+  const precisePrediction =
+    Number(homeScore) === pHomeScore && Number(awayScore) === pAwayScore
+  const preciseDiff =
+    winningTeam === pWinningTeam && winningDiff === pWinningDiff
   const preciseWinningTeam = winningTeam === pWinningTeam
 
   const addGameToHistory = (points) => {
     if (user.lastFiveGames.length === 5) {
       user.lastFiveGames.pop()
     }
-  
+
     user.lastFiveGames.unshift(points)
   }
 
@@ -212,4 +221,4 @@ userSchema.statics.determinePoints = async function (email, homeScore, awayScore
   return user
 }
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model('User', userSchema)
