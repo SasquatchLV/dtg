@@ -2,7 +2,7 @@ const Match = require('../models/matchModel')
 const Team = require('../models/teamModel')
 const UserModel = require('../models/userModel')
 const { zonedTimeToUtc, utcToZonedTime, format } = require('date-fns-tz')
-const { formatDistance, getTime } = require('date-fns')
+const { formatDistance, getTime, getDate } = require('date-fns')
 const mongoose = require('mongoose')
 const { User } = require('../config/rolesList')
 
@@ -20,26 +20,34 @@ const getAllMatches = async (req, res) => {
       })
     }
 
+    // Sort matches by starting time
+    matches.sort((a, b) => {
+      return (
+        getTime(new Date(a.startingTime)) - getTime(new Date(b.startingTime))
+      )
+    })
+
     const matchesWithUsersGameTime = matches.map((match) => {
       const { startingTime } = match
 
       // Get the starting time of the match in the user's timezone
+      const usersGameTime = utcToZonedTime(startingTime, timezone)
 
-      const pattern = 'dd.MM.yyyy HH:mm:ss'
-      const usersGameTime = format(new Date(startingTime), pattern, {
+      const userStartTime = format(usersGameTime, 'HH:mm (z)', {
         timeZone: timezone,
       })
-      const userStartTime = format(
-        new Date(usersGameTime),
-        "HH:mm 'GMT' XXX (z)"
-      )
-      const userStartDate = format(new Date(usersGameTime), 'dd.MM.yyyy')
+      const userStartDate = format(usersGameTime, 'dd.MM.yyyy', {
+        timeZone: timezone,
+      })
 
       const isMatchFinished =
         getTime(new Date(startingTime)) < getTime(new Date())
 
       const userTimeTillGame = isMatchFinished
-        ? 'Finished'
+        ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
+            addSuffix: true,
+            includeSeconds: true,
+          })}`
         : formatDistance(new Date(startingTime), new Date(), {
             addSuffix: true,
             includeSeconds: true,
