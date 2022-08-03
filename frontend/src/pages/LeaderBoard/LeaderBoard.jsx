@@ -15,9 +15,12 @@ const LeaderBoard = () => {
       })
 
       const json = await response.json()
-      console.log(json)
+
+      // Sort users by points
+      const sortedUsers = json.sort((a, b) => b.points - a.points)
+
       if (response.ok) {
-        setUsers(json)
+        setUsers(sortedUsers)
       }
 
       if (!response.ok) {
@@ -37,10 +40,17 @@ const LeaderBoard = () => {
           <div className={styles.userWrapper}>
             <h1>Top Predictors</h1>
             {users.map((obj) => (
-              <LeaderBoardCard avatar={obj.avatar} email={obj.email} points={obj.points} key={obj.email} />
+              <LeaderBoardCard
+                avatar={obj.avatar}
+                email={obj.email}
+                points={obj.points}
+                key={obj.email}
+              />
             ))}
           </div>
-        ) : (<h1>No upcoming matches to be found</h1>)}
+        ) : (
+          <h1>No upcoming matches to be found</h1>
+        )}
       </div>
     </div>
   )
