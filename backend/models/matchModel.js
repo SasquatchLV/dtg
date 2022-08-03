@@ -67,12 +67,6 @@ const matchSchema = new Schema({
     type: String,
     required: true,
   },
-  startTime: {
-    type: String,
-  },
-  startDate: {
-    type: String,
-  },
   finished: {
     type: Boolean,
     default: false,
