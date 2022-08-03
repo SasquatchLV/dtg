@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import styles from '../Admin/AdminPanel.module.scss'
+import { errorToast } from '../../utils/toast'
 
 const Teams = () => {
   const [teams, setTeams] = useState([])
@@ -21,15 +21,7 @@ const Teams = () => {
       }
 
       if (!response.ok) {
-        toast.error(json.error, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        })
+        errorToast('Can`t load')
       }
     }
 

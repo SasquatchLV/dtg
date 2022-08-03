@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Signup from '../../components/Signup/Signup'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import { usePromote } from '../../hooks/usePromote'
+import { useUser } from '../../hooks/useUser'
 import styles from './AdminPanel.module.scss'
 
 const UserOverview = () => {
@@ -11,7 +11,7 @@ const UserOverview = () => {
   const [error, setError] = useState()
   const [writtenEmail, setWrittenEmail] = useState('')
   const { user } = useAuthContext()
-  const { promoteUser, demoteUser, deleteUser } = usePromote()
+  const { promoteUser, demoteUser, deleteUser } = useUser()
 
   const userFound = Object.keys(activeUser).length
 

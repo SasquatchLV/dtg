@@ -1,116 +1,48 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
+import { fetchData } from '../utils/fetch'
 
 export const useMatch = () => {
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(null)
   const [unsettledMatches, setUnsettledMatches] = useState([])
   const { user } = useAuthContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime) => {
-    setIsLoading(true)
-    setError(null)
+    const route = 'match/new'
+    const bodyParams = { homeTeam, awayTeam, startingTime }
+    const successMsg = 'Match created'
 
-    const response = await fetch('api/match/new', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ homeTeam, awayTeam, startingTime }),
-    })
-    const json = await response.json()
-
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
-    }
-    if (response.ok) {
-      console.log('Match created')
-
-      // update loading state
-      setIsLoading(false)
-    }
+    fetchData(user.token, route, 'POST', bodyParams, successMsg)
   }
 
   const makePrediction = async (_id, homeScore, awayScore, ot) => {
-    setIsLoading(true)
-    setError(null)
-    const { email } = user
-
-    const response = await fetch('api/match/predict', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        _id, email, homeScore, awayScore, ot,
-      }),
-    })
-
-    const json = await response.json()
-
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
+    const { email, token } = user
+    const route = 'match/predict'
+    const bodyParams = {
+      _id, email, homeScore, awayScore, ot,
     }
-    if (response.ok) {
-      console.log('Prediction made')
+    const successMsg = 'Prediction submitted'
 
-      // update loading state
-      setIsLoading(false)
-    }
+    fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const finishMatch = async (_id) => {
-    setIsLoading(true)
-    setError(null)
+    const { token } = user
+    const route = 'match/finish'
+    const bodyParams = { _id }
+    const successMsg = ''
 
-    const response = await fetch('api/match/finish', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ _id }),
-    })
-
-    const json = await response.json()
-
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
-    }
-    if (response.ok) {
-      setIsLoading(false)
-    }
+    fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const publishResult = async (_id, homeScore, awayScore, ot) => {
-    setIsLoading(true)
-    setError(null)
-
-    const response = await fetch('api/match/publish', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        _id, homeScore, awayScore, ot,
-      }),
-    })
-
-    const json = await response.json()
-
-    if (!response.ok) {
-      setIsLoading(false)
-      setError(json.error)
+    const { token } = user
+    const route = 'match/publish'
+    const bodyParams = {
+      _id, homeScore, awayScore, ot,
     }
-    if (response.ok) {
-      setIsLoading(false)
-    }
+    const successMsg = 'Match results published'
+
+    fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
   const getAllMatches = async () => {
@@ -129,6 +61,6 @@ export const useMatch = () => {
   }
 
   return {
-    createMatch, makePrediction, finishMatch, publishResult, isLoading, error, getAllMatches, unsettledMatches,
+    createMatch, makePrediction, finishMatch, publishResult, getAllMatches, unsettledMatches,
   }
 }
