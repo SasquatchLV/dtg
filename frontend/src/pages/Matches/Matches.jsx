@@ -6,7 +6,7 @@ import styles from './Matches.module.scss'
 
 const Matches = () => {
   const [unfinishedMatches, setUnfinishedMatches] = useState([])
-  const [finishedMatches, setFinishedMatches] = useState([])
+  const [publishedMatches, setPublishedMatches] = useState([])
   const { user } = useAuthContext()
 
   useEffect(() => {
@@ -21,10 +21,10 @@ const Matches = () => {
 
       if (response.ok) {
         const matchesWithScore = json.filter(
-          (match) => match.finished && (match.homeTeamScore || match.awayTeamScore),
+          (match) => match.isMatchFinished && (match.homeTeamScore || match.awayTeamScore),
         )
 
-        setFinishedMatches(json.filter((match) => match.isMatchFinished))
+        setPublishedMatches(matchesWithScore)
         setUnfinishedMatches(json.filter((match) => !match.isMatchFinished))
       }
 
@@ -90,10 +90,10 @@ const Matches = () => {
         ) : (
           <h1>No upcoming matches to be found</h1>
         )}
-        {finishedMatches.length ? (
+        {publishedMatches.length ? (
           <div className={styles.matchWrapper}>
             <h1>Finished games</h1>
-            {finishedMatches.map(
+            {publishedMatches.map(
               ({
                 startingTime,
                 homeTeam,

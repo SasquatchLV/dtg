@@ -1,33 +1,35 @@
-import { useState } from 'react'
-import { useMatch } from '../../hooks/useMatch'
-import styles from './MatchCard.module.scss'
+import { useEffect, useState } from 'react'
+import { useMatch } from '../../../hooks/useMatch'
+import styles from '../MatchCard.module.scss'
 
-const PredictResult = (matchId) => {
-  const [homeScore, setHomeScore] = useState(0)
-  const [awayScore, setAwayScore] = useState(0)
-  const [participated, setParticipated] = useState(false)
+const FinalResult = (matchId, isAdmin) => {
+  const [finalHomeScore, setFinalHomeScore] = useState(0)
+  const [finalAwayScore, setFinalAwayScore] = useState(0)
+  const [accepted, setAccepted] = useState(false)
   const [overTime, setOverTime] = useState(false)
-  const { makePrediction } = useMatch()
+  const { publishResult } = useMatch()
 
-  const handleSubmit = async (e) => {
+  const handlePublish = async (e) => {
     e.preventDefault()
 
     // eslint-disable-next-line react/destructuring-assignment
-    await makePrediction(matchId.matchId, homeScore, awayScore, overTime)
-    setParticipated(true)
+    await publishResult(matchId.matchId, finalHomeScore, finalAwayScore, overTime)
+
+    setAccepted(true)
   }
 
   return (
-    !participated ? (
+    !accepted ? (
       <div className={styles.inputWrapper}>
+        <h4>Add final result</h4>
         <div className={styles.inputTop}>
           <div className={styles.inputBox}>
             <span>TEAM 1</span>
             <input
               type="number"
               placeholder="0"
-              value={homeScore}
-              onChange={(e) => setHomeScore(e.target.value)}
+              value={finalHomeScore}
+              onChange={(e) => setFinalHomeScore(e.target.value)}
               required
             />
           </div>
@@ -36,8 +38,8 @@ const PredictResult = (matchId) => {
             <input
               type="number"
               placeholder="0"
-              value={awayScore}
-              onChange={(e) => setAwayScore(e.target.value)}
+              value={finalAwayScore}
+              onChange={(e) => setFinalAwayScore(e.target.value)}
               required
             />
           </div>
@@ -48,15 +50,13 @@ const PredictResult = (matchId) => {
         </div>
         <button
           className={styles.predictBtn}
-          onClick={(e) => handleSubmit(e)}
+          onClick={(e) => handlePublish(e)}
         >
-          SUBMIT
+          Publish
         </button>
       </div>
-    ) : (
-      <h4>Accepted</h4>
-    )
+    ) : <h4>Accepted</h4>
   )
 }
 
-export default PredictResult
+export default FinalResult

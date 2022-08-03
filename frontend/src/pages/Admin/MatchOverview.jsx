@@ -11,11 +11,12 @@ registerLocale('lv', lv)
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
+  const [unsettledMatches, setUnsettledMatches] = useState([])
   const [homeTeam, setHomeTeam] = useState({})
   const [awayTeam, setAwayTeam] = useState({})
   const [created, setCreated] = useState(false)
   const [startingTime, setStartingTime] = useState(new Date())
-  const { createMatch, getAllMatches, unsettledMatches } = useMatch()
+  const { createMatch } = useMatch()
   const { user } = useAuthContext()
 
   const getAllTeams = async () => {
@@ -29,10 +30,25 @@ const MatchOverview = () => {
     }
   }
 
+  const getUnsettledMatches = async () => {
+    const response = await fetch('/api/match/all', {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+    if (response.ok) {
+      const matchesWithNoScore = json.filter((match) => (
+        match.isMatchFinished && !match.homeTeamScore && !match.awayTeamScore && !match.overTime
+      ))
+
+      setUnsettledMatches(matchesWithNoScore)
+    }
+  }
+
   useEffect(() => {
     if (user) {
       getAllTeams()
-      getAllMatches()
+      getUnsettledMatches()
     }
   }, [user])
 
@@ -104,6 +120,7 @@ const MatchOverview = () => {
               usersParticipating={match.usersParticipating}
               title={match.title}
               key={match._id}
+              isMatchFinished={match.isMatchFinished}
             />
           ))}
         </div>

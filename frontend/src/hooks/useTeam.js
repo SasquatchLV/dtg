@@ -1,16 +1,16 @@
-import { fetchData } from '../utils/fetch'
-import { useAuthContext } from './useAuthContext'
+import { useFetch } from './useFetch'
 
 export const useTeam = () => {
-  const { user } = useAuthContext()
+  const { fetchData } = useFetch()
 
   const getAllTeams = async () => {
-    const { token } = user
     const route = 'team/all'
     const bodyParams = {}
     const successMsg = ''
 
-    fetchData(token, route, 'GET', bodyParams, successMsg)
+    const json = await fetchData(route, 'GET', bodyParams, successMsg)
+
+    return json
   }
 
   return {

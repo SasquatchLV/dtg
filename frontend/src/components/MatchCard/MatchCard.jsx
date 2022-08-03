@@ -1,15 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { formatDistance, getTime } from 'date-fns'
 import styles from './MatchCard.module.scss'
 import { useMatch } from '../../hooks/useMatch'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import FinalResult from './FinalResult'
-import PredictResult from './PredictResult'
+import FinalResult from './Layouts/FinalResult'
+import PredictResult from './Layouts/PredictResult'
 
 const MatchCard = ({
-  startingTime,
   homeTeam,
   homeTeamScore,
   awayTeam,
@@ -41,8 +39,6 @@ const MatchCard = ({
   const usersBet = usersParticipating[indexOfUser]
 
   const hasMatchScore = homeTeamScore || awayTeamScore
-
-  const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
 
   const handleDelete = async (id) => {
     const response = await fetch(`/api/match/${id}`, {
@@ -120,20 +116,15 @@ const MatchCard = ({
       {!alreadyParticipated ? (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
-            !isAdmin ? (
-              <PredictResult matchId={matchId} />
-            ) : (
-              <h4>Admin does no participate</h4>
-            )
-          ) : !isMatchPublished ? (
-            isAdmin && <FinalResult matchId={matchId} />
+            <PredictResult matchId={matchId} />
+          ) : !hasMatchScore ? (
+            <FinalResult matchId={matchId} />
           ) : (
             <h5>Points distributed</h5>
           )}
         </div>
       ) : (
         <h5 className={styles.info}>
-          <i>You`ve participated</i>
           <p>Predicted Score:</p>
           <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
         </h5>
