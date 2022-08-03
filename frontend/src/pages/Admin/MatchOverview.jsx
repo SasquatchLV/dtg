@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import lv from 'date-fns/locale/lv'
-import { formatUTC } from '../../utils/formatUTC'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatch } from '../../hooks/useMatch'
 import 'react-datepicker/dist/react-datepicker.css'

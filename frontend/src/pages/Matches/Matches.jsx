@@ -12,10 +12,8 @@ const Matches = () => {
   useEffect(() => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
-    console.log(timezone)
-
     const getAllMatches = async () => {
-      const response = await fetch('/api/match/all', {
+      const response = await fetch(`/api/match/all?timezone=${timezone}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       })
 
@@ -26,8 +24,8 @@ const Matches = () => {
           (match) => match.finished && (match.homeTeamScore || match.awayTeamScore),
         )
 
-        setFinishedMatches(matchesWithScore)
-        setUnfinishedMatches(json.filter((match) => !match.finished))
+        setFinishedMatches(json.filter((match) => match.isMatchFinished))
+        setUnfinishedMatches(json.filter((match) => !match.isMatchFinished))
       }
 
       if (!response.ok) {
@@ -65,6 +63,10 @@ const Matches = () => {
                 usersParticipating,
                 title,
                 overTime,
+                userStartDate,
+                userStartTime,
+                isMatchFinished,
+                userTimeTillGame,
               }) => (
                 <MatchCard
                   startingTime={startingTime}
@@ -77,6 +79,10 @@ const Matches = () => {
                   title={title}
                   key={_id}
                   ot={overTime}
+                  userStartDate={userStartDate}
+                  userStartTime={userStartTime}
+                  isMatchFinished={isMatchFinished}
+                  userTimeTillGame={userTimeTillGame}
                 />
               ),
             )}
@@ -98,6 +104,10 @@ const Matches = () => {
                 usersParticipating,
                 title,
                 overTime,
+                userStartDate,
+                userStartTime,
+                isMatchFinished,
+                userTimeTillGame,
               }) => (
                 <MatchCard
                   startingTime={startingTime}
@@ -110,6 +120,10 @@ const Matches = () => {
                   title={title}
                   key={_id}
                   ot={overTime}
+                  userStartDate={userStartDate}
+                  userStartTime={userStartTime}
+                  isMatchFinished={isMatchFinished}
+                  userTimeTillGame={userTimeTillGame}
                 />
               ),
             )}

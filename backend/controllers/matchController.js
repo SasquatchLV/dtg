@@ -1,16 +1,15 @@
 const Match = require('../models/matchModel')
 const Team = require('../models/teamModel')
 const UserModel = require('../models/userModel')
-const format = require('date-fns/format')
+const { zonedTimeToUtc, utcToZonedTime, format } = require('date-fns-tz')
+const { formatDistance, getTime } = require('date-fns')
 const mongoose = require('mongoose')
 const { User } = require('../config/rolesList')
 
 // get all matches
 const getAllMatches = async (req, res) => {
-  // get locale from req header
-  const locale = req.headers
-
-  console.log('locale', locale)
+  // get timezone from request query
+  const { timezone } = req.query
 
   try {
     const matches = await Match.find()
@@ -21,7 +20,41 @@ const getAllMatches = async (req, res) => {
       })
     }
 
-    res.status(200).json(matches)
+    const matchesWithUsersGameTime = matches.map((match) => {
+      const { startingTime } = match
+
+      // Get the starting time of the match in the user's timezone
+
+      const pattern = 'dd.MM.yyyy HH:mm:ss'
+      const usersGameTime = format(new Date(startingTime), pattern, {
+        timeZone: timezone,
+      })
+      const userStartTime = format(
+        new Date(usersGameTime),
+        "HH:mm 'GMT' XXX (z)"
+      )
+      const userStartDate = format(new Date(usersGameTime), 'dd.MM.yyyy')
+
+      const isMatchFinished =
+        getTime(new Date(startingTime)) < getTime(new Date())
+
+      const userTimeTillGame = isMatchFinished
+        ? 'Finished'
+        : formatDistance(new Date(startingTime), new Date(), {
+            addSuffix: true,
+            includeSeconds: true,
+          })
+
+      return {
+        ...match._doc,
+        userStartTime,
+        userStartDate,
+        isMatchFinished,
+        userTimeTillGame,
+      }
+    })
+
+    res.status(200).json(matchesWithUsersGameTime)
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -48,17 +81,12 @@ const createMatch = async (req, res) => {
       .json({ error: 'Please fill in all the fields', emptyFields })
   }
 
-  const startTime = format(new Date(startingTime), 'HH:mm')
-  const startDate = format(new Date(startingTime), 'dd.MM.yyyy')
-
   // add doc to db
   try {
     const match = await Match.create({
       homeTeam,
       awayTeam,
       startingTime,
-      startTime,
-      startDate,
     })
     res.status(200).json(match)
   } catch (error) {

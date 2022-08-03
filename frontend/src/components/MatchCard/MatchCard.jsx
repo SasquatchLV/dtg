@@ -18,16 +18,15 @@ const MatchCard = ({
   usersParticipating,
   title,
   ot,
+  userStartTime,
+  userStartDate,
+  isMatchFinished,
+  userTimeTillGame,
 }) => {
   const { finishMatch } = useMatch()
   const [isDeleted, setIsDeleted] = useState(false)
-  const time = startingTime.split('').slice(12, 17)
-  const date = startingTime.split('').slice(1, 11)
-  const fullDate = new Date(`${date.join('')} ${time.join('')}`)
 
   const { user } = useAuthContext()
-
-  const isMatchFinished = getTime(fullDate) < getTime(new Date())
 
   const isAdmin = user?.roles?.includes(2000)
 
@@ -44,12 +43,6 @@ const MatchCard = ({
   const hasMatchScore = homeTeamScore || awayTeamScore
 
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
-
-  useEffect(() => {
-    if (isMatchFinished) {
-      finishMatch(matchId)
-    }
-  }, [])
 
   const handleDelete = async (id) => {
     const response = await fetch(`/api/match/${id}`, {
@@ -92,8 +85,8 @@ const MatchCard = ({
           <h4 className={styles.deleted}>Deleted</h4>
         ))}
       <div className={styles.time}>
-        <h4>{time}</h4>
-        <span>{date.slice(5)}</span>
+        <h4>{userStartTime}</h4>
+        <span>{userStartDate}</span>
       </div>
       <div className={styles.middle}>
         <h6>{title}</h6>
@@ -121,14 +114,7 @@ const MatchCard = ({
             <span>{awayTeam.country}</span>
           </div>
         </div>
-        <span className={styles.timeRemaining}>
-          {/* {isMatchFinished
-            ? 'Finished'
-            : formatDistance(fullDate, new Date(), {
-              addSuffix: true,
-              includeSeconds: true,
-            })} */}
-        </span>
+        <span className={styles.timeRemaining}>{userTimeTillGame}</span>
       </div>
 
       {!alreadyParticipated ? (
