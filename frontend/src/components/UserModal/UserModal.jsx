@@ -59,79 +59,78 @@ const UserModal = () => {
     await changeUserPassword(newPassValue)
   }
 
-  return (
-    userFound ? (
-      <div className={styles.container}>
-        <div className={styles.leftSide}>
-          <img
-            className={styles.userAvatar}
-            src={activeUser.avatar}
-            alt="avatar"
-          />
-          <button onClick={() => setAvatarSelectionActive(true)}>
-            Change Avatar
-          </button>
-          {avatarSelectionActive && (
-            <ClickAwayListener onClickAway={handleClickAway}>
-              <div className={styles.avatarWrapper}>
-                {avatars.map((avatar) => (
-                  <img
-                    key={avatar}
-                    src={avatar}
-                    alt="avatar"
-                    className={styles.avatar}
-                    onClick={() => handleSelection(avatar)}
-                  />
-                ))}
-              </div>
-            </ClickAwayListener>
-          )}
-          {!passwordInputActive ? (
-            <button onClick={() => setPasswordInputActive(true)}>
-              Change Password
-            </button>
-          ) : (
-            <ClickAwayListener onClickAway={handleClickAway}>
-              <form className={styles.passwordBox} onSubmit={(e) => confirmPassword(e)}>
-                <label>New Password</label>
-                <input type="password" required minLength="8" maxLength="20" />
-                <button
-                  type="submit"
-                  className={styles.confirm}
-                >
-                  Confirm
-                </button>
-              </form>
-            </ClickAwayListener>
-          )}
-        </div>
-        <div className={styles.rightSide}>
-          <div className={styles.box}>
-            <span className={styles.title}>
-              Collected points
-            </span>
-            <span className={styles.points}>
-              {`${activeUser.points}p`}
-            </span>
-          </div>
-          <div className={styles.box}>
-            <span className={styles.title}>
-              Last five games
-            </span>
-            <div className={styles.gameWrapper}>
-              {activeUser.lastFiveGames.map((game, i) => (
-                <span
-                  className={game === '0p' ? styles.lost : styles.won}
-                  key={i}
-                >
-                  {game}
-                </span>
+  return userFound ? (
+    <div className={styles.container}>
+      <div className={styles.leftSide}>
+        <img
+          className={styles.userAvatar}
+          src={activeUser.avatar}
+          alt="avatar"
+        />
+        <button onClick={() => setAvatarSelectionActive(true)}>
+          Change Avatar
+        </button>
+        {avatarSelectionActive && (
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <div className={styles.avatarWrapper}>
+              {avatars.map((avatar) => (
+                <img
+                  key={avatar}
+                  src={avatar}
+                  alt="avatar"
+                  className={styles.avatar}
+                  onClick={() => handleSelection(avatar)}
+                />
               ))}
             </div>
+          </ClickAwayListener>
+        )}
+        {!passwordInputActive ? (
+          <button onClick={() => setPasswordInputActive(true)}>
+            Change Password
+          </button>
+        ) : (
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <form
+              className={styles.passwordBox}
+              onSubmit={(e) => confirmPassword(e)}
+            >
+              <label>New Password</label>
+              <input
+                type="password"
+                onChange={(e) => setNewPassValue(e.target.value)}
+                required
+                minLength="8"
+              />
+              <button type="submit" className={styles.confirm}>
+                Confirm
+              </button>
+            </form>
+          </ClickAwayListener>
+        )}
+      </div>
+      <div className={styles.rightSide}>
+        <div className={styles.box}>
+          <span className={styles.title}>Collected points</span>
+          <span className={styles.points}>{`${activeUser.points}p`}</span>
+        </div>
+        <div className={styles.box}>
+          <span className={styles.title}>Last five games</span>
+          <div className={styles.gameWrapper}>
+            {activeUser.lastFiveGames.map((game, i) => (
+              <span
+                className={game === '0p' ? styles.lost : styles.won}
+                key={i}
+              >
+                {game}
+              </span>
+            ))}
           </div>
         </div>
       </div>
-    ) : <h1>Loading..</h1>
+    </div>
+  ) : (
+    <h1>Loading..</h1>
   )
 }
 
