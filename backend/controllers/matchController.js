@@ -84,9 +84,7 @@ const createMatch = async (req, res) => {
     emptyFields.push('Date')
   }
   if (emptyFields.length > 0) {
-    return res
-      .status(408)
-      .json({ error: 'Please fill in all the fields', emptyFields })
+    return res.status(400).json({ error: `Please fill in all the fields` })
   }
 
   // add doc to db

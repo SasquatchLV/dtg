@@ -11,10 +11,10 @@ registerLocale('lv', lv)
 
 const MatchOverview = () => {
   const [teams, setTeams] = useState([])
-  const [homeTeam, setHomeTeam] = useState({})
-  const [awayTeam, setAwayTeam] = useState({})
+  const [homeTeam, setHomeTeam] = useState(null)
+  const [awayTeam, setAwayTeam] = useState(null)
   const [created, setCreated] = useState(false)
-  const [startingTime, setStartingTime] = useState(new Date())
+  const [startingTime, setStartingTime] = useState(null)
   const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
 
@@ -50,10 +50,7 @@ const MatchOverview = () => {
         <form className={styles.matchForm} onSubmit={(e) => handleSubmit(e)}>
           <h3>Add a new match</h3>
           <label>Home Team</label>
-          <select
-            onChange={(e) => setHomeTeam(JSON.parse(e.target.value))}
-            required
-          >
+          <select onChange={(e) => setHomeTeam(JSON.parse(e.target.value))}>
             <option value="">Select</option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
@@ -62,10 +59,7 @@ const MatchOverview = () => {
             ))}
           </select>
           <label>Away Team</label>
-          <select
-            onChange={(e) => setAwayTeam(JSON.parse(e.target.value))}
-            required
-          >
+          <select onChange={(e) => setAwayTeam(JSON.parse(e.target.value))}>
             <option value="">Select</option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
@@ -80,7 +74,6 @@ const MatchOverview = () => {
             locale="lv"
             selected={startingTime}
             onChange={(date) => setStartingTime(date)}
-            required
           />
           <button className={styles.addBtn} type="submit">
             Add Match
