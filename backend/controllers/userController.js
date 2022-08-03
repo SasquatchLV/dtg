@@ -13,7 +13,7 @@ const loginUser = async (req, res) => {
     const user = await User.login(email, password)
     const roles = Object.values(user.roles).filter(Boolean)
     const { lastFiveGames, avatar, points } = user
-  
+
     // create a token
     const token = createToken(user._id)
 
@@ -55,9 +55,9 @@ const promoteUser = async (req, res) => {
 // give admin
 const changeUserPassword = async (req, res) => {
   try {
-    const { email, newPass } = req.body
+    const { _id, newPass } = req.body
 
-    const user = await User.changePass(email, newPass)
+    const user = await User.changePass(_id, newPass)
 
     res.status(200).json({ user })
   } catch (error) {

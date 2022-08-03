@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import LeaderBoardCard from '../../components/LeaderBoardCard/LeaderBoardCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { errorToast } from '../../utils/toast'
 import styles from './LeaderBoard.module.scss'
 
 const LeaderBoard = () => {
@@ -21,15 +21,7 @@ const LeaderBoard = () => {
       }
 
       if (!response.ok) {
-        toast.error(json.error, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        })
+        errorToast(json.error)
       }
     }
 

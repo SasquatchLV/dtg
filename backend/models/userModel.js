@@ -133,21 +133,20 @@ userSchema.statics.updateAvatar = async function (email, avatarLink) {
 }
 
 // static method to change password
-userSchema.statics.changePass = async function (email, newPass) {
-  const user = await this.findOne({ email })
+userSchema.statics.changePass = async function (_id, newPass) {
+  const user = await this.findOne({ _id })
 
-  if (!user) {
-    throw Error("Can't find user with this email")
+  if (!validator.isStrongPassword(newPass)) {
+    throw Error("Password not strong enough")
   }
 
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(newPass, salt)
 
-  console.log(hash)
-
   user.password = hash
   await user.save()
-
+  
+  console.log(user)
   return user
 }
 

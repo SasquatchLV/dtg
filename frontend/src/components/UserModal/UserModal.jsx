@@ -5,7 +5,7 @@ import ClickAwayListener from 'react-click-away-listener'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './UserModal.module.scss'
 import { avatars } from '../../data/avatars'
-import { usePromote } from '../../hooks/usePromote'
+import { useUser } from '../../hooks/useUser'
 
 const UserModal = () => {
   const [avatarSelectionActive, setAvatarSelectionActive] = useState(false)
@@ -13,7 +13,7 @@ const UserModal = () => {
   const [newPassValue, setNewPassValue] = useState('')
   const [activeUser, setActiveUser] = useState({})
   const { user } = useAuthContext()
-  const { updateAvatar, changeUserPassword } = usePromote()
+  const { updateAvatar, changeUserPassword } = useUser()
 
   const userFound = Object.keys(activeUser).length
 

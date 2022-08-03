@@ -1,5 +1,4 @@
 import { useState } from 'react'
-
 import { useMatch } from '../../hooks/useMatch'
 import styles from './MatchCard.module.scss'
 
