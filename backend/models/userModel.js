@@ -132,7 +132,6 @@ userSchema.statics.toggleHasPaid = async function (email) {
   if (!user) {
     throw Error("Can't find user with this email")
   }
-  
 
   user.hasPaid = !user.hasPaid
   await user.save()
@@ -187,6 +186,20 @@ userSchema.statics.single = async function (email) {
   }
 
   return user
+}
+
+// get prize pool from the users
+userSchema.statics.getPrizePool = async function () {
+  const users = await this.find()
+  let prizePool = 0
+
+  users.forEach((user) => {
+    if (user.hasPaid) {
+      prizePool += 10
+    }
+  })
+
+  return prizePool
 }
 
 // static promote method

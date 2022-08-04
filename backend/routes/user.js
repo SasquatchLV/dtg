@@ -10,6 +10,7 @@ const {
   deleteUser,
   updateUsersAvatar,
   changeUserPassword,
+  getPrizePool,
 } = require("../controllers/userController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -17,11 +18,13 @@ const ROLE_LIST = require("../config/rolesList")
 
 const router = express.Router()
 
+
 // login route
 router.post("/login", loginUser)
 
 // require auth for all workout routes
 router.use(requireAuth)
+
 
 // register a user route
 router.post("/signup", verifyRoles(ROLE_LIST.Admin), signupUser)
@@ -47,7 +50,11 @@ router.get("/all", verifyRoles(ROLE_LIST.User), getAllUsers)
 // change password
 router.post("/password", verifyRoles(ROLE_LIST.User), changeUserPassword)
 
+// get prize pool route
+router.get("/getprizepool", verifyRoles(ROLE_LIST.User), getPrizePool)
+
 // get single user route
 router.get("/:email", verifyRoles(ROLE_LIST.User), getSingleUser)
+
 
 module.exports = router

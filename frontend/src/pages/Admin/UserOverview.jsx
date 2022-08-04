@@ -91,7 +91,7 @@ const UserOverview = () => {
     if (user) {
       fetchUsers()
     }
-  }, [user, fetchUsers, activeUser])
+  }, [fetchUsers, user])
 
   useEffect(() => {
     if (selectedUser) {
@@ -109,6 +109,13 @@ const UserOverview = () => {
     setSelectedUser('')
     setWrittenEmail('')
   }
+
+  // Re-render user card when pressing the icons
+  useEffect(() => {
+    if (userFound) {
+      fetchUser(activeUser.email)
+    }
+  }, [activeUser.email, userFound])
 
   return (
     <div className={styles.userOverview}>
@@ -187,6 +194,11 @@ const UserOverview = () => {
                 <span>{activeUser.hasPaid ? 'Yes' : 'No'}</span>
               </li>
             </ul>
+            <img
+              className={styles.paidStatus}
+              src={activeUser.hasPaid ? '/paid.png' : '/notpaid.png'}
+              alt="hasPaid"
+            />
           </div>
         </div>
       ) : (

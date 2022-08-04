@@ -141,6 +141,17 @@ const getSingleUser = async (req, res) => {
   }
 }
 
+// get prize pool
+const getPrizePool = async (req, res) => {
+  try {
+    const prizePool = await User.getPrizePool()
+
+    res.status(200).json(prizePool)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 module.exports = {
   signupUser,
   loginUser,
@@ -152,4 +163,5 @@ module.exports = {
   updateUsersAvatar,
   changeUserPassword,
   toggleHasPaid,
+  getPrizePool,
 }
