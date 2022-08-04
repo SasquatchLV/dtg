@@ -60,7 +60,7 @@ export const useMatch = () => {
     const json = await response.json()
     if (response.ok) {
       const matchesWithNoScore = json.filter(
-        (match) => match.finished
+        (match) => match.isMatchFinished
           && !match.homeTeamScore
           && !match.awayTeamScore
           && !match.overTime,

@@ -97,6 +97,11 @@ const MatchOverview = () => {
               usersParticipating={match.usersParticipating}
               title={match.title}
               key={match._id}
+              ot={match.overTime}
+              userStartDate={match.userStartDate}
+              userStartTime={match.userStartTime}
+              isMatchFinished={match.isMatchFinished}
+              userTimeTillGame={match.userTimeTillGame}
             />
           ))}
         </div>
