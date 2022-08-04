@@ -14,6 +14,7 @@ const MatchOverview = () => {
   const [homeTeam, setHomeTeam] = useState(null)
   const [awayTeam, setAwayTeam] = useState(null)
   const [startingTime, setStartingTime] = useState(null)
+  const [selectedGameType, setSelectedGameType] = useState('Regular game')
   const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
 
@@ -38,7 +39,7 @@ const MatchOverview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await createMatch(homeTeam, awayTeam, startingTime)
+    await createMatch(homeTeam, awayTeam, startingTime, selectedGameType)
   }
 
   return (
@@ -76,6 +77,14 @@ const MatchOverview = () => {
             selected={startingTime}
             onChange={(date) => setStartingTime(date)}
           />
+          <label>Game Type</label>
+          <select onChange={(e) => setSelectedGameType(e.target.value)}>
+            <option value="Regular game" selected>Regular game</option>
+            <option value="Quaters">Quaters</option>
+            <option value="Semis">Semis</option>
+            <option value="Finals - Bronze">Finals - Bronze</option>
+            <option value="Finals - Gold">Finals - Gold</option>
+          </select>
           <button className={styles.addBtn} type="submit">
             Add Match
           </button>

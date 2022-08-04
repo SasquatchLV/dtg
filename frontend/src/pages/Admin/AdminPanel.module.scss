@@ -165,6 +165,10 @@
   font-weight: 300;
 }
 
+.teamForm select {
+  text-align: center;
+}
+
 ::placeholder {
   color: #033834;
 }
@@ -480,8 +484,9 @@ select {
   font-weight: 300;
 }
 
-select {
+.matchForm select {
   min-width: 100%;
+  text-align: center;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
