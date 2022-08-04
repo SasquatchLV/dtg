@@ -4,7 +4,7 @@ import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import styles from '../Admin/AdminPanel.module.scss'
 import { errorToast } from '../../utils/toast'
 
-const Teams = () => {
+const Standings = () => {
   const [teams, setTeams] = useState([])
   const { user } = useAuthContext()
 
@@ -75,4 +75,4 @@ const Teams = () => {
   )
 }
 
-export default Teams
+export default Standings

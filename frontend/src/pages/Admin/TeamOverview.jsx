@@ -84,6 +84,11 @@ const TeamOverview = () => {
             placeholder="type..."
             required
           />
+          <label>Teams group:</label>
+          <select name="" id="">
+            <option value="">A</option>
+            <option value="">A</option>
+          </select>
           <button className={styles.addBtn} type="submit">
             Add Team
           </button>
