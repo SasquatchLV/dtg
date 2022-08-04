@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { errorToast } from '../../utils/toast'
 import MatchCard from '../../components/MatchCard/MatchCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './Matches.module.scss'
@@ -20,24 +21,12 @@ const Matches = () => {
       const json = await response.json()
 
       if (response.ok) {
-        const matchesWithScore = json.filter(
-          (match) => match.finished && (match.homeTeamScore || match.awayTeamScore),
-        )
-
-        setFinishedMatches(json.filter((match) => match.isMatchFinished))
+        setFinishedMatches(json.filter((match) => match.isMatchFinished && match.homeTeamScore && match.awayTeamScore))
         setUnfinishedMatches(json.filter((match) => !match.isMatchFinished))
       }
 
       if (!response.ok) {
-        toast.error(json.error, {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        })
+        errorToast(json.error)
       }
     }
 
