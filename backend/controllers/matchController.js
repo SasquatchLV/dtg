@@ -108,13 +108,21 @@ const createMatch = async (req, res) => {
 const makePrediction = async (req, res) => {
   const { _id, email, homeScore, awayScore, ot } = req.body
 
+  const user = await UserModel.findOne({ email })
   const match = await Match.findOne({ _id })
+  const { startingTime, isMatchFinished } = match
+
+  if (!user) {
+    return res.status(400).json({ error: 'User not found' })
+  }
+
+  if (!user.hasPaid) {
+    return res.status(400).json({ error: 'You need to pay the contribution fee to participate' })
+  }
 
   if (!match) {
     return res.status(404).json({ error: 'Match not found' })
   }
-
-  const { startingTime, isMatchFinished } = match
 
   if (isMatchFinished) {
     return res.status(400).json({

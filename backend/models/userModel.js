@@ -34,6 +34,10 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
+  hasPaid: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     immutable: true,
@@ -94,6 +98,10 @@ userSchema.statics.promote = async function (email) {
     throw Error("Can't find user with this email")
   }
 
+  if (user.roles.Admin) {
+    throw Error('This user is already an admin')
+  }
+
   user.roles = { User: 1000, Admin: 2000 }
   await user.save()
 
@@ -113,6 +121,20 @@ userSchema.statics.demote = async function (email) {
   }
 
   user.roles = { User: 1000 }
+  await user.save()
+
+  return user
+}
+
+// static method to toggle paid status
+userSchema.statics.toggleHasPaid = async function (email) {
+  const user = await this.findOne({ email })
+  if (!user) {
+    throw Error("Can't find user with this email")
+  }
+  
+
+  user.hasPaid = !user.hasPaid
   await user.save()
 
   return user

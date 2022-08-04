@@ -6,6 +6,7 @@ const {
   demoteUser,
   getAllUsers,
   getSingleUser,
+  toggleHasPaid,
   deleteUser,
   updateUsersAvatar,
   changeUserPassword,
@@ -31,8 +32,11 @@ router.post("/promote/:email", verifyRoles(ROLE_LIST.Admin), promoteUser)
 // remove admin access route
 router.post("/demote/:email", verifyRoles(ROLE_LIST.Admin), demoteUser)
 
-// remove admin access route
+// delete user route
 router.post("/delete/:email", verifyRoles(ROLE_LIST.Admin), deleteUser)
+
+// toggle user paid status route
+router.post("/toggleHasPaid/:email", verifyRoles(ROLE_LIST.Admin), toggleHasPaid)
 
 // give new avatar to user
 router.post("/avatar", verifyRoles(ROLE_LIST.User), updateUsersAvatar)

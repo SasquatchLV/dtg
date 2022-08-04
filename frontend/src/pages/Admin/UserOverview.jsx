@@ -11,7 +11,9 @@ const UserOverview = () => {
   const [error, setError] = useState()
   const [writtenEmail, setWrittenEmail] = useState('')
   const { user } = useAuthContext()
-  const { promoteUser, demoteUser, deleteUser } = useUser()
+  const {
+    promoteUser, demoteUser, deleteUser, toggleHasPaid,
+  } = useUser()
 
   const userFound = Object.keys(activeUser).length
 
@@ -29,6 +31,14 @@ const UserOverview = () => {
       imgLink: 'https://cdn-icons-png.flaticon.com/32/727/727358.png',
       handleClick: () => {
         demoteUser(activeUser.email)
+        setSelectedUser(activeUser.email)
+      },
+    },
+    {
+      title: 'Payment',
+      imgLink: 'https://cdn-icons-png.flaticon.com/512/126/126179.png',
+      handleClick: () => {
+        toggleHasPaid(activeUser.email)
         setSelectedUser(activeUser.email)
       },
     },
@@ -75,7 +85,7 @@ const UserOverview = () => {
       setError(json.error)
       setActiveUser({})
     }
-  }, [user.token])
+  }, [user])
 
   useEffect(() => {
     if (user) {
@@ -171,6 +181,10 @@ const UserOverview = () => {
               <li>
                 <span>Registered:</span>
                 <span>{activeUser.createdAt.slice(0, 10)}</span>
+              </li>
+              <li>
+                <span>Has Paid:</span>
+                <span>{activeUser.hasPaid ? 'Yes' : 'No'}</span>
               </li>
             </ul>
           </div>
