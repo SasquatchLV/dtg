@@ -42,6 +42,15 @@ export const useUser = () => {
     await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
+  const toggleHasPaid = async (email) => {
+    const { token } = user
+    const route = `user/toggleHasPaid/${email}`
+    const bodyParams = {}
+    const successMsg = 'User hasPaid toggled'
+
+    await fetchData(token, route, 'POST', bodyParams, successMsg)
+  }
+
   const deleteUser = async (id) => {
     const { token } = user
     const route = `user/delete/${id}`
@@ -77,5 +86,6 @@ export const useUser = () => {
     fetchUser,
     changeUserPassword,
     signupUser,
+    toggleHasPaid,
   }
 }
