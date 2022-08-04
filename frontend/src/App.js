@@ -10,7 +10,7 @@ import Login from './pages/Login/Login'
 import Header from './components/Header/Header'
 import AdminPanel from './pages/Admin/AdminPanel'
 import Matches from './pages/Matches/Matches'
-import Teams from './pages/Teams/Teams'
+import Standings from './pages/Standings/Standings'
 import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
               element={isAdmin ? <AdminPanel /> : <Navigate to="/matches" />}
             />
             <Route path="/matches" element={<Matches />} />
-            <Route path="/teams" element={<Teams />} />
+            <Route path="/standings" element={<Standings />} />
             <Route path="/leaderboard" element={<LeaderBoard />} />
           </Routes>
         </div>

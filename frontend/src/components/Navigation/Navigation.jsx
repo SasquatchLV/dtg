@@ -5,6 +5,7 @@ import styles from './Navigation.module.scss'
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState('Matches')
   const navigate = useNavigate()
+
   const sections = [
     {
       id: 1,
@@ -16,10 +17,10 @@ const Navigation = () => {
     },
     {
       id: 2,
-      title: 'Teams',
+      title: 'Standings',
       handleClick: () => {
-        setActiveSection('Teams')
-        navigate('/teams')
+        setActiveSection('Standings')
+        navigate('/standings')
       },
     },
     {
