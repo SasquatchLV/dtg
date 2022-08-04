@@ -67,7 +67,7 @@ const matchSchema = new Schema({
     type: String,
     required: true,
   },
-  finished: {
+  isMatchFinished: {
     type: Boolean,
     default: false,
   },

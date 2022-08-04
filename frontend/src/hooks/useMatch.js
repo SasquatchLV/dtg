@@ -18,7 +18,11 @@ export const useMatch = () => {
     const { email, token } = user
     const route = 'match/predict'
     const bodyParams = {
-      _id, email, homeScore, awayScore, ot,
+      _id,
+      email,
+      homeScore,
+      awayScore,
+      ot,
     }
     const successMsg = 'Prediction submitted'
 
@@ -38,7 +42,10 @@ export const useMatch = () => {
     const { token } = user
     const route = 'match/publish'
     const bodyParams = {
-      _id, homeScore, awayScore, ot,
+      _id,
+      homeScore,
+      awayScore,
+      ot,
     }
     const successMsg = 'Match results published'
 
@@ -52,15 +59,23 @@ export const useMatch = () => {
 
     const json = await response.json()
     if (response.ok) {
-      const matchesWithNoScore = json.filter((match) => (
-        match.finished && !match.homeTeamScore && !match.awayTeamScore && !match.overTime
-      ))
+      const matchesWithNoScore = json.filter(
+        (match) => match.finished
+          && !match.homeTeamScore
+          && !match.awayTeamScore
+          && !match.overTime,
+      )
 
       setUnsettledMatches(matchesWithNoScore)
     }
   }
 
   return {
-    createMatch, makePrediction, finishMatch, publishResult, getAllMatches, unsettledMatches,
+    createMatch,
+    makePrediction,
+    finishMatch,
+    publishResult,
+    getAllMatches,
+    unsettledMatches,
   }
 }
