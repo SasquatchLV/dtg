@@ -123,7 +123,7 @@ const MatchCard = ({
             !isAdmin ? (
               <PredictResult matchId={matchId} />
             ) : (
-              <h4>Admin does no participate</h4>
+              <h4>Admins can`t participate</h4>
             )
           ) : !isMatchPublished ? (
             isAdmin && <FinalResult matchId={matchId} />

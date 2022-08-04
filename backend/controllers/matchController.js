@@ -53,11 +53,15 @@ const getAllMatches = async (req, res) => {
             includeSeconds: true,
           })
 
+      if (isMatchFinished) {
+        match.isMatchFinished = true
+        match.save()
+      }
+
       return {
         ...match._doc,
         userStartTime,
         userStartDate,
-        isMatchFinished,
         userTimeTillGame,
       }
     })
@@ -102,9 +106,32 @@ const createMatch = async (req, res) => {
 
 // get user prediction
 const makePrediction = async (req, res) => {
-  try {
-    const { _id, email, homeScore, awayScore, ot } = req.body
+  const { _id, email, homeScore, awayScore, ot } = req.body
 
+  const match = await Match.findOne({ _id })
+
+  if (!match) {
+    return res.status(404).json({ error: 'Match not found' })
+  }
+
+  const { startingTime, isMatchFinished } = match
+
+  if (isMatchFinished) {
+    return res.status(400).json({
+      error: 'You can not make a prediction for a finished match',
+    })
+  }
+
+  const timeTillMatch = getTime(new Date(startingTime)) - getTime(new Date())
+
+  if (timeTillMatch < 3600000) {
+    return res.status(400).json({
+      error:
+        'Predictions are locked. There is less than 1 hour left to the match.',
+    })
+  }
+
+  try {
     const userPrediction = await Match.prediction(
       _id,
       email,

@@ -13,7 +13,6 @@ const MatchOverview = () => {
   const [teams, setTeams] = useState([])
   const [homeTeam, setHomeTeam] = useState(null)
   const [awayTeam, setAwayTeam] = useState(null)
-  const [created, setCreated] = useState(false)
   const [startingTime, setStartingTime] = useState(null)
   const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
@@ -40,8 +39,6 @@ const MatchOverview = () => {
     e.preventDefault()
 
     await createMatch(homeTeam, awayTeam, startingTime)
-
-    setCreated(true)
   }
 
   return (
@@ -51,7 +48,9 @@ const MatchOverview = () => {
           <h3>Add a new match</h3>
           <label>Home Team</label>
           <select onChange={(e) => setHomeTeam(JSON.parse(e.target.value))}>
-            <option value="">Select</option>
+            <option value="" hidden>
+              Select
+            </option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
                 {team.country}
@@ -60,7 +59,9 @@ const MatchOverview = () => {
           </select>
           <label>Away Team</label>
           <select onChange={(e) => setAwayTeam(JSON.parse(e.target.value))}>
-            <option value="">Select</option>
+            <option value="" hidden>
+              Select
+            </option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
                 {team.country}
@@ -78,7 +79,6 @@ const MatchOverview = () => {
           <button className={styles.addBtn} type="submit">
             Add Match
           </button>
-          {created && <h4>Match Created</h4>}
         </form>
       </div>
       {unsettledMatches ? (
