@@ -20,16 +20,22 @@ const getAllTeams = async (req, res) => {
 
 // add new team
 const addNewTeam = async (req, res) => {
-  const { country, flag } = req.body
+  const { country, flag, group } = req.body
 
   let emptyFields = []
 
   if (!country) {
     emptyFields.push("country")
   }
+
   if (!flag) {
     emptyFields.push("flag")
   }
+
+  if (!group) {
+    emptyFields.push("group")
+  }
+
   if (emptyFields.length > 0) {
     return res
       .status(400)
@@ -37,7 +43,7 @@ const addNewTeam = async (req, res) => {
   }
 
   try {
-    const team = await Team.create({ country, flag })
+    const team = await Team.create({ country, flag, group })
     res.status(200).json(team)
   } catch (error) {
     res.status(400).json({ error: error.message })

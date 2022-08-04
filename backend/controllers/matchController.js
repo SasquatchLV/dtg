@@ -74,7 +74,7 @@ const getAllMatches = async (req, res) => {
 
 // create new match
 const createMatch = async (req, res) => {
-  const { homeTeam, awayTeam, startingTime } = req.body
+  const { homeTeam, awayTeam, startingTime, title } = req.body
 
   let emptyFields = []
 
@@ -97,6 +97,7 @@ const createMatch = async (req, res) => {
       homeTeam,
       awayTeam,
       startingTime,
+      title
     })
     res.status(200).json(match)
   } catch (error) {

@@ -8,6 +8,7 @@ const TeamOverview = () => {
   const [teams, setTeams] = useState([])
   const [countryName, setCountryName] = useState('')
   const [countryFlag, setCountryFlag] = useState('')
+  const [countryGroup, setCountryGroup] = useState('')
   const { user } = useAuthContext()
 
   const getAllTeams = async () => {
@@ -37,6 +38,7 @@ const TeamOverview = () => {
   const addTeam = async () => {
     const country = countryName
     const flag = countryFlag
+    const group = countryGroup
 
     await fetch('/api/team/new', {
       method: 'POST',
@@ -44,7 +46,7 @@ const TeamOverview = () => {
         Authorization: `Bearer ${user.token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ country, flag }),
+      body: JSON.stringify({ country, flag, group }),
     })
   }
 
@@ -55,6 +57,8 @@ const TeamOverview = () => {
 
     setCountryFlag('')
     setCountryName('')
+
+    getAllTeams()
   }
 
   useEffect(() => {
@@ -85,9 +89,10 @@ const TeamOverview = () => {
             required
           />
           <label>Teams group:</label>
-          <select name="" id="">
-            <option value="">A</option>
-            <option value="">A</option>
+          <select onChange={(e) => setCountryGroup(e.target.value)} required>
+            <option value="" selected disabled>Select</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
           </select>
           <button className={styles.addBtn} type="submit">
             Add Team
