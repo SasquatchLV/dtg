@@ -12,6 +12,10 @@ const teamSchema = new Schema({
     type: String,
     required: true,
   },
+  group: {
+    type: String,
+    required: true,
+  },
   gamesWon: {
     type: Number,
     default: 0,

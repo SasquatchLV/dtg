@@ -13,6 +13,10 @@ const teamSchema = new Schema(
       type: String,
       required: true,
     },
+    group: {
+      type: String,
+      required: true,
+    },
     points: {
       type: Number,
       default: 0,
@@ -62,4 +66,4 @@ teamSchema.statics.updatePoints = async function (_id, points) {
   return Team
 }
 
-module.exports = mongoose.model("Team", teamSchema)
+module.exports = mongoose.model('Team', teamSchema)
