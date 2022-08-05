@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser } from '../../hooks/useUser'
 import styles from './UserSearch.module.scss'
 
 const UserSearch = (props) => {
   const [email, setEmail] = useState('')
-  const { setActiveUser } = props
-
-  const { fetchUser } = useUser()
+  const { setActiveUser, fetchUser } = props
 
   const handleSubmit = async (e) => {
     e.preventDefault()
