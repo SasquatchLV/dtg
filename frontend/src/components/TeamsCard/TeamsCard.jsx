@@ -4,7 +4,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './TeamsCard.module.scss'
 
 const TeamsCard = ({
-  _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+  _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, deletable,
 }) => {
   const { user } = useAuthContext()
   const isAdmin = user?.roles?.includes(2000)
@@ -50,7 +50,7 @@ const TeamsCard = ({
   return (
 
     <div className={styles.teamRow}>
-      {isAdmin && (
+      {(isAdmin && deletable) && (
       <button className={styles.delete} onClick={() => handleDelete(_id)}>
         <img src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png" alt="delete" className={styles.deleteImg} />
       </button>

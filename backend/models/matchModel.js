@@ -32,6 +32,7 @@ const teamSchema = new Schema({
     type: Number,
     default: 0,
   },
+  position: Number,
 })
 
 const usersParticipatingSchema = new Schema({
