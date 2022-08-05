@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from '../../pages/Admin/AdminPanel.module.scss'
 import { useUser } from '../../hooks/useUser'
 
 const UserInfo = (props) => {
-  const { activeUser } = props
+  const { activeUser, fetchData } = props
   const {
     promoteUser, demoteUser, toggleHasPaid, deleteUser,
   } = useUser()
@@ -12,29 +12,33 @@ const UserInfo = (props) => {
     {
       title: 'Promote',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3050/3050304.png',
-      handleClick: () => {
-        promoteUser(activeUser.email)
+      handleClick: async () => {
+        await promoteUser(activeUser.email)
+        await fetchData(activeUser.email)
       },
     },
     {
       title: 'Demote',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/727/727358.png',
-      handleClick: () => {
-        demoteUser(activeUser.email)
+      handleClick: async () => {
+        await demoteUser(activeUser.email)
+        await fetchData(activeUser.email)
       },
     },
     {
       title: 'Payment',
       imgLink: 'https://cdn-icons-png.flaticon.com/512/126/126179.png',
-      handleClick: () => {
-        toggleHasPaid(activeUser.email)
+      handleClick: async () => {
+        await toggleHasPaid(activeUser.email)
+        await fetchData(activeUser.email)
       },
     },
     {
       title: 'Delete',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3221/3221845.png',
-      handleClick: () => {
-        deleteUser(activeUser.email)
+      handleClick: async () => {
+        await deleteUser(activeUser.email)
+        await fetchData(activeUser.email)
       },
     },
   ]

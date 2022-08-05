@@ -15,7 +15,7 @@ export const fetchData = async (token, routeParams, methodType, bodyParams, succ
 
   if (!response.ok) errorToast(json.error)
 
-  if (response.ok) successToast(successMsg)
+  if (response.ok && successMsg !== null) successToast(successMsg)
 
   return json
 }

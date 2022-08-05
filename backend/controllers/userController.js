@@ -68,7 +68,13 @@ const changeUserPassword = async (req, res) => {
 // remove admin
 const demoteUser = async (req, res) => {
   try {
-    const { email } = req.params
+    const { email} = req.params
+    const { _id } = req.user
+
+    // can't demote yourself
+    const user = await User.findById(_id)
+
+    if (email === user.email) return res.status(400).json({ error: 'You can\'t demote yourself' })
 
     await User.demote(email)
 

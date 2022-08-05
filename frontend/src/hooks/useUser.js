@@ -17,7 +17,7 @@ export const useUser = () => {
     const { token } = user
     const route = `user/${email}`
     const bodyParams = null
-    const successMsg = 'User found'
+    const successMsg = null
 
     const singleUser = await fetchData(token, route, 'GET', bodyParams, successMsg)
 
