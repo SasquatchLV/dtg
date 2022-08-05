@@ -37,27 +37,50 @@ const teamSchema = new Schema(
       type: Number,
       default: 0,
     },
-    position: Number,
+    position: String,
   },
   { timestamps: true }
 )
 
 // static method to update result
-teamSchema.statics.updatePoints = async function (_id, points) {
+teamSchema.statics.updatePoints = async function (_id, points, title) {
   const Team = await this.findOne({ _id })
 
   if (!Team) {
     throw Error("Can't find team")
   }
 
-  if (!points) {
-    Team.gamesLost += 1
-  } else if (points === 1) {
-    Team.gamesLO += 1
-  } else if (points === 2) {
-    Team.gamesWO +=1
+  if (title === "Finals - Gold") {
+    if (points > 1) {
+      Team.position = '1'
+    } else {
+      Team.position = '2'
+    }
+  } else if (title === "Finals - Bronze") {
+    if (points > 1) {
+      Team.position = '3'
+    } else {
+      Team.position = '4'
+    }
+  } else if (title === "Semi Finals") {
+    if (points < 2) {
+      Team.position = '4'
+    }
+  } else if (title === "Quarter Finals") {
+    if (points < 2) {
+      Team.position = '5'
+    }
   } else {
-    Team.gamesWon +=1
+    Team.position = 'eliminated'
+    if (!points) {
+      Team.gamesLost += 1
+    } else if (points === 1) {
+      Team.gamesLO += 1
+    } else if (points === 2) {
+      Team.gamesWO += 1
+    } else {
+      Team.gamesWon += 1
+    }
   }
 
   Team.points += points

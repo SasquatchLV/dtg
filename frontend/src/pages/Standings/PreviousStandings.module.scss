@@ -20,6 +20,15 @@
     text-align: center;
 }
 
+.rankingData {
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+    justify-content: center;
+    text-align: center;
+    padding-left: .5rem;
+    padding-right: 2rem;
+}
+
 h4 {
     margin: .5rem 0;
 }

@@ -48,7 +48,6 @@ const TeamsCard = ({
   }
 
   return (
-
     <div className={styles.teamRow}>
       {(isAdmin && deletable) && (
       <button className={styles.delete} onClick={() => handleDelete(_id)}>
@@ -68,7 +67,6 @@ const TeamsCard = ({
         {points}
       </span>
     </div>
-
   )
 }
 

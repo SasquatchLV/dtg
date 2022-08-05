@@ -8,28 +8,9 @@ import CurrentStandings from './CurrentStandings'
 import PreviousStandings from './PreviousStandings'
 
 const Standings = () => {
-  const [teams, setTeams] = useState([])
   const [years, setYears] = useState([])
   const [chosenYear, setChosenYear] = useState('')
-  const [newSeasonModal, setNewSeasonModal] = useState(false)
-  const [finishSeasonModal, setFinishSeasonModal] = useState(false)
   const { user } = useAuthContext()
-
-  const getAllTeams = async () => {
-    const response = await fetch('/api/team/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      setTeams(json)
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
-    }
-  }
 
   const getAllSeasons = async () => {
     const response = await fetch('/api/season/all', {
@@ -40,7 +21,6 @@ const Standings = () => {
 
     if (response.ok) {
       setYears(json.map(({ year }) => year))
-      console.log(json.map(({ year }) => year))
     }
 
     if (!response.ok) {
@@ -51,27 +31,26 @@ const Standings = () => {
   useEffect(() => {
     if (user) {
       getAllSeasons()
-      getAllTeams()
     }
   }, [user])
 
-  const finishSeason = async () => {
-    const year = 2021
-    const response = await fetch('/api/season/end', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ year }),
-    })
+  // const finishSeason = async () => {
+  //   const year = 2021
+  //   const response = await fetch('/api/season/end', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${user.token}`,
+  //     },
+  //     body: JSON.stringify({ year }),
+  //   })
 
-    await response.json()
-  }
+  //   await response.json()
+  // }
 
-  const newSeason = async () => {
+  // const newSeason = async () => {
 
-  }
+  // }
 
   return (
     <div className={styles.container}>
@@ -101,11 +80,22 @@ const Standings = () => {
       )} */}
       <div className={styles.yearWrapper}>
         {years.map((year) => (
-          <button key={year} onClick={() => setChosenYear(year)}>
+          <button
+            key={year}
+            onClick={() => setChosenYear(year)}
+            className={styles.yearBtn}
+          >
             {year}
           </button>
         ))}
+        <button
+          onClick={() => setChosenYear('')}
+          className={styles.yearBtn}
+        >
+          Current standings
+        </button>
       </div>
+      <h3>{chosenYear ? `${chosenYear} Standings ` : 'Current Standings'}</h3>
       {chosenYear && <PreviousStandings seasonYear={chosenYear} />}
       {!chosenYear && <CurrentStandings />}
     </div>
