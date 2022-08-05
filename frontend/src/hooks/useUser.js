@@ -13,15 +13,15 @@ export const useUser = () => {
     await fetchData(token, route, 'POST', bodyParams, successMsg)
   }
 
-  const fetchUser = async () => {
-    const { token, email } = user
+  const fetchUser = async (email) => {
+    const { token } = user
     const route = `user/${email}`
-    const bodyParams = {}
-    const successMsg = ''
+    const bodyParams = null
+    const successMsg = 'User found'
 
-    const json = await fetchData(token, route, 'GET', bodyParams, successMsg)
+    const singleUser = await fetchData(token, route, 'GET', bodyParams, successMsg)
 
-    return json
+    return singleUser
   }
 
   const promoteUser = async (email) => {

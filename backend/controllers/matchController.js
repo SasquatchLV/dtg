@@ -74,7 +74,7 @@ const getAllMatches = async (req, res) => {
 
 // create new match
 const createMatch = async (req, res) => {
-  const { homeTeam, awayTeam, startingTime, title } = req.body
+  const { homeTeam, awayTeam, startingTime, selectedGameType } = req.body
 
   let emptyFields = []
 
@@ -87,6 +87,9 @@ const createMatch = async (req, res) => {
   if (!startingTime) {
     emptyFields.push('Date')
   }
+  if (!selectedGameType) {
+    emptyFields.push('Date')
+  }
   if (emptyFields.length > 0) {
     return res.status(400).json({ error: `Please fill in all the fields` })
   }
@@ -97,7 +100,7 @@ const createMatch = async (req, res) => {
       homeTeam,
       awayTeam,
       startingTime,
-      title
+      title: selectedGameType
     })
     res.status(200).json(match)
   } catch (error) {

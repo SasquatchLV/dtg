@@ -11,6 +11,9 @@ const Signup = () => {
     e.preventDefault()
 
     await signupUser(email, password)
+
+    setEmail('')
+    setPassword('')
   }
 
   return (
@@ -18,12 +21,16 @@ const Signup = () => {
       <h3>Add new user</h3>
       <label>Email address:</label>
       <input
+        id="email"
+        name="email"
         type="email"
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
       <label>Password:</label>
       <input
+        id="password"
+        name="password"
         type="password"
         onChange={(e) => setPassword(e.target.value)}
         value={password}

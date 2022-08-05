@@ -79,9 +79,9 @@ const MatchOverview = () => {
           />
           <label>Game Type</label>
           <select onChange={(e) => setSelectedGameType(e.target.value)}>
-            <option value="Regular game" selected>Regular game</option>
-            <option value="Quaters">Quaters</option>
-            <option value="Semis">Semis</option>
+            <option value="Regular game">Regular game</option>
+            <option value="Quarter Finals">Quarter Finals</option>
+            <option value="Semi Finals">Semi Finals</option>
             <option value="Finals - Bronze">Finals - Bronze</option>
             <option value="Finals - Gold">Finals - Gold</option>
           </select>

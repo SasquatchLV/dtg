@@ -6,9 +6,11 @@ export const useMatch = () => {
   const [unsettledMatches, setUnsettledMatches] = useState([])
   const { user } = useAuthContext()
 
-  const createMatch = async (homeTeam, awayTeam, startingTime) => {
+  const createMatch = async (homeTeam, awayTeam, startingTime, selectedGameType) => {
     const route = 'match/new'
-    const bodyParams = { homeTeam, awayTeam, startingTime }
+    const bodyParams = {
+      homeTeam, awayTeam, startingTime, selectedGameType,
+    }
     const successMsg = 'Match created'
 
     fetchData(user.token, route, 'POST', bodyParams, successMsg)
