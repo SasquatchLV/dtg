@@ -21,7 +21,7 @@ const PreviousStandings = ({ seasonYear }) => {
     const json = await response.json()
 
     const sortOverAll = (teamArr, playOffTeamArr, matchArr) => {
-let sortedTeamArr
+      let sortedTeamArr
     }
 
     if (response.ok) {
@@ -31,7 +31,6 @@ let sortedTeamArr
       setMatches(json.matches)
       setUsers(json.users)
       setOverall(json.teams)
-      console.log(json.teams)
     }
 
     if (!response.ok) {
