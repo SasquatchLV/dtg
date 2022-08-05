@@ -7,7 +7,8 @@ export const fetchData = async (token, routeParams, methodType, bodyParams, succ
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(bodyParams),
+    body: bodyParams ? JSON.stringify(bodyParams) : null,
+
   })
 
   const json = await response.json()

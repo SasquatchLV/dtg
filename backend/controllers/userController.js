@@ -137,7 +137,7 @@ const getSingleUser = async (req, res) => {
 
     res.status(200).json(user)
   } catch (error) {
-    res.status(400).json({ error: 'No user found' })
+    res.status(400).json({ error: error.message })
   }
 }
 

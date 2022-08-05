@@ -45,6 +45,7 @@ const usersParticipatingSchema = new Schema({
 const matchSchema = new Schema({
   title: {
     type: String,
+    required: true,
   },
   homeTeam: {
     type: teamSchema,

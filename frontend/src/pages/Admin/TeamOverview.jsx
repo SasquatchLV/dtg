@@ -90,7 +90,7 @@ const TeamOverview = () => {
           />
           <label>Teams group:</label>
           <select onChange={(e) => setCountryGroup(e.target.value)} required>
-            <option value="" selected disabled>Select</option>
+            <option value="" hidden>Select</option>
             <option value="A">A</option>
             <option value="B">B</option>
           </select>

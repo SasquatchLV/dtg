@@ -9,6 +9,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    lowercase: true,
   },
   avatar: {
     type: String,
@@ -63,6 +64,8 @@ userSchema.statics.signup = async function (email, password) {
   if (exists) {
     throw Error('Email already in use')
   }
+
+
 
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(password, salt)
@@ -181,6 +184,7 @@ userSchema.statics.delete = async function (email) {
 
 userSchema.statics.single = async function (email) {
   const user = await this.findOne({ email })
+  
   if (!user) {
     throw Error("Can't find user with this email")
   }
