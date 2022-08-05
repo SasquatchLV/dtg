@@ -1,6 +1,6 @@
 const express = require("express")
 const {
-    endSeason
+    endSeason, getAllSeasons, getSingleSeason,
 } = require("../controllers/seasonController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -10,6 +10,12 @@ const router = express.Router()
 
 // require auth for all workout routes
 router.use(requireAuth)
+
+// get all seasons
+router.get("/all", verifyRoles(ROLE_LIST.User), getAllSeasons)
+
+// get single season
+router.get("/:year", verifyRoles(ROLE_LIST.User), getSingleSeason)
 
 // create a new season
 router.post("/end", verifyRoles(ROLE_LIST.Admin), endSeason)

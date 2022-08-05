@@ -123,6 +123,7 @@ const TeamOverview = () => {
             gamesWO={gamesWO}
             gamesLO={gamesLO}
             points={points}
+            deletable
           />
         ))}
       </div>

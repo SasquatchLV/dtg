@@ -3,6 +3,39 @@ const Team = require("../models/teamModel")
 const User = require("../models/userModel")
 const Match = require("../models/matchModel")
 
+const getAllSeasons = async (req, res) => {
+    try {
+        const seasons = await Season.find()
+
+        if (!seasons.length) {
+            return res.status(404).json({
+                error: 'No seasons registered',
+            })
+        }
+
+        // Sort seasons by year
+        seasons.sort((a, b) => a.year - b.year)
+
+        res.status(200).json(seasons)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+const getSingleSeason = async (req, res) => {
+    try {
+        const { year } = req.params
+
+        const season = await Season.findOne({ year })
+
+        season.teams.sort((a, b) => b.points - a.points)
+
+        res.status(200).json(season)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 // end the season and save data in seasonDB
 const endSeason = async (req, res) => {
     const { year } = req.body
@@ -43,5 +76,5 @@ const endSeason = async (req, res) => {
 }
 
 module.exports = {
-    endSeason
+    endSeason, getAllSeasons, getSingleSeason,
 }
