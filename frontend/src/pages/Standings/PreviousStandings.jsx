@@ -3,13 +3,14 @@ import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
 import { errorToast } from '../../utils/toast'
+import RankingCard from '../../components/RankingCard/RankingCard'
 
 const PreviousStandings = ({ seasonYear }) => {
   const [season, setSeason] = useState({})
   const [groupA, setGroupA] = useState([])
   const [groupB, setGroupB] = useState([])
   const [matches, setMatches] = useState([])
-  const [overall, setOverall] = useState([])
+  const [overallRanking, setOverallRanking] = useState([])
   const [users, setUsers] = useState([])
   const { user } = useAuthContext()
 
@@ -20,8 +21,15 @@ const PreviousStandings = ({ seasonYear }) => {
 
     const json = await response.json()
 
-    const sortOverAll = (teamArr, playOffTeamArr, matchArr) => {
-let sortedTeamArr
+    const sortRankingsForTeams = (teamArr) => {
+      const sortedEliminatedTeams = teamArr.filter(({ position }) => position === 'eliminated')
+      const sortedPlayoffTeams = teamArr.filter(
+        (team) => team.position !== 'eliminated',
+      ).sort((a, b) => a.position - b.position)
+
+      const sortedArr = [...sortedPlayoffTeams, ...sortedEliminatedTeams]
+
+      return sortedArr
     }
 
     if (response.ok) {
@@ -30,8 +38,9 @@ let sortedTeamArr
       setGroupB(json.teams.filter(({ group }) => group === 'B'))
       setMatches(json.matches)
       setUsers(json.users)
-      setOverall(json.teams)
-      console.log(json.teams)
+      const sortedRankings = sortRankingsForTeams(json.teams)
+      console.log(sortedRankings)
+      setOverallRanking(sortedRankings)
     }
 
     if (!response.ok) {
@@ -105,29 +114,16 @@ let sortedTeamArr
       </div>
       <div className={styles.teamWrapper}>
         <h4>OVERALL STANDINGS</h4>
-        <div className={styles.teamData}>
+        <div className={styles.rankingData}>
+          <span>Rank</span>
           <span>Country</span>
-          <span>Won</span>
-          <span>Lost</span>
-          <span>WO</span>
-          <span>LO</span>
-          <span>GP</span>
-          <span>Points</span>
         </div>
-        {groupB.map(({
-          _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-        }) => (
-          <TeamsCard
-            key={_id}
-            _id={_id}
+        {overallRanking.map(({ country, flag }, index) => (
+          <RankingCard
+            key={Math.random(185)}
             country={country}
             flag={flag}
-            gamesWon={gamesWon}
-            gamesLost={gamesLost}
-            gamesWO={gamesWO}
-            gamesLO={gamesLO}
-            points={points}
-            deletable={false}
+            ranking={index + 1}
           />
         ))}
       </div>

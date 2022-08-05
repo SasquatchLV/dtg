@@ -178,7 +178,7 @@ const publishMatch = async (req, res) => {
 
     const match = await Match.setResult(_id, homeScore, awayScore, ot)
 
-    const { usersParticipating } = match
+    const { usersParticipating, title } = match
 
     await usersParticipating.forEach(
       ({ email, homeTeamScore, awayTeamScore }) =>
@@ -213,8 +213,8 @@ const publishMatch = async (req, res) => {
     const homeTeam = match.homeTeam._id
     const awayTeam = match.awayTeam._id
 
-    await Team.updatePoints(homeTeam, homePoints)
-    await Team.updatePoints(awayTeam, awayPoints)
+    await Team.updatePoints(homeTeam, homePoints, title)
+    await Team.updatePoints(awayTeam, awayPoints, title)
 
     res.status(200).json(match)
   } catch (error) {

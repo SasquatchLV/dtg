@@ -129,7 +129,7 @@ matchSchema.statics.finish = async function (_id) {
 // static method to set final result of the match
 matchSchema.statics.setResult = async function (_id, homeScore, awayScore, ot) {
   const match = await this.findOne({ _id })
-
+  
   if (!match) {
     throw Error("Can't find match")
   }
