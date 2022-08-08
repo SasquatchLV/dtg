@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
+import { useMatchContext } from './useMatchContext'
 import { fetchData } from '../utils/fetch'
 
 export const useMatch = () => {
   const [unsettledMatches, setUnsettledMatches] = useState([])
   const { user } = useAuthContext()
+  const { dispatch } = useMatchContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime, selectedGameType) => {
     const route = 'match/new'
