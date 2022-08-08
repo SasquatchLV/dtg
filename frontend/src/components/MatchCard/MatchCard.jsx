@@ -1,10 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
-import { formatDistance, getTime } from 'date-fns'
+import { useState } from 'react'
+import { successToast } from '../../utils/toast'
 import styles from './MatchCard.module.scss'
-import { useMatch } from '../../hooks/useMatch'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { useMatchContext } from '../../hooks/useMatchContext'
 import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
 
@@ -14,7 +13,7 @@ const MatchCard = ({
   homeTeamScore,
   awayTeam,
   awayTeamScore,
-  matchId,
+  _id,
   usersParticipating,
   title,
   ot,
@@ -23,25 +22,18 @@ const MatchCard = ({
   isMatchFinished,
   userTimeTillGame,
 }) => {
-  const { finishMatch } = useMatch()
   const [isDeleted, setIsDeleted] = useState(false)
-
   const { user } = useAuthContext()
-
+  const { dispatch } = useMatchContext()
   const isAdmin = user?.roles?.includes(2000)
-
   const alreadyParticipated = usersParticipating.some(
     (obj) => obj.email === user.email,
   )
-
   const indexOfUser = usersParticipating?.findIndex(
     (obj) => obj.email === user.email,
   )
-
   const usersBet = usersParticipating[indexOfUser]
-
-  const hasMatchScore = homeTeamScore || awayTeamScore
-
+  const hasMatchScore = homeTeamScore && awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
 
   const handleDelete = async (id) => {
@@ -53,15 +45,8 @@ const MatchCard = ({
     const json = await response.json()
 
     if (response.ok) {
-      toast.success(json.message, {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      })
+      successToast(json.message)
+      dispatch({ type: 'DELETE_MATCH', payload: json })
     }
 
     setIsDeleted(true)
@@ -73,7 +58,7 @@ const MatchCard = ({
         && (!isDeleted ? (
           <button
             className={styles.delete}
-            onClick={() => handleDelete(matchId)}
+            onClick={() => handleDelete(_id)}
           >
             <img
               src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
@@ -121,12 +106,12 @@ const MatchCard = ({
         <div className={styles.prediction}>
           {!isMatchFinished ? (
             !isAdmin ? (
-              <PredictResult matchId={matchId} />
+              <PredictResult matchId={_id} />
             ) : (
               <h4>Admins can`t participate</h4>
             )
           ) : !isMatchPublished ? (
-            isAdmin && <FinalResult matchId={matchId} />
+            isAdmin && <FinalResult matchId={_id} />
           ) : (
             <h5>Points distributed</h5>
           )}

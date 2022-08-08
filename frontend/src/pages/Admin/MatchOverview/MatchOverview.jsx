@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import lv from 'date-fns/locale/lv'
 import { useAuthContext } from '../../../hooks/useAuthContext'
-import { useMatch } from '../../../hooks/useMatch'
+import { useMatchContext } from '../../../hooks/useMatchContext'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './MatchOverview.module.scss'
 import MatchCard from '../../../components/MatchCard/MatchCard'
+import { successToast, errorToast } from '../../../utils/toast'
 
 registerLocale('lv', lv)
 
@@ -15,31 +16,90 @@ const MatchOverview = () => {
   const [awayTeam, setAwayTeam] = useState(null)
   const [startingTime, setStartingTime] = useState(null)
   const [selectedGameType, setSelectedGameType] = useState('Regular game')
-  const { createMatch, getAllMatches, unsettledMatches } = useMatch()
   const { user } = useAuthContext()
-
-  const getAllTeams = async () => {
-    const response = await fetch('/api/team/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-    if (response.ok) {
-      setTeams(json)
-    }
-  }
+  const { matches, dispatch, unsettledMatches } = useMatchContext()
 
   useEffect(() => {
+    const getAllTeams = async () => {
+      const response = await fetch('/api/team/all', {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+
+      const json = await response.json()
+      if (response.ok) {
+        setTeams(json)
+      }
+    }
+
     if (user) {
       getAllTeams()
-      getAllMatches()
     }
   }, [user])
+
+  useEffect(() => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+    const getUnsettledMatches = async () => {
+      const response = await fetch(`/api/match/all?timezone=${timezone}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+
+      const json = await response.json()
+
+      if (response.ok) {
+        dispatch({
+          type: 'SET_UNSETTLED_MATCHES',
+          payload: json.filter(
+            (match) => match.isMatchFinished
+                && !match.homeTeamScore
+                && !match.awayTeamScore,
+          ),
+        })
+      }
+
+      if (!response.ok) {
+        errorToast(json.error)
+      }
+    }
+
+    if (user) {
+      getUnsettledMatches()
+    }
+  }, [user, dispatch, matches])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await createMatch(homeTeam, awayTeam, startingTime, selectedGameType)
+    const match = {
+      homeTeam,
+      awayTeam,
+      startingTime,
+      selectedGameType,
+    }
+
+    const response = await fetch('/api/match/new', {
+      method: 'POST',
+      body: JSON.stringify(match),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      errorToast(json.error)
+    }
+
+    if (response.ok) {
+      setHomeTeam(null)
+      setAwayTeam(null)
+      setStartingTime(null)
+      setSelectedGameType('Regular game')
+      successToast('Match created')
+      dispatch({ type: 'CREATE_MATCH', payload: json })
+    }
   }
 
   return (
@@ -90,33 +150,13 @@ const MatchOverview = () => {
           </button>
         </form>
       </div>
-      {unsettledMatches ? (
-        <div className={styles.matchWrapper}>
-          <h2 className={styles.matchDesc}>
-            Please add the final result to the following matches:
-          </h2>
-          {unsettledMatches.map((match) => (
-            <MatchCard
-              startingTime={match.startingTime}
-              homeTeam={match.homeTeam}
-              homeTeamScore={match.homeTeamScore}
-              awayTeam={match.awayTeam}
-              awayTeamScore={match.awayTeamScore}
-              matchId={match._id}
-              usersParticipating={match.usersParticipating}
-              title={match.title}
-              key={match._id}
-              ot={match.overTime}
-              userStartDate={match.userStartDate}
-              userStartTime={match.userStartTime}
-              isMatchFinished={match.isMatchFinished}
-              userTimeTillGame={match.userTimeTillGame}
-            />
+      <div className={styles.matchWrapper}>
+        {unsettledMatches
+          && unsettledMatches.map((match) => (
+            <MatchCard key={match._id} {...match} />
           ))}
-        </div>
-      ) : (
-        <h1>No unsettled matches to be found</h1>
-      )}
+        {!unsettledMatches && <h3>No unsettled matches</h3>}
+      </div>
     </div>
   )
 }
