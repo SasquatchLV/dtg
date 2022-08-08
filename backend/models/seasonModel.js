@@ -43,99 +43,103 @@ const teamSchema = new Schema(
 )
 
 const userSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  avatar: {
+    type: String,
+    default:
+      'https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png',
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  roles: {
+    User: {
+      type: Number,
+      default: 1000,
     },
-    avatar: {
-        type: String,
-        default:
-            'https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png',
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    roles: {
-        User: {
-            type: Number,
-            default: 1000,
-        },
-        Admin: Number,
-    },
-    points: {
-        type: Number,
-        default: 0,
-    },
-    lastFiveGames: {
-        type: Array,
-        default: [],
-    },
-    createdAt: {
-        type: Date,
-        immutable: true,
-        default: () => new Date(),
-    },
+    Admin: Number,
+  },
+  points: {
+    type: Number,
+    default: 0,
+  },
+  lastFiveGames: {
+    type: Array,
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => new Date(),
+  },
 })
 
 const usersParticipatingSchema = new Schema({
-    email: String,
-    homeTeamScore: Number,
-    awayTeamScore: Number,
-    overTime: Boolean,
+  email: String,
+  homeTeamScore: Number,
+  awayTeamScore: Number,
+  overTime: Boolean,
 })
 
 const matchSchema = new Schema({
-    title: {
-        type: String,
-    },
-    homeTeam: {
-        type: teamSchema,
-        required: true,
-    },
-    homeTeamScore: {
-        type: Number,
-        default: 0,
-    },
-    awayTeam: {
-        type: teamSchema,
-        required: true,
-    },
-    awayTeamScore: {
-        type: Number,
-        default: 0,
-    },
-    usersParticipating: [usersParticipatingSchema],
-    overTime: {
-        type: Boolean,
-        default: false,
-    },
-    startingTime: {
-        type: String,
-        required: true,
-    },
-    finished: {
-        type: Boolean,
-        default: false,
-    },
-    createdAt: {
-        type: Date,
-        immutable: true,
-        default: () => new Date(),
-    },
+  title: {
+    type: String,
+  },
+  homeTeam: {
+    type: teamSchema,
+    required: true,
+  },
+  homeTeamScore: {
+    type: Number,
+    default: 0,
+  },
+  awayTeam: {
+    type: teamSchema,
+    required: true,
+  },
+  awayTeamScore: {
+    type: Number,
+    default: 0,
+  },
+  usersParticipating: [usersParticipatingSchema],
+  overTime: {
+    type: Boolean,
+    default: false,
+  },
+  startingTime: {
+    type: String,
+    required: true,
+  },
+  finished: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => new Date(),
+  },
 })
 
 const seasonSchema = new Schema(
   {
     year: {
-        type: String,
-        unique: true,
-        required: true,
+      type: Number,
+      unique: true,
+      required: true,
     },
     teams: [teamSchema],
     matches: [matchSchema],
     users: [userSchema],
+    status: {
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true }
 )

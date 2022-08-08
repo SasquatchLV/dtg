@@ -1,6 +1,6 @@
 const express = require("express")
 const {
-    endSeason, getAllSeasons, getSingleSeason,
+    endSeason, getAllSeasons, getSingleSeason, getPreviousSeasonTeams,
 } = require("../controllers/seasonController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
@@ -13,6 +13,9 @@ router.use(requireAuth)
 
 // get all seasons
 router.get("/all", verifyRoles(ROLE_LIST.User), getAllSeasons)
+
+// get existing teams
+router.get("/seasonTeams", verifyRoles(ROLE_LIST.Admin), getPreviousSeasonTeams)
 
 // get single season
 router.get("/:year", verifyRoles(ROLE_LIST.User), getSingleSeason)
