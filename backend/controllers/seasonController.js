@@ -65,7 +65,7 @@ const endSeason = async (req, res) => {
 
     try {
         const season = await Season.create({ year, teams, matches, users })
-
+        season.status = 'finished'
         await Match.deleteMany({})
         await Team.deleteMany({})
 
@@ -75,6 +75,18 @@ const endSeason = async (req, res) => {
     }
 }
 
+// get teams for selection
+const getPreviousSeasonTeams = async (req, res) => {    
+    try {
+        const seasons = await Season.find()
+        const seasonTeams = [...new Set(seasons.flatMap((season) => season.teams))]
+
+        res.status(200).json(seasonTeams)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 module.exports = {
-    endSeason, getAllSeasons, getSingleSeason,
+    endSeason, getAllSeasons, getSingleSeason, getPreviousSeasonTeams,
 }

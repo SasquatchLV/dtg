@@ -3,6 +3,7 @@ import styles from './AdminPanel.module.scss'
 import MatchOverview from './MatchOverview/MatchOverview'
 import TeamOverview from './TeamOverview/TeamOverview'
 import UserOverview from './UserOverview/UserOverview'
+import SeasonOverview from './SeasonOverview/SeasonOverview'
 
 const AdminPanel = () => {
   const [activePanel, setActivePanel] = useState('Match Overview')
@@ -23,6 +24,11 @@ const AdminPanel = () => {
       title: 'User Overview',
       handleClick: () => setActivePanel('User Overview'),
     },
+    {
+      id: 4,
+      title: 'Season Overview',
+      handleClick: () => setActivePanel('Season Overview'),
+    },
   ]
 
   return (
@@ -42,6 +48,7 @@ const AdminPanel = () => {
       </div>
       {activePanel === 'Match Overview' && <MatchOverview />}
       {activePanel === 'Team Overview' && <TeamOverview />}
+      {activePanel === 'Season Overview' && <SeasonOverview />}
       {activePanel === 'User Overview' && <UserOverview />}
     </div>
   )

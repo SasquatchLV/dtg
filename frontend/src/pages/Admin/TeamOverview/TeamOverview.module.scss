@@ -27,7 +27,7 @@
     grid-template-columns: 0.2fr 0.8fr repeat(6, 10%);
     align-items: center;
     padding: 0.2rem;
-    background-color: #cbe3e1;
+    background-color: var(--rowBg);
     border-radius: 1rem;
     margin-bottom: 0.5rem;
 }

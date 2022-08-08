@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center;
     padding: .8rem .4rem;
-    background-color: #cbe3e1;
+    background-color: var(--rowBg);
     border-radius: 1rem;
     min-width: 310px;
     width: 100%;
@@ -113,7 +113,7 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #cbe3e1;
+    background-color: var(--rowBg);
     min-width: max-content;
 }
 
