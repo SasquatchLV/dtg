@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styles from './AdminPanel.module.scss'
-import MatchOverview from './MatchOverview'
-import TeamOverview from './TeamOverview'
-import UserOverview from './UserOverview'
+import MatchOverview from './MatchOverview/MatchOverview'
+import TeamOverview from './TeamOverview/TeamOverview'
+import UserOverview from './UserOverview/UserOverview'
 
 const AdminPanel = () => {
   const [activePanel, setActivePanel] = useState('Match Overview')

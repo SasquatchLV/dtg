@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import TeamsCard from '../../components/TeamsCard/TeamsCard'
-import { useAuthContext } from '../../hooks/useAuthContext'
-import styles from './AdminPanel.module.scss'
+import TeamsCard from '../../../components/TeamsCard/TeamsCard'
+import { useAuthContext } from '../../../hooks/useAuthContext'
+import styles from './TeamOverview.module.scss'
 
 const TeamOverview = () => {
   const [teams, setTeams] = useState([])

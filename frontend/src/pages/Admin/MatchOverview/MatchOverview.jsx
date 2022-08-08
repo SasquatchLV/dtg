@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import lv from 'date-fns/locale/lv'
-import { useAuthContext } from '../../hooks/useAuthContext'
-import { useMatch } from '../../hooks/useMatch'
+import { useAuthContext } from '../../../hooks/useAuthContext'
+import { useMatch } from '../../../hooks/useMatch'
 import 'react-datepicker/dist/react-datepicker.css'
-import styles from './AdminPanel.module.scss'
-import MatchCard from '../../components/MatchCard/MatchCard'
+import styles from './MatchOverview.module.scss'
+import MatchCard from '../../../components/MatchCard/MatchCard'
 
 registerLocale('lv', lv)
 

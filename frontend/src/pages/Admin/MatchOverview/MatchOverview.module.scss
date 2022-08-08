@@ -1,0 +1,104 @@
+.matchOverview {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: 40% 60%;
+    justify-content: space-between;
+    column-gap: 2rem;
+    margin-top: 1rem;
+}
+
+.matchDesc {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.matchActions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.matchForm {
+    max-width: 350px;
+    width: 100%;
+    min-height: 150px;
+    background-color: #0338341f;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 35px;
+}
+
+.matchForm * {
+    font-family: 'Poppins', sans-serif;
+    color: #033834;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+.matchForm h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+}
+
+.matchForm label {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.matchForm input,
+select {
+    display: block;
+    height: 50px;
+    max-width: 330px;
+    width: 100%;
+    background-color: #03383443;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.matchForm select {
+    min-width: 100%;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    background-position: calc(100% - 12px) center !important;
+    background: url("data:image/svg+xml,<svg height='10px' width='10px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+    padding: 8px 32px 8px 16px;
+    background-color: #03383443;
+}
+
+::placeholder {
+    color: #033834;
+}
+
+.addBtn {
+    margin: 10px 0;
+    width: 100%;
+    background-color: #033834;
+    color: #eefaf9;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        opacity: 0.8;
+    }
+}
