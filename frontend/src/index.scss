@@ -3,15 +3,16 @@
 
 /* layout */
 :root {
-  --primary: #1aac83;
   --error: #e7195a;
+  --primary: #eefaf9;
+  --secondary: #033834;
 }
 
 * {
   font-family: 'Poppins', sans-serif;
   padding: 0;
   margin: 0;
-  color: #033834;
+  color: var(--secondary);
 }
 
 a {
@@ -23,7 +24,7 @@ ul {
 }
 
 body {
-  background-color: #eefaf9;
+  background-color: var(--primary);
   width: 100%;
   min-height: 100vh;
 }

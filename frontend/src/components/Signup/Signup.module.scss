@@ -11,7 +11,7 @@
 
 .form * {
     font-family: 'Poppins', sans-serif;
-    color: #033834;
+    color: var(--secondary);
     letter-spacing: 0.5px;
     outline: none;
     border: none;
@@ -45,14 +45,14 @@
 }
 
 ::placeholder {
-    color: #033834;
+    color: var(--secondary);
 }
 
 .form button {
     margin: 10px 0 0 0;
     width: 100%;
-    background-color: #033834;
-    color: #EEFAF9;
+    background-color: var(--secondary);
+    color: var(--primary);
     padding: 15px 0;
     font-size: 18px;
     font-weight: 600;

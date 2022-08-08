@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import styles from '../../pages/Admin/AdminPanel.module.scss'
+import React from 'react'
+import styles from './UserInfo.module.scss'
 import { useUser } from '../../hooks/useUser'
 
 const UserInfo = (props) => {
