@@ -89,7 +89,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #033834;
+    background-color: var(--secondary);
     min-width: max-content;
     border-radius: 1rem;
     padding: .8rem;
@@ -118,7 +118,7 @@ button {
 }
 
 .passwordBox label {
-    color: #033834;
+    color: var(--secondary);
     font-size: 14px;
 }
 
@@ -136,15 +136,14 @@ button {
 }
 
 ::placeholder {
-    color: #033834;
+    color: var(--secondary);
 }
 
 .confirm {
     margin: 5px 0 0 0;
     width: 100%;
-    background-color: #033834;
-    color: #EEFAF9;
-    padding: 5px 0;
+    background-color: var(--secondary);
+    color: var(--primary);
     font-size: 12px;
     font-weight: 600;
     border-radius: 5px;

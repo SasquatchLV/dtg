@@ -3,11 +3,11 @@
     justify-content: center;
     align-items: center;
     margin: 0;
-    background-image: linear-gradient(to bottom, black 0%, #032d29, #033834);
+    background-image: linear-gradient(to bottom, black 0%, #032d29, var(--secondary));
 }
 
 .section {
-    color: #EEFAF9;
+    color: var(--primary);
     font-size: 16px;
     font-weight: 500;
     padding: .8rem 1.4rem;

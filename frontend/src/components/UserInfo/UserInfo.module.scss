@@ -1,0 +1,109 @@
+.userProfile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    justify-content: center;
+    column-gap: 1rem;
+    background-color: #0338341f;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    max-height: 250px;
+}
+
+.userLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.userRight {
+    position: relative;
+}
+
+.userAvatar {
+    max-width: 200px;
+    width: 100%;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.leftBottom {
+    display: flex;
+    font-weight: 500;
+    column-gap: 1rem;
+}
+
+.leftBottom span {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+hr {
+    margin: 1rem 0;
+}
+
+.userEmail {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-right: 1rem;
+}
+
+.userIcons {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.icon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+    max-width: 30px;
+    width: 100%;
+
+    &:hover {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+.userGameData li {
+    display: grid;
+    grid-template-columns: 25% 50%;
+    column-gap: 0.5rem;
+    padding: 0.2rem 0;
+}
+
+.userGameData li span:nth-child(1) {
+    font-size: 14px;
+    color: gray;
+    text-align: left;
+}
+
+.userGameData li span:nth-child(2) {
+    font-size: 14px;
+    color: var(--secondary);
+    text-align: left;
+}
+
+.paidStatus {
+    position: absolute;
+    bottom: 5%;
+    right: 10%;
+    max-width: 100px;
+    width: 100%;
+}
+
+.err {
+    font-size: 12px;
+    padding: 10px;
+    font-weight: 700;
+    color: #e7195a;
+}
+

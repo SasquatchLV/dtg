@@ -19,7 +19,7 @@ header {
 
 .actions {
   display: flex;
-  color: #eefaf9;
+  color: var(--primary);
   align-items: center;
   position: relative;
 }
@@ -35,9 +35,9 @@ span {
 
 .adminBtn,
 .logoutBtn {
-  background-color: #eefaf9;
-  color: #033834;
-  border: 2px solid #033834;
+  background-color: var(--primary);
+  color: var(--secondary);
+  border: 2px solid var(--secondary);
   padding: 6px 10px;
   border-radius: 4px;
   font-family: 'Poppins';

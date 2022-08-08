@@ -20,9 +20,9 @@
 }
 
 .yearBtn {
-    background-color: #eefaf9;
-    color: #033834;
-    border: 2px solid #033834;
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
     padding: 6px 10px;
     border-radius: 4px;
     font-family: 'Poppins';
@@ -33,7 +33,7 @@
     transition: all 0.2s ease-in-out;
 
     &:hover {
-        background-color: #eefaf9;
+        background-color: var(--primary);
         text-decoration: none;
         transform: scale(1.05);
     }

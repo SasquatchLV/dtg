@@ -5,7 +5,7 @@
 
 .actions {
   padding: 0.4rem 1rem;
-  background-color: #033834;
+  background-color: var(--secondary);
   border-radius: 0.5rem;
   display: flex;
   justify-content: center;
@@ -18,8 +18,8 @@
 }
 
 .actionBtn {
-  background-color: #eefaf9;
-  color: #033834;
+  background-color: var(--primary);
+  color: var(--secondary);
   padding: 6px 4px;
   font-size: 12px;
   font-weight: 400;
@@ -35,7 +35,7 @@
     rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 
   &:hover {
-    background-color: #eefaf9;
+    background-color: var(--primary);
     transform: scale(1.05);
   }
 
@@ -45,7 +45,7 @@
 }
 
 .activeBtn {
-  background-color: #eefaf9;
+  background-color: var(--primary);
   color: #080710;
   padding: 6px 4px;
   font-size: 12px;
