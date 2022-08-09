@@ -109,9 +109,9 @@ const SeasonOverview = () => {
   const allHaveBeenSelected = selectedTeams.length >= 10 && selectedTeams.length <= 16
 
   return (
-    <div className={styles.seasonOverview}>
-      <div className={styles.seasonActions}>
-        {!submitted ? (
+    !submitted ? (
+      <div className={styles.seasonOverview}>
+        <div className={styles.seasonActions}>
           <div className={styles.seasonForm}>
             <h3>Start new season</h3>
             <label>Year</label>
@@ -145,12 +145,12 @@ const SeasonOverview = () => {
               </h5>
             )}
             {seasonAlreadyRunning
-          && (
-          <h5 className={styles.err}>
-            Can`t start new season, while a season is already ongoing.
-            Please finish the season to start a new one!
-          </h5>
-          )}
+              && (
+              <h5 className={styles.err}>
+                Can`t start new season, while a season is already ongoing.
+                Please finish the season to start a new one!
+              </h5>
+              )}
             <button
               className={styles.addBtn}
               disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || seasonAlreadyRunning}
@@ -166,58 +166,58 @@ const SeasonOverview = () => {
               Finish Season
             </button>
           </div>
-        ) : (
-          <h2>All good!</h2>
-        )}
-      </div>
-      <div className={styles.selectionWrapper}>
-        <h4>
-          <i>
-            If a team is not in the selection, start the season without it
-            and afterwards add the team manually in Team Overview
-          </i>
-        </h4>
-        <h5 className={styles.err}>{errorMsg}</h5>
-        <div className={styles.selection}>
-          <h3>Teams for group A</h3>
-          <h5>{`${groupACount} selected`}</h5>
-          <div className={styles.teamWrapper}>
-            {teamSelection.map(({ flag, country, _id }) => (
-              <div
-                className={teamAlreadySelected(country) ? styles.selected : styles.notSelected}
-                key={_id}
-                onClick={() => handleSelection('A', { country, flag })}
-              >
-                <span className={whichGroup(country) === 'A' ? styles.selectedA : styles.selectedB}>
-                  {whichGroup(country)}
-                </span>
-                <img src={flag} alt="flag" className={styles.flag} />
-                <span>{country}</span>
-              </div>
-            ))}
-          </div>
         </div>
-        <div className={styles.selection}>
-          <h3>Teams for group B</h3>
-          <h5>{`${groupBCount} selected`}</h5>
-          <div className={styles.teamWrapper}>
-            {teamSelection.map(({ flag, country, _id }) => (
-              <div
-                className={teamAlreadySelected(country) ? styles.selected : styles.notSelected}
-                key={_id}
-                onClick={() => handleSelection('B', { country, flag })}
-              >
-                <span className={whichGroup(country) === 'A' ? styles.selectedA : styles.selectedB}>
-                  {whichGroup(country)}
-                </span>
-                <img src={flag} alt="flag" className={styles.flag} />
-                <span>{country}</span>
-              </div>
-            ))}
+        <div className={styles.selectionWrapper}>
+          <h4>
+            <i>
+              If a team is not in the selection, start the season without it
+              and afterwards add the team manually in Team Overview
+            </i>
+          </h4>
+          <h5 className={styles.err}>{errorMsg}</h5>
+          <div className={styles.selection}>
+            <h3>Teams for group A</h3>
+            <h5>{`${groupACount} selected`}</h5>
+            <div className={styles.teamWrapper}>
+              {teamSelection.map(({ flag, country, _id }) => (
+                <div
+                  className={teamAlreadySelected(country) ? styles.selected : styles.notSelected}
+                  key={_id}
+                  onClick={() => handleSelection('A', { country, flag })}
+                >
+                  <span className={whichGroup(country) === 'A' ? styles.selectedA : styles.selectedB}>
+                    {whichGroup(country)}
+                  </span>
+                  <img src={flag} alt="flag" className={styles.flag} />
+                  <span>{country}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={styles.selection}>
+            <h3>Teams for group B</h3>
+            <h5>{`${groupBCount} selected`}</h5>
+            <div className={styles.teamWrapper}>
+              {teamSelection.map(({ flag, country, _id }) => (
+                <div
+                  className={teamAlreadySelected(country) ? styles.selected : styles.notSelected}
+                  key={_id}
+                  onClick={() => handleSelection('B', { country, flag })}
+                >
+                  <span className={whichGroup(country) === 'A' ? styles.selectedA : styles.selectedB}>
+                    {whichGroup(country)}
+                  </span>
+                  <img src={flag} alt="flag" className={styles.flag} />
+                  <span>{country}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    ) : (
+      <h1>All done!</h1>
+    )
   )
 }
 
