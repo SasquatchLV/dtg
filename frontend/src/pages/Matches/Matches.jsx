@@ -18,14 +18,22 @@ const Matches = () => {
       })
 
       const json = await response.json()
+      const {
+        status, data, message,
+      } = json
 
-      if (response.ok) {
-        dispatch({ type: 'SET_MATCHES', payload: json })
+      if (status === 'success') {
+        dispatch({ type: 'SET_MATCHES', payload: data })
+      } else {
+        errorToast(message)
       }
+      // if (response.ok) {
+      //   dispatch({ type: 'SET_MATCHES', payload: json })
+      // }
 
-      if (!response.ok) {
-        errorToast(json.error)
-      }
+      // if (!response.ok) {
+      //   errorToast(json.error)
+      // }
     }
 
     if (user) {

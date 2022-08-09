@@ -5,6 +5,7 @@ const {
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
 const ROLE_LIST = require("../config/rolesList")
+const MatchesService = require ("../services/MatchesService")
 
 const router = express.Router()
 
@@ -21,7 +22,24 @@ router.post("/finish", verifyRoles(ROLE_LIST.User), finishMatch)
 router.post("/publish", verifyRoles(ROLE_LIST.Admin), publishMatch)
 
 // create a new match
-router.get("/all", verifyRoles(ROLE_LIST.User), getAllMatches)
+router.get("/all", verifyRoles(ROLE_LIST.User), (req, res) => {
+    try {
+        const { matches } = MatchesService.getMatches()
+
+        res.send({ 
+            data: matches,
+            message: "All matches",
+            status: "success",
+        })
+    }
+    catch (error) {
+        res.send({
+            data: null,
+            message: error.message,
+            status: "error",
+        })
+    }
+})
 
 // create a new match
 router.post("/new", verifyRoles(ROLE_LIST.Admin), createMatch)

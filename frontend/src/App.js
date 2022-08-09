@@ -12,6 +12,7 @@ import AdminPanel from './pages/Admin/AdminPanel'
 import Matches from './pages/Matches/Matches'
 import Standings from './pages/Standings/Standings'
 import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
+import ProtectedRoute from './components/ProtectedRoute/protectedRoute'
 
 function App() {
   const { user } = useAuthContext()
@@ -20,28 +21,19 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        {user && <Header />}
-        <div className="pages">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                user ? <Navigate to="/matches" /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/login"
-              element={!user ? <Login /> : <Navigate to="/matches" />}
-            />
-            <Route
-              path="/admin"
-              element={isAdmin ? <AdminPanel /> : <Navigate to="/matches" />}
-            />
-            <Route path="/matches" element={<Matches />} />
-            <Route path="/standings" element={<Standings />} />
-            <Route path="/leaderboard" element={<LeaderBoard />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="*"
+            element={(
+              <ProtectedRoute>
+                <Routes>
+                  <Route path="/matches" element={<Matches />} />
+                </Routes>
+              </ProtectedRoute>
+          )}
+          />
+        </Routes>
       </BrowserRouter>
       <ToastContainer />
     </div>

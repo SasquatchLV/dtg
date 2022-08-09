@@ -13,6 +13,26 @@ const router = express.Router()
 // require auth for all workout routes
 router.use(requireAuth)
 
+
+router.get('/test', (req, res) => {
+  const { body } = req;
+
+  try {
+    const response = { matches: [] };
+
+    res.send({
+      data: response,
+      status: 'success',
+      message: "Success",
+    })
+  } catch (ex) {
+    res.send({
+      data: null,
+      status: 'error',
+      message: ex.message,
+    })
+  }
+})
 // GET all teams
 router.get("/all", getAllTeams)
 

@@ -1,12 +1,15 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import {
+  Navigate, Route, useLocation, useNavigate,
+} from 'react-router-dom'
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const [loading, setLoading] = React.useState(true)
-  const [redirect, setRedirect] = React.useState(false)
+function ProtectedRoute({ children }) {
+  const [loading, setLoading] = useState(true)
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const tokenCheck = () => {
-    fetch('/api/users/is-authorized', {
+    fetch('/api/user/is-authorized', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -17,12 +20,13 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
           setLoading(false)
         } else {
           setLoading(false)
-          setRedirect(true)
+          navigate('/login', { state: { from: location }, replace: true })
         }
       })
-      .catch((ex) => {
+      .catch((err) => {
         setLoading(false)
-        setRedirect(true)
+        console.error(err)
+        navigate('/login', { state: { from: location }, replace: true })
       })
   }
 
@@ -30,13 +34,15 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
     tokenCheck()
   }, [])
 
-  if (redirect) {
-    return <Navigate to="/login" />
-  }
-
   if (loading) {
-    return null
+    return (
+      <div className="vh-100">
+        <h1>Loading</h1>
+      </div>
+    )
   }
 
-  return <Component {...rest} />
+  return children
 }
+
+export default ProtectedRoute
