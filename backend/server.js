@@ -45,6 +45,27 @@ app.use('/api/team', teamRoutes)
 app.use('/api/match', matchRoutes)
 app.use('/api/season', seasonRoutes)
 
+// let dog = "1";
+
+// const cat = {
+//   name: "1"
+// };
+
+// function random(prim) {
+//   prim = "2"
+// }
+
+// function randomObj(obj) {
+//   obj.name = "2";
+// }
+
+// random(dog);
+// randomObj(cat);
+
+// console.log(dog);
+// console.log(cat);
+
+
 // connect to db
 mongoose
   .connect(process.env.MONGO_URI)

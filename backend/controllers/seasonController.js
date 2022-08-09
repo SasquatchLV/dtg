@@ -40,7 +40,7 @@ const getSingleSeason = async (req, res) => {
 const startNewSeason = async (req, res) => {
 
     const { seasonsYear, selectedTeams } = req.body
-    
+
     selectedTeams.forEach(({ flag, country, group }) => Team.create({ flag, country, group }))
 
     try {
@@ -55,41 +55,28 @@ const startNewSeason = async (req, res) => {
 
 // end the season and save data in seasonDB
 const finishSeason = async (req, res) => {
-    const teamIdArray = await Team.distinct('_id')
-    // const userIdArray = await User.distinct('_id')
-    const matchIdArray = await Match.distinct('_id')
-
-    let teams = []
-    let matches = []
-    // let users = []
-
-    for (let i = 0; i < teamIdArray.length; i += 1) {
-        const team = await Team.findOne({ _id: teamIdArray[i] })
-        teams.push(team)
-    }
-
-    // for (let i = 0; i < userIdArray.length; i += 1) {
-    //     const user = await User.findOne({ _id: userIdArray[i] })
-    //     users.push(user)
-    // }
-
-    for (let i = 0; i < matchIdArray.length; i += 1) {
-        const match = await Match.findOne({ _id: matchIdArray[i] })
-        matches.push(match)
-    }
-
     try {
-        const activeSeason = await Season.findOne({ status: 'active' })
-        console.log(activeSeason)
+        const [seasonTeams, seasonMatches, users, activeSeason] = await Promise.all([
+            Team.find(),
+            Match.find(),
+            User.find(),
+            Season.findOne({ status: 'active' })
+        ])
+        
+        const topThreeUsersInPoints = users.sort((a, b) => b.points - a.points).slice(0, 3)
+
         activeSeason.status = 'finished'
-        activeSeason.teams = teams
-        activeSeason.matches = matches
-        // activeSeason.users = users
+        activeSeason.teams = seasonTeams
+        activeSeason.matches = seasonMatches
+        activeSeason.users = topThreeUsersInPoints
 
-        activeSeason.save()
-
-        await Match.deleteMany({})
-        await Team.deleteMany({})
+        // resets db for next season
+        await Promise.all([
+            ...users.map((user) => User.updateOne({ "_id": user._id }, { "points": 0 })), 
+            Match.deleteMany({}), 
+            Team.deleteMany({}),
+            activeSeason.save()
+        ])
 
         res.status(200).json(activeSeason)
     } catch (error) {
