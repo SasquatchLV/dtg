@@ -20,7 +20,7 @@ const Standings = () => {
     const json = await response.json()
 
     if (response.ok) {
-      setYears(json.map(({ year }) => year))
+      setYears(json.filter((season) => season.status === 'finished').map(({ year }) => year))
     }
 
     if (!response.ok) {
@@ -51,21 +51,6 @@ const Standings = () => {
   // const newSeason = async () => {
 
   // }
-  const log = async () => {
-    const response = await fetch('/api/season/seasonTeams', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      console.log(json)
-    }
-
-    if (!response.ok) {
-      console.log('error')
-    }
-  }
 
   return (
     <div className={styles.container}>
@@ -110,7 +95,6 @@ const Standings = () => {
           Current standings
         </button>
       </div>
-      <button onClick={() => log()}>log teams</button>
       <h3>{chosenYear ? `${chosenYear} Standings ` : 'Current Standings'}</h3>
       {chosenYear && <PreviousStandings seasonYear={chosenYear} />}
       {!chosenYear && <CurrentStandings />}

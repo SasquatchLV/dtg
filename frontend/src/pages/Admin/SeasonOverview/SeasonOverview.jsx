@@ -7,8 +7,53 @@ const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState(0)
   const [teamSelection, setTeamSelection] = useState([])
   const [selectedTeams, setSelectedTeams] = useState([])
+  const [seasonAlreadyRunning, setSeasonAlreadyRunning] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
+
+  const getAllSeasons = async () => {
+    const response = await fetch('/api/season/all', {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+
+    if (response.ok) {
+      json.some(({ status }) => status === 'active' && setSeasonAlreadyRunning(true))
+    }
+
+    if (!response.ok) {
+      errorToast('Can`t load')
+    }
+  }
+
+  const startSeason = async () => {
+    const response = await fetch('/api/season/new', {
+      method: 'POST',
+      body: JSON.stringify({ seasonsYear, selectedTeams }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+
+    await response.json()
+    setSubmitted(true)
+  }
+
+  const finishSeason = async () => {
+    const response = await fetch('/api/season/finish', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+
+    await response.json()
+    setSubmitted(true)
+  }
 
   const getTeamSelection = async () => {
     const response = await fetch('/api/season/seasonTeams', {
@@ -18,7 +63,6 @@ const SeasonOverview = () => {
     const json = await response.json()
 
     if (response.ok) {
-      console.log(json)
       setTeamSelection(json)
     }
 
@@ -29,6 +73,7 @@ const SeasonOverview = () => {
 
   useEffect(() => {
     getTeamSelection()
+    getAllSeasons()
   }, [user])
 
   const teamAlreadySelected = (country) => selectedTeams.some((team) => team.country === country)
@@ -66,45 +111,64 @@ const SeasonOverview = () => {
   return (
     <div className={styles.seasonOverview}>
       <div className={styles.seasonActions}>
-        <form className={styles.seasonForm}>
-          <h3>Start new season</h3>
-          <label>Year</label>
-          <input
-            type="number"
-            onChange={(e) => setSeasonsYear(e.target.value)}
-            value={seasonsYear}
-            placeholder="year..."
-            required
-          />
-          {allHaveBeenSelected ? (
-            <div className={styles.selectedContainer}>
-              <h6>Group A</h6>
-              <div className={styles.selectedWrapper}>
-                {selectedTeams.map(({ group, flag }) => (group === 'A'
-                  ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
-                  : ''))}
+        {!submitted ? (
+          <div className={styles.seasonForm}>
+            <h3>Start new season</h3>
+            <label>Year</label>
+            <input
+              type="number"
+              onChange={(e) => setSeasonsYear(e.target.value)}
+              value={seasonsYear}
+              placeholder="year..."
+              required
+            />
+            {allHaveBeenSelected ? (
+              <div className={styles.selectedContainer}>
+                <h6>Group A</h6>
+                <div className={styles.selectedWrapper}>
+                  {selectedTeams.map(({ group, flag }) => (group === 'A'
+                    ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
+                    : ''))}
+                </div>
+                <h6>Group B</h6>
+                <div className={styles.selectedWrapper}>
+                  {selectedTeams.map(({ group, flag }) => (group === 'B'
+                    ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
+                    : ''))}
+                </div>
               </div>
-              <h6>Group B</h6>
-              <div className={styles.selectedWrapper}>
-                {selectedTeams.map(({ group, flag }) => (group === 'B'
-                  ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
-                  : ''))}
-              </div>
-            </div>
-          ) : (
-            <h5 className={styles.err}>
-              Please select at least 10 teams,
-              <br />
-              not more than 16
-            </h5>
+            ) : (
+              <h5 className={styles.err}>
+                Please select at least 10 teams,
+                <br />
+                not more than 16
+              </h5>
+            )}
+            {seasonAlreadyRunning
+          && (
+          <h5 className={styles.err}>
+            Can`t start new season, while a season is already ongoing.
+            Please finish the season to start a new one!
+          </h5>
           )}
-          <button
-            className={styles.addBtn}
-            disabled={!allHaveBeenSelected || seasonsYear.length !== 4}
-          >
-            Start Season
-          </button>
-        </form>
+            <button
+              className={styles.addBtn}
+              disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || seasonAlreadyRunning}
+              onClick={startSeason}
+            >
+              Start Season
+            </button>
+            <button
+              className={styles.addBtn}
+              disabled={!seasonAlreadyRunning}
+              onClick={finishSeason}
+            >
+              Finish Season
+            </button>
+          </div>
+        ) : (
+          <h2>All good!</h2>
+        )}
       </div>
       <div className={styles.selectionWrapper}>
         <h4>
