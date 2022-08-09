@@ -40,15 +40,15 @@ const getSingleSeason = async (req, res) => {
 const startNewSeason = async (req, res) => {
 
     const { seasonsYear, selectedTeams } = req.body
-
     
+    selectedTeams.forEach(({ flag, country, group }) => Team.create({ flag, country, group }))
+
     try {
-        selectedTeams.forEach(({ flag, country, group }) => Team.create({ flag, country, group }))
-    
         const season = await Season.create({ year: Number(seasonsYear), status: 'active' })
-
+        console.log(season)
         res.status(200).json(season)
     } catch (error) {
+        console.log(error)
         res.status(400).json({ error: error.message })
     }
 }
@@ -101,9 +101,10 @@ const finishSeason = async (req, res) => {
 const getPreviousSeasonTeams = async (req, res) => {
     try {
         const seasons = await Season.find()
-        const seasonTeams = [...new Set(seasons.flatMap((season) => season.teams))]
+        const seasonTeams = seasons.flatMap((season) => season.teams)
+        const uniqueTeams = [...new Map(seasonTeams.map((team) => [team.country, team])).values()]
 
-        res.status(200).json(seasonTeams)
+        res.status(200).json(uniqueTeams)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
