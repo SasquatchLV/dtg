@@ -44,6 +44,7 @@ const addNewTeam = async (req, res) => {
 
   try {
     const team = await Team.create({ country, flag, group })
+  
     res.status(200).json(team)
   } catch (error) {
     res.status(400).json({ error: error.message })

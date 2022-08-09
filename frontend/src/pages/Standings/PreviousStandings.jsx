@@ -53,7 +53,7 @@ const PreviousStandings = ({ seasonYear }) => {
     if (user) {
       getSeason(seasonYear)
     }
-  }, [user])
+  }, [seasonYear])
 
   return (
     <div className={styles.container}>

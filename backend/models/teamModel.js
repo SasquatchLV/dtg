@@ -6,7 +6,6 @@ const teamSchema = new Schema(
   {
     country: {
       type: String,
-      unique: true,
       required: true,
     },
     flag: {
@@ -72,6 +71,7 @@ teamSchema.statics.updatePoints = async function (_id, points, title) {
     }
   } else {
     Team.position = 'eliminated'
+    Team.points += points
     if (!points) {
       Team.gamesLost += 1
     } else if (points === 1) {
@@ -82,8 +82,6 @@ teamSchema.statics.updatePoints = async function (_id, points, title) {
       Team.gamesWon += 1
     }
   }
-
-  Team.points += points
 
   await Team.save()
 
