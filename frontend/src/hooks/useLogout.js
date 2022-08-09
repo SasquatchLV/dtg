@@ -7,6 +7,9 @@ export const useLogout = () => {
     // remove user from storage
     localStorage.removeItem('user')
 
+    // clear the cookies
+    document.cookie = 'accessCookie'
+
     // dispatch logout action
     dispatch({ type: 'LOGOUT' })
 

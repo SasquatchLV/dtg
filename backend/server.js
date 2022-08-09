@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('./middleware/morgan')
 const mongoose = require('mongoose')
+const cookieParser = require("cookie-parser")
 const path = require('path')
 const userRoutes = require('./routes/user')
 const teamRoutes = require('./routes/team')
@@ -14,6 +15,9 @@ const credentials = require('./middleware/credentials')
 
 // express app
 const app = express()
+
+// Add the cookie-parser
+app.use(cookieParser());
 
 // Add morgan middleware
 app.use(morgan)
@@ -30,11 +34,6 @@ app.use(express.urlencoded({ extended: false }))
 
 // middleware
 app.use(express.json())
-
-app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
 
 //serve static files
 app.use('/', express.static(path.join(__dirname, '/public')))

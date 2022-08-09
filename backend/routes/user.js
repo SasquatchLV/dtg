@@ -25,7 +25,6 @@ router.post("/login", loginUser)
 // require auth for all workout routes
 router.use(requireAuth)
 
-
 // register a user route
 router.post("/signup", verifyRoles(ROLE_LIST.Admin), signupUser)
 
