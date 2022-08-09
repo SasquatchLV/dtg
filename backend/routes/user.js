@@ -25,6 +25,16 @@ router.post("/login", loginUser)
 // require auth for all workout routes
 router.use(requireAuth)
 
+router.get('/is-authorized', (req, res) => {
+  const { _id } = req.user;
+
+  res.send({
+    data: { _id },
+    status: 'success',
+    message: 'Authorized!',
+  });
+});
+
 // register a user route
 router.post("/signup", verifyRoles(ROLE_LIST.Admin), signupUser)
 
