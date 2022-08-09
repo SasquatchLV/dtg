@@ -36,38 +36,16 @@ const getSingleSeason = async (req, res) => {
     }
 }
 
-// end the season and save data in seasonDB
-const endSeason = async (req, res) => {
-    const { year } = req.body
+// start a new season with status: 'active'
+const startNewSeason = async (req, res) => {
 
-    const teamIdArray = await Team.distinct('_id')
-    const userIdArray = await User.distinct('_id')
-    const matchIdArray = await Match.distinct('_id')
+    const { seasonsYear, selectedTeams } = req.body
 
-    let teams = []
-    let matches = []
-    let users = []
-
-    for (let i = 0; i < teamIdArray.length; i += 1) {
-        const team = await Team.findOne({ _id: teamIdArray[i] })
-        teams.push(team)
-    }
-
-    for (let i = 0; i < userIdArray.length; i += 1) {
-        const user = await User.findOne({ _id: userIdArray[i] })
-        users.push(user)
-    }
-
-    for (let i = 0; i < matchIdArray.length; i += 1) {
-        const match = await Match.findOne({ _id: matchIdArray[i] })
-        matches.push(match)
-    }
-
+    
     try {
-        const season = await Season.create({ year, teams, matches, users })
-        season.status = 'finished'
-        await Match.deleteMany({})
-        await Team.deleteMany({})
+        selectedTeams.forEach(({ flag, country, group }) => Team.create({ flag, country, group }))
+    
+        const season = await Season.create({ year: Number(seasonsYear), status: 'active' })
 
         res.status(200).json(season)
     } catch (error) {
@@ -75,8 +53,52 @@ const endSeason = async (req, res) => {
     }
 }
 
+// end the season and save data in seasonDB
+const finishSeason = async (req, res) => {
+    const teamIdArray = await Team.distinct('_id')
+    // const userIdArray = await User.distinct('_id')
+    const matchIdArray = await Match.distinct('_id')
+
+    let teams = []
+    let matches = []
+    // let users = []
+
+    for (let i = 0; i < teamIdArray.length; i += 1) {
+        const team = await Team.findOne({ _id: teamIdArray[i] })
+        teams.push(team)
+    }
+
+    // for (let i = 0; i < userIdArray.length; i += 1) {
+    //     const user = await User.findOne({ _id: userIdArray[i] })
+    //     users.push(user)
+    // }
+
+    for (let i = 0; i < matchIdArray.length; i += 1) {
+        const match = await Match.findOne({ _id: matchIdArray[i] })
+        matches.push(match)
+    }
+
+    try {
+        const activeSeason = await Season.findOne({ status: 'active' })
+        console.log(activeSeason)
+        activeSeason.status = 'finished'
+        activeSeason.teams = teams
+        activeSeason.matches = matches
+        // activeSeason.users = users
+
+        activeSeason.save()
+
+        await Match.deleteMany({})
+        await Team.deleteMany({})
+
+        res.status(200).json(activeSeason)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 // get teams for selection
-const getPreviousSeasonTeams = async (req, res) => {    
+const getPreviousSeasonTeams = async (req, res) => {
     try {
         const seasons = await Season.find()
         const seasonTeams = [...new Set(seasons.flatMap((season) => season.teams))]
@@ -88,5 +110,5 @@ const getPreviousSeasonTeams = async (req, res) => {
 }
 
 module.exports = {
-    endSeason, getAllSeasons, getSingleSeason, getPreviousSeasonTeams,
+    finishSeason, getAllSeasons, getSingleSeason, getPreviousSeasonTeams, startNewSeason,
 }

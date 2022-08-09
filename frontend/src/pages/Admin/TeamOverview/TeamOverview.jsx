@@ -115,7 +115,7 @@ const TeamOverview = () => {
           <TeamsCard
             key={_id}
             id={_id}
-            _id={id}
+            _id={_id}
             country={country}
             flag={flag}
             gamesWon={gamesWon}

@@ -6,7 +6,6 @@ const teamSchema = new Schema(
   {
     country: {
       type: String,
-      unique: true,
       required: true,
     },
     flag: {
@@ -46,7 +45,6 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   avatar: {
     type: String,
