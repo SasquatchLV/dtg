@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import styles from './SeasonOverview.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { errorToast } from '../../../utils/toast'
+import { useModalContext } from '../../../hooks/useModalContext'
 
 const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState(0)
@@ -11,6 +12,7 @@ const SeasonOverview = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
+  const { dispatchModal } = useModalContext()
 
   const getAllSeasons = async () => {
     const response = await fetch('/api/season/all', {
@@ -109,6 +111,24 @@ const SeasonOverview = () => {
 
   const allHaveBeenSelected = selectedTeams.length >= 10 && selectedTeams.length <= 16
 
+  const seasonStartProps = {
+    text: 'Confirm to start new season!',
+    confirm: async () => {
+      await startSeason()
+      dispatchModal({ type: 'CLOSE_MODAL' })
+    },
+    cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
+  }
+
+  const seasonFinishProps = {
+    text: 'Confirm to finish this season!',
+    confirm: async () => {
+      await finishSeason()
+      dispatchModal({ type: 'CLOSE_MODAL' })
+    },
+    cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
+  }
+
   return (
     !submitted ? (
       <div className={styles.seasonOverview}>
@@ -155,14 +175,14 @@ const SeasonOverview = () => {
             <button
               className={styles.addBtn}
               disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || seasonAlreadyRunning}
-              onClick={startSeason}
+              onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonStartProps })}
             >
               Start Season
             </button>
             <button
               className={styles.addBtn}
               disabled={!seasonAlreadyRunning}
-              onClick={finishSeason}
+              onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })}
             >
               Finish Season
             </button>

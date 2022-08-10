@@ -25,7 +25,6 @@ const MatchCard = ({
   userTimeTillGame,
 }) => {
   const [isDeleted, setIsDeleted] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
   const { user } = useAuthContext()
   const { dispatch } = useMatchContext()
   const { dispatchModal } = useModalContext()
@@ -67,13 +66,6 @@ const MatchCard = ({
 
   return (
     <div className={styles.container}>
-      {deleteModal && (
-      <ConfirmationModal
-        text="Confirm to delete match!"
-        // handleConfirmation={() => handleDelete(_id)}
-        // handleCancelation={() => setDeleteModal(false)}
-      />
-      )}
       {isAdmin
         && (!isDeleted ? (
           <button

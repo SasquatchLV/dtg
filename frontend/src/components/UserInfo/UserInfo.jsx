@@ -1,12 +1,24 @@
 import React from 'react'
 import styles from './UserInfo.module.scss'
 import { useUser } from '../../hooks/useUser'
+import { useModalContext } from '../../hooks/useModalContext'
 
 const UserInfo = (props) => {
   const { activeUser, fetchData } = props
   const {
     promoteUser, demoteUser, toggleHasPaid, deleteUser,
   } = useUser()
+  const { dispatchModal } = useModalContext()
+
+  const deleteModalProps = {
+    text: 'Confirm to delete!',
+    confirm: async () => {
+      await deleteUser(activeUser.email)
+      await fetchData('')
+      dispatchModal({ type: 'CLOSE_MODAL' })
+    },
+    cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
+  }
 
   const icons = [
     {
@@ -36,10 +48,7 @@ const UserInfo = (props) => {
     {
       title: 'Delete',
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3221/3221845.png',
-      handleClick: async () => {
-        await deleteUser(activeUser.email)
-        await fetchData(activeUser.email)
-      },
+      handleClick: async () => dispatchModal({ type: 'OPEN_MODAL', payload: deleteModalProps }),
     },
   ]
 

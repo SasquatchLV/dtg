@@ -10,10 +10,14 @@ const UserOverview = () => {
   const { fetchUser } = useUser()
 
   const fetchData = async (email) => {
-    const user = await fetchUser(email)
+    if (!email) {
+      setActiveUser(null)
+    } else {
+      const user = await fetchUser(email)
 
-    if (!user.error) {
-      setActiveUser(user)
+      if (!user.error) {
+        setActiveUser(user)
+      }
     }
   }
 
