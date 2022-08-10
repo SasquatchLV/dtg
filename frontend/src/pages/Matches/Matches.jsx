@@ -14,10 +14,13 @@ const Matches = () => {
 
     const getAllMatches = async () => {
       const response = await fetch(`/api/match/all?timezone=${timezone}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       })
 
       const json = await response.json()
+
       const {
         status, data, message,
       } = json
@@ -27,13 +30,6 @@ const Matches = () => {
       } else {
         errorToast(message)
       }
-      // if (response.ok) {
-      //   dispatch({ type: 'SET_MATCHES', payload: json })
-      // }
-
-      // if (!response.ok) {
-      //   errorToast(json.error)
-      // }
     }
 
     if (user) {
