@@ -12,6 +12,7 @@ const seasonRoutes = require('./routes/season')
 const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const credentials = require('./middleware/credentials')
+// const routes = require('./routes/index')
 
 // express app
 const app = express()
@@ -45,25 +46,6 @@ app.use('/api/team', teamRoutes)
 app.use('/api/match', matchRoutes)
 app.use('/api/season', seasonRoutes)
 
-// let dog = "1";
-
-// const cat = {
-//   name: "1"
-// };
-
-// function random(prim) {
-//   prim = "2"
-// }
-
-// function randomObj(obj) {
-//   obj.name = "2";
-// }
-
-// random(dog);
-// randomObj(cat);
-
-// console.log(dog);
-// console.log(cat);
 
 
 // connect to db
