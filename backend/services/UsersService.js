@@ -13,6 +13,7 @@ class MatchesService {
       const { token } = await AccessTokenService.createToken({userId: user._id, userAgent })
 
       return { email, token, userId: user._id, avatar, lastFiveGames, roles, points }
+      
   }
 }
 

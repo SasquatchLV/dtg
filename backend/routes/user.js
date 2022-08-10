@@ -39,7 +39,6 @@ router.post("/login", async (req, res) => {
       message: 'User logged in successfully',
     })
   } catch (error) {
-    console.log(error)
     res.send({
       data: null,
       status: 'error',
@@ -54,11 +53,19 @@ router.use(requireAuth)
 router.get('/is-authorized', (req, res) => {
   const { _id } = req.user;
 
-  res.send({
-    data: { _id },
-    status: 'success',
-    message: 'Authorized!',
-  });
+  try {
+    res.send({
+      data: { _id },
+      status: 'success',
+      message: 'Authorized!',
+    });
+  } catch (error) {
+    res.send({
+      data: null,
+      status: 'error',
+      message: error.message,
+    });
+  }
 });
 
 // register a user route

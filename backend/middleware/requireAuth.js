@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel")
 const AccessTokenService = require("../services/AccessTokenService")
+
 const requireAuth = async (req, res, next) => {
   // verify user is authenticated
   const { cookies, headers } = req;
   const { accessCookie } = cookies;
-  const userAgent = req.headers['user-agent'] || 'local placeholder';
 
   const unauthorizedResponse = {
     data: false,
@@ -50,8 +50,6 @@ const requireAuth = async (req, res, next) => {
   
         next();
       } catch (err) {
-        console.error(err);
-  
         res.send(unauthorizedResponse);
       }
     });

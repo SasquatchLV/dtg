@@ -17,11 +17,17 @@ export const useLogin = () => {
       status, data, message,
     } = json
 
+    const {
+      userId, avatar, lastFiveGames, roles, points,
+    } = data
+
     if (status === 'success') {
       successToast(`Welcome ${data.email}!`)
 
       // save the user to local storage
-      localStorage.setItem('user', JSON.stringify(data))
+      localStorage.setItem('user', JSON.stringify({
+        userId, avatar, lastFiveGames, roles, points,
+      }))
 
       // update the auth context
       dispatch({ type: 'LOGIN', payload: data })
