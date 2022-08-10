@@ -57,10 +57,11 @@ class MatchesService {
           userTimeTillGame,
         }
       })
+
       return {
         matches: matchesWithUsersGameTime,
-      }
     }
+  }
 }
 
 module.exports = MatchesService;

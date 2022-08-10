@@ -1,37 +1,37 @@
-import React, { useState } from 'react'
-import {
-  Navigate, Route, useLocation, useNavigate,
-} from 'react-router-dom'
+import React, { useState, useCallback, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { errorToast } from '../../utils/toast'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
   const location = useLocation()
   const navigate = useNavigate()
+  const { dispatch } = useAuthContext()
 
-  const tokenCheck = () => {
+  const isAuth = useCallback(() => {
     fetch('/api/user/is-authorized', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     })
-      .then((res) => res.json())
-      .then((resp) => {
-        if (resp.status === 'success') {
+      .then((response) => response.json())
+      .then(({ status }) => {
+        if (status === 'success') {
           setLoading(false)
         } else {
-          setLoading(false)
+          dispatch({ type: 'LOGOUT' })
           navigate('/login', { state: { from: location }, replace: true })
         }
       })
       .catch((err) => {
+        errorToast(err)
         setLoading(false)
         navigate('/login', { state: { from: location }, replace: true })
       })
-  }
+  }, [location, navigate, dispatch])
 
-  React.useEffect(() => {
-    tokenCheck()
-  }, [])
+  useEffect(isAuth, [isAuth])
 
   if (loading) {
     return (

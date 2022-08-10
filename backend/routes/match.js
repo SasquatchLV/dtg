@@ -22,11 +22,11 @@ router.post("/finish", verifyRoles(ROLE_LIST.User), finishMatch)
 router.post("/publish", verifyRoles(ROLE_LIST.Admin), publishMatch)
 
 // create a new match
-router.get("/all", verifyRoles(ROLE_LIST.User), (req, res) => {
+router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
     const { timezone } = req.query
 
     try {
-        const { matches } = MatchesService.getMatches({ timezone })
+        const { matches } = await MatchesService.getMatches({timezone})
 
         res.send({ 
             data: matches,
