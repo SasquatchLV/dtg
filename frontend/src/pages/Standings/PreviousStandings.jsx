@@ -4,14 +4,13 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
 import { errorToast } from '../../utils/toast'
 import RankingCard from '../../components/RankingCard/RankingCard'
+import UserRankingCard from '../../components/UserRankingCard/UserRankingCard'
 
 const PreviousStandings = ({ seasonYear }) => {
-  const [season, setSeason] = useState({})
   const [groupA, setGroupA] = useState([])
   const [groupB, setGroupB] = useState([])
-  const [matches, setMatches] = useState([])
+  const [topThreeUsers, setTopThreeUsers] = useState([])
   const [overallRanking, setOverallRanking] = useState([])
-  const [users, setUsers] = useState([])
   const { user } = useAuthContext()
 
   const getSeason = async (year) => {
@@ -33,11 +32,9 @@ const PreviousStandings = ({ seasonYear }) => {
     }
 
     if (response.ok) {
-      setSeason(json)
       setGroupA(json.teams.filter(({ group }) => group === 'A'))
       setGroupB(json.teams.filter(({ group }) => group === 'B'))
-      setMatches(json.matches)
-      setUsers(json.users)
+      setTopThreeUsers(json.users)
 
       const sortedRankings = sortRankingsForTeams(json.teams)
 
@@ -57,61 +54,81 @@ const PreviousStandings = ({ seasonYear }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.teamWrapper}>
-        <h4>GROUP A</h4>
-        <div className={styles.teamData}>
-          <span>Country</span>
-          <span>Won</span>
-          <span>Lost</span>
-          <span>WO</span>
-          <span>LO</span>
-          <span>GP</span>
-          <span>Points</span>
+      <div className={styles.left}>
+        <div className={styles.teamWrapper}>
+          <h4>GROUP A</h4>
+          <div className={styles.teamData}>
+            <span>Country</span>
+            <span>Won</span>
+            <span>Lost</span>
+            <span>WO</span>
+            <span>LO</span>
+            <span>GP</span>
+            <span>Points</span>
+          </div>
+          {groupA.map(({
+            _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+          }) => (
+            <TeamsCard
+              key={_id}
+              _id={_id}
+              country={country}
+              flag={flag}
+              gamesWon={gamesWon}
+              gamesLost={gamesLost}
+              gamesWO={gamesWO}
+              gamesLO={gamesLO}
+              points={points}
+              deletable={false}
+            />
+          ))}
         </div>
-        {groupA.map(({
-          _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-        }) => (
-          <TeamsCard
-            key={_id}
-            _id={_id}
-            country={country}
-            flag={flag}
-            gamesWon={gamesWon}
-            gamesLost={gamesLost}
-            gamesWO={gamesWO}
-            gamesLO={gamesLO}
-            points={points}
-            deletable={false}
-          />
-        ))}
-      </div>
-      <div className={styles.teamWrapper}>
-        <h4>GROUP B</h4>
-        <div className={styles.teamData}>
-          <span>Country</span>
-          <span>Won</span>
-          <span>Lost</span>
-          <span>WO</span>
-          <span>LO</span>
-          <span>GP</span>
-          <span>Points</span>
+        <div className={styles.teamWrapper}>
+          <h4>GROUP B</h4>
+          <div className={styles.teamData}>
+            <span>Country</span>
+            <span>Won</span>
+            <span>Lost</span>
+            <span>WO</span>
+            <span>LO</span>
+            <span>GP</span>
+            <span>Points</span>
+          </div>
+          {groupB.map(({
+            _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+          }) => (
+            <TeamsCard
+              key={_id}
+              _id={_id}
+              country={country}
+              flag={flag}
+              gamesWon={gamesWon}
+              gamesLost={gamesLost}
+              gamesWO={gamesWO}
+              gamesLO={gamesLO}
+              points={points}
+              deletable={false}
+            />
+          ))}
         </div>
-        {groupB.map(({
-          _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-        }) => (
-          <TeamsCard
-            key={_id}
-            _id={_id}
-            country={country}
-            flag={flag}
-            gamesWon={gamesWon}
-            gamesLost={gamesLost}
-            gamesWO={gamesWO}
-            gamesLO={gamesLO}
-            points={points}
-            deletable={false}
-          />
-        ))}
+        {topThreeUsers.length ? (
+          <div className={styles.teamWrapper}>
+            <h4>TOP PREDICTORS</h4>
+            <div className={styles.rankingData}>
+              <span>Points</span>
+              <span>User</span>
+            </div>
+            {topThreeUsers.map(({ email, avatar, points }, index) => (
+              <UserRankingCard
+                key={Math.random(185)}
+                email={email}
+                points={points}
+                avatar={avatar}
+                ranking={index + 1}
+              />
+            ))}
+          </div>
+        ) : <h4>NO PREDICTORS</h4>}
       </div>
       <div className={styles.teamWrapper}>
         <h4>OVERALL STANDINGS</h4>

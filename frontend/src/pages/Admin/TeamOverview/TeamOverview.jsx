@@ -9,7 +9,20 @@ const TeamOverview = () => {
   const [countryName, setCountryName] = useState('')
   const [countryFlag, setCountryFlag] = useState('')
   const [countryGroup, setCountryGroup] = useState('')
+  const [seasonAlreadyRunning, setSeasonAlreadyRunning] = useState(false)
   const { user } = useAuthContext()
+
+  const getAllSeasons = async () => {
+    const response = await fetch('/api/season/all', {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+
+    const json = await response.json()
+
+    if (response.ok) {
+      json.some(({ status }) => status === 'active' && setSeasonAlreadyRunning(true))
+    }
+  }
 
   const getAllTeams = async () => {
     const response = await fetch('/api/team/all', {
@@ -64,6 +77,7 @@ const TeamOverview = () => {
   useEffect(() => {
     if (user) {
       getAllTeams()
+      getAllSeasons()
     }
   }, [user])
 
@@ -94,12 +108,23 @@ const TeamOverview = () => {
             <option value="A">A</option>
             <option value="B">B</option>
           </select>
-          <button className={styles.addBtn} type="submit">
+          {!seasonAlreadyRunning
+          && (
+          <h5 className={styles.err}>
+            No active season. Start season to add teams here.
+          </h5>
+          )}
+          <button
+            className={styles.addBtn}
+            type="submit"
+            disabled={!seasonAlreadyRunning}
+          >
             Add Team
           </button>
         </form>
       </div>
       <div className={styles.teamWrapper}>
+        <h2>Current season teams</h2>
         <div className={styles.teamData}>
           <span>Country</span>
           <span>Won</span>
