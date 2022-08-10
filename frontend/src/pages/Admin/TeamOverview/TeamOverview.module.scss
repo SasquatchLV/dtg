@@ -107,6 +107,11 @@
     color: var(--secondary);
 }
 
+h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 .addBtn {
     margin: 10px 0 0 0;
     width: 100%;
@@ -126,6 +131,15 @@
     &:active {
         opacity: 0.8;
     }
+
+    &:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+}
+
+.err {
+    color: var(--error)
 }
 
 @media screen and (max-width: 1000px) {

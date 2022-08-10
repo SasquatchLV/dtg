@@ -39,6 +39,7 @@ const SeasonOverview = () => {
     })
 
     await response.json()
+
     setSubmitted(true)
   }
 

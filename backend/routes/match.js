@@ -26,7 +26,7 @@ router.get("/all", verifyRoles(ROLE_LIST.User), (req, res) => {
     const { timezone } = req.query
 
     try {
-        const { matches } = MatchesService.getMatches({timezone})
+        const { matches } = MatchesService.getMatches({ timezone })
 
         res.send({ 
             data: matches,
