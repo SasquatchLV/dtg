@@ -21,19 +21,31 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="*"
-            element={(
-              <ProtectedRoute>
-                <Routes>
-                  <Route path="/matches" element={<Matches />} />
-                </Routes>
-              </ProtectedRoute>
-          )}
-          />
-        </Routes>
+        {user && <Header />}
+        <div className="pages">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                user ? <Navigate to="/matches" /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/matches" />}
+            />
+            <Route
+              path="/admin"
+              element={isAdmin ? <AdminPanel /> : <Navigate to="/matches" />}
+            />
+            {/* <Route path="/matches" element={<Matches />} /> */}
+            <Route path="/standings" element={<Standings />} />
+            <Route path="/leaderboard" element={<LeaderBoard />} />
+
+            <Route path="/matches" element={<Matches />} />
+
+          </Routes>
+        </div>
       </BrowserRouter>
       <ToastContainer />
     </div>

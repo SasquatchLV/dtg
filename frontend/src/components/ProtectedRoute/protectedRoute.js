@@ -25,7 +25,6 @@ function ProtectedRoute({ children }) {
       })
       .catch((err) => {
         setLoading(false)
-        console.error(err)
         navigate('/login', { state: { from: location }, replace: true })
       })
   }
