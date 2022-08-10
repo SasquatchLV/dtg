@@ -30,6 +30,7 @@ const MatchCard = ({
   const { dispatch } = useMatchContext()
   const { dispatchModal } = useModalContext()
   const isAdmin = user?.roles?.includes(2000)
+
   const alreadyParticipated = usersParticipating.some(
     (obj) => obj.email === user.email,
   )
@@ -70,8 +71,6 @@ const MatchCard = ({
       {deleteModal && (
       <ConfirmationModal
         text="Confirm to delete match!"
-        // handleConfirmation={() => handleDelete(_id)}
-        // handleCancelation={() => setDeleteModal(false)}
       />
       )}
       {isAdmin

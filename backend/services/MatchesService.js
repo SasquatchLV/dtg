@@ -62,6 +62,41 @@ class MatchesService {
         matches: matchesWithUsersGameTime,
     }
   }
+
+  // create new match
+  static async createMatch({ homeTeam, awayTeam, startingTime, selectedGameType }) {
+
+  let emptyFields = []
+
+  if (!homeTeam) {
+    emptyFields.push('Home Team')
+  }
+  if (!awayTeam) {
+    emptyFields.push('Away Team')
+  }
+  if (!startingTime) {
+    emptyFields.push('Starting time')
+  }
+  if (!selectedGameType) {
+    emptyFields.push('Game type')
+  }
+  if (emptyFields.length > 0) {
+    throw new Error(`${emptyFields.join(', ')} is required`)
+  }
+
+  const match = await Match.create({
+    homeTeam,
+    awayTeam,
+    startingTime,
+    title: selectedGameType
+  })
+
+  await match.save()
+
+  return {
+    match
+  }
+}
 }
 
 module.exports = MatchesService;
