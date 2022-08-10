@@ -22,7 +22,7 @@ const MatchOverview = () => {
   useEffect(() => {
     const getAllTeams = async () => {
       const response = await fetch('/api/team/all', {
-        headers: { Authorization: `Bearer ${user.token}` },
+        credentials: 'include',
       })
 
       const json = await response.json()
@@ -44,19 +44,17 @@ const MatchOverview = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       })
 
-      const { data, message } = await response.json()
+      const { data, message, status } = await response.json()
 
-      if (response.ok) {
+      if (status === 'success') {
         dispatch({
           type: 'SET_UNSETTLED_MATCHES',
           payload: data.filter(
             (match) => match.isMatchFinished
-                && (!match.homeTeamScore && !match.awayTeamScore),
+              && (!match.homeTeamScore && !match.awayTeamScore),
           ),
         })
-      }
-
-      if (!response.ok) {
+      } else {
         errorToast(message)
       }
     }
@@ -81,23 +79,24 @@ const MatchOverview = () => {
       body: JSON.stringify(match),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
       },
+      credentials: 'include',
     })
 
     const json = await response.json()
 
-    if (!response.ok) {
-      errorToast(json.error)
-    }
+    const { data, message, status } = json
 
-    if (response.ok) {
+    if (status === 'success') {
+      successToast(message)
       setHomeTeam(null)
       setAwayTeam(null)
       setStartingTime(null)
       setSelectedGameType('Regular game')
-      successToast('Match created')
-      dispatch({ type: 'CREATE_MATCH', payload: json })
+      dispatch({ type: 'CREATE_MATCH', payload: data })
+      e.target.reset()
+    } else {
+      errorToast(message)
     }
   }
 
@@ -107,7 +106,7 @@ const MatchOverview = () => {
         <form className={styles.matchForm} onSubmit={(e) => handleSubmit(e)}>
           <h3>Add a new match</h3>
           <label>Home Team</label>
-          <select onChange={(e) => setHomeTeam(JSON.parse(e.target.value))}>
+          <select onChange={(e) => setHomeTeam(JSON.parse(e.target.value))} selected={homeTeam}>
             <option value="" hidden>
               Select
             </option>

@@ -8,7 +8,7 @@ const requireAuth = require("../middleware/requireAuth")
 // Matches
 router
   .use("/matches", requireAuth, matches)
-  .use("/seasons", seasons)
-  .use("/user", users)
+  .use("/seasons",requireAuth, seasons)
+  .use("/user",requireAuth, users)
 
 module.exports = router;
