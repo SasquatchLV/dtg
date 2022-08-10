@@ -3,7 +3,7 @@ const { formatDistance, getTime, getDate } = require('date-fns')
 const Match = require('../models/matchModel')
 
 class MatchesService {
-    static async getMatches() {
+    static async getMatches({timezone}) {
       const matches = await Match.find()
 
       if (matches.length === 0) {

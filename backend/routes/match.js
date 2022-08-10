@@ -23,8 +23,10 @@ router.post("/publish", verifyRoles(ROLE_LIST.Admin), publishMatch)
 
 // create a new match
 router.get("/all", verifyRoles(ROLE_LIST.User), (req, res) => {
+    const { timezone } = req.query
+
     try {
-        const { matches } = MatchesService.getMatches()
+        const { matches } = MatchesService.getMatches({timezone})
 
         res.send({ 
             data: matches,
