@@ -16,11 +16,13 @@ function ProtectedRoute({ children }) {
       credentials: 'include',
     })
       .then((response) => response.json())
-      .then(({ status }) => {
+      .then(({ status, error }) => {
         if (status === 'success') {
           setLoading(false)
         } else {
           dispatch({ type: 'LOGOUT' })
+          errorToast(error)
+          setLoading(false)
           navigate('/login', { state: { from: location }, replace: true })
         }
       })
