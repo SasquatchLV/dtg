@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { errorToast } from '../../utils/toast'
 import MatchCard from '../../components/MatchCard/MatchCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
@@ -6,7 +6,7 @@ import { useMatchContext } from '../../hooks/useMatchContext'
 import styles from './Matches.module.scss'
 
 const Matches = () => {
-  const { matches, dispatch, unsettledMatches } = useMatchContext()
+  const { matches, dispatch } = useMatchContext()
   const { user } = useAuthContext()
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Matches = () => {
         <div className={styles.matchWrapper}>
           <h1>Finished games</h1>
           {matches && matches.map((match) => (
-            (match.isMatchFinished && match.homeTeamScore && match.awayTeamScore) ? (
+            (match.isMatchFinished && (match.homeTeamScore || match.awayTeamScore)) ? (
               <MatchCard key={match._id} {...match} />
             )
               : null

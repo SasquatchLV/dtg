@@ -44,21 +44,20 @@ const MatchOverview = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       })
 
-      const json = await response.json()
+      const { data, message } = await response.json()
+
       if (response.ok) {
-        console.log(json)
         dispatch({
           type: 'SET_UNSETTLED_MATCHES',
-          payload: json.filter(
+          payload: data.filter(
             (match) => match.isMatchFinished
-                && !match.homeTeamScore
-                && !match.awayTeamScore,
+                && (!match.homeTeamScore && !match.awayTeamScore),
           ),
         })
       }
 
       if (!response.ok) {
-        errorToast(json.error)
+        errorToast(message)
       }
     }
 
