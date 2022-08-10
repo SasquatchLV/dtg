@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import styles from './ConfirmationModal.module.scss'
+import Portal from './Portal'
 
 const ConfirmationModal = ({ text, handleConfirmation, handleCancelation }) => {
   const boxRef = useRef(null)
@@ -18,26 +20,9 @@ const ConfirmationModal = ({ text, handleConfirmation, handleCancelation }) => {
   //   }
   // }, [])
 
-  return (
-    <div className={styles.blur}>
-      <div className={styles.box}>
-        <h5>{text}</h5>
-        <div className={styles.buttons}>
-          <button
-            className={styles.cancel}
-            onClick={() => handleCancelation()}
-          >
-            Cancel
-          </button>
-          <button
-            className={styles.confirm}
-            onClick={handleConfirmation}
-          >
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
+  return ReactDOM.createPortal(
+    <Portal text={text} handleConfirmation={handleConfirmation} handleCancelation={handleCancelation} />,
+    document.getElementById('portal'),
   )
 }
 
