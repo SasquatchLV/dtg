@@ -18,41 +18,42 @@ const Header = () => {
   const toggleUserModal = () => setUserModalActive(!userModalActive)
 
   return (
+    user && (
     <>
       <header>
         <div className={styles.container}>
           <div className={styles.infog}>
             {user && (
-              <div className={styles.actions}>
-                <button
-                  className={styles.modalBtn}
-                  onClick={toggleUserModal}
-                >
-                  {user.email}
-                </button>
-                {userModalActive && <UserModal />}
-                {isAdmin && (
-                  <button
-                    className={styles.adminBtn}
-                    onClick={handleAdmin}
-                  >
-                    Admin Panel
-                  </button>
-                )}
-                <button
-                  className={styles.logoutBtn}
-                  onClick={logout}
-                >
-                  Log out
-                </button>
-              </div>
+            <div className={styles.actions}>
+              <button
+                className={styles.modalBtn}
+                onClick={toggleUserModal}
+              >
+                {user.email}
+              </button>
+              {userModalActive && <UserModal />}
+              {isAdmin && (
+              <button
+                className={styles.adminBtn}
+                onClick={handleAdmin}
+              >
+                Admin Panel
+              </button>
+              )}
+              <button
+                className={styles.logoutBtn}
+                onClick={logout}
+              >
+                Log out
+              </button>
+            </div>
             )}
           </div>
         </div>
       </header>
       <Navigation />
     </>
-  )
+    ))
 }
 
 export default Header

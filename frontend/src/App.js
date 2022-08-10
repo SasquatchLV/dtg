@@ -8,18 +8,21 @@ import { useAuthContext } from './hooks/useAuthContext'
 // pages & components
 import Login from './pages/Login/Login'
 import Header from './components/Header/Header'
-import AdminPanel from './pages/Admin/AdminPanel'
 import Matches from './pages/Matches/Matches'
 import Standings from './pages/Standings/Standings'
+import AdminPanel from './pages/Admin/AdminPanel'
 import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
 import ProtectedRoute from './components/ProtectedRoute/protectedRoute'
+import ConfirmationModal from './components/ConfirmationModal/ConfirmationModal'
 
 function App() {
   const { user } = useAuthContext()
   const isAdmin = user?.roles?.includes(2000)
+
   return (
     <BrowserRouter basename="/">
-      {user && <Header /> }
+      <ConfirmationModal />
+      <Header />
       <div className="pages">
         <Routes>
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/matches" />} />

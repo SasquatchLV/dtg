@@ -4,6 +4,7 @@ import { successToast } from '../../utils/toast'
 import styles from './MatchCard.module.scss'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatchContext } from '../../hooks/useMatchContext'
+import { useModalContext } from '../../hooks/useModalContext'
 import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
@@ -27,6 +28,7 @@ const MatchCard = ({
   const [deleteModal, setDeleteModal] = useState(false)
   const { user } = useAuthContext()
   const { dispatch } = useMatchContext()
+  const { dispatchModal } = useModalContext()
   const isAdmin = user?.roles?.includes(2000)
   const alreadyParticipated = usersParticipating.some(
     (obj) => obj.email === user.email,
@@ -54,20 +56,29 @@ const MatchCard = ({
     setIsDeleted(true)
   }
 
+  const modalProps = {
+    text: 'Confirm to delete match!',
+    confirm: async () => {
+      await handleDelete(_id)
+      dispatchModal({ type: 'CLOSE_MODAL' })
+    },
+    cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
+  }
+
   return (
     <div className={styles.container}>
       {deleteModal && (
       <ConfirmationModal
         text="Confirm to delete match!"
-        handleConfirmation={() => handleDelete(_id)}
-        handleCancelation={() => setDeleteModal(false)}
+        // handleConfirmation={() => handleDelete(_id)}
+        // handleCancelation={() => setDeleteModal(false)}
       />
       )}
       {isAdmin
         && (!isDeleted ? (
           <button
             className={styles.delete}
-            onClick={() => setDeleteModal(true)}
+            onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: modalProps })}
           >
             <img
               src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
