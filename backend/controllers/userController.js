@@ -1,9 +1,10 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
+const AccessTokenService = require('../services/accessTokenService')
 
-const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
-}
+// const createToken = (_id) => {
+//   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
+// }
 
 // login a user
 const loginUser = async (req, res) => {
@@ -15,7 +16,7 @@ const loginUser = async (req, res) => {
     const { lastFiveGames, avatar, points } = user
 
     // create a token
-    const token = createToken(user._id)
+    const token = AccessTokenService.createToken(user._id, )
 
     res.cookie('accessCookie', `Bearer ${token}`, {
       httpOnly: true,
