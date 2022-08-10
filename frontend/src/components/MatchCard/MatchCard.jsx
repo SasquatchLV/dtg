@@ -6,6 +6,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatchContext } from '../../hooks/useMatchContext'
 import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
 
 const MatchCard = ({
   startingTime,
@@ -23,6 +24,7 @@ const MatchCard = ({
   userTimeTillGame,
 }) => {
   const [isDeleted, setIsDeleted] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
   const { user } = useAuthContext()
   const { dispatch } = useMatchContext()
   const isAdmin = user?.roles?.includes(2000)
@@ -33,7 +35,7 @@ const MatchCard = ({
     (obj) => obj.email === user.email,
   )
   const usersBet = usersParticipating[indexOfUser]
-  const hasMatchScore = homeTeamScore && awayTeamScore
+  const hasMatchScore = homeTeamScore || awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
 
   const handleDelete = async (id) => {
@@ -54,11 +56,18 @@ const MatchCard = ({
 
   return (
     <div className={styles.container}>
+      {deleteModal && (
+      <ConfirmationModal
+        text="Confirm to delete match!"
+        handleConfirmation={() => handleDelete(_id)}
+        handleCancelation={() => setDeleteModal(false)}
+      />
+      )}
       {isAdmin
         && (!isDeleted ? (
           <button
             className={styles.delete}
-            onClick={() => handleDelete(_id)}
+            onClick={() => setDeleteModal(true)}
           >
             <img
               src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
