@@ -65,8 +65,6 @@ userSchema.statics.signup = async function (email, password) {
     throw Error('Email already in use')
   }
 
-
-
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(password, salt)
 
