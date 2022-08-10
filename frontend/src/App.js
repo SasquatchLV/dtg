@@ -17,38 +17,30 @@ import ProtectedRoute from './components/ProtectedRoute/protectedRoute'
 function App() {
   const { user } = useAuthContext()
   const isAdmin = user?.roles?.includes(2000)
-
   return (
-    <div className="app">
-      <BrowserRouter>
-        {user && <Header />}
-        <div className="pages">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                user ? <Navigate to="/matches" /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/login"
-              element={!user ? <Login /> : <Navigate to="/matches" />}
-            />
-            <Route
-              path="/admin"
-              element={isAdmin ? <AdminPanel /> : <Navigate to="/matches" />}
-            />
-            {/* <Route path="/matches" element={<Matches />} /> */}
-            <Route path="/standings" element={<Standings />} />
-            <Route path="/leaderboard" element={<LeaderBoard />} />
-
-            <Route path="/matches" element={<Matches />} />
-
-          </Routes>
-        </div>
-      </BrowserRouter>
+    <BrowserRouter basename="/">
+      {user && <Header /> }
+      <div className="pages">
+        <Routes>
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/matches" />} />
+          <Route
+            path="*"
+            element={(
+              <ProtectedRoute>
+                <Routes>
+                  <Route path="/matches" element={<Matches />} />
+                  {isAdmin && <Route path="/admin" element={<AdminPanel />} />}
+                  <Route path="/standings" element={<Standings />} />
+                  <Route path="/leaderboard" element={<LeaderBoard />} />
+                  <Route path="/*" element={<Navigate to="matches" replace />} />
+                </Routes>
+              </ProtectedRoute>
+          )}
+          />
+        </Routes>
+      </div>
       <ToastContainer />
-    </div>
+    </BrowserRouter>
   )
 }
 
