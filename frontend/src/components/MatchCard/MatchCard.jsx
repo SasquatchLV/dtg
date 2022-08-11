@@ -34,7 +34,6 @@ const MatchCard = ({
   const usersBet = usersParticipating[indexOfUser]
   const hasMatchScore = homeTeamScore || awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
-  console.log(user.email)
   const handleDelete = async () => {
     const response = await fetch(`/api/match/${_id}`, {
       method: 'DELETE',
