@@ -114,9 +114,6 @@ class MatchesService {
     const match = await Match.findOne({ _id: matchId })
     const { startingTime, isMatchFinished } = match
 
-    console.log(matchId)
-    console.log('match', match)
-
     if (!user) {
       throw new Error('User not found')
     }

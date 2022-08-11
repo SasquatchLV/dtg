@@ -45,10 +45,8 @@ const startNewSeason = async (req, res) => {
 
     try {
         const season = await Season.create({ year: Number(seasonsYear), status: 'active' })
-        console.log(season)
         res.status(200).json(season)
     } catch (error) {
-        console.log(error)
         res.status(400).json({ error: error.message })
     }
 }

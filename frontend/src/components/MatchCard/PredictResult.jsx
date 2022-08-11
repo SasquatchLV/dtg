@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { errorToast, successToast } from '../../utils/toast'
-import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './MatchCard.module.scss'
 
 const PredictResult = ({ matchId }) => {

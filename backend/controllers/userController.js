@@ -2,26 +2,6 @@ const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const AccessTokenService = require('../services/accessTokenService')
 
-// login a user
-const loginUser = async (req, res) => {
-  const { email, password } = req.body
-
-  try {
-    const user = await User.login(email, password)
-    const roles = Object.values(user.roles).filter(Boolean)
-    const { lastFiveGames, avatar, points } = user
-
-    // create a token
-    const token = AccessTokenService.createToken(user._id, )
-
-    res.cookie('accessCookie', `Bearer ${token}`, {
-      httpOnly: true,
-      sameSite: 'strict',
-    }).status(200).json({ email, token, roles, lastFiveGames, avatar, points })
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-}
 
 // signup a user
 const signupUser = async (req, res) => {
@@ -157,7 +137,6 @@ const getPrizePool = async (req, res) => {
 
 module.exports = {
   signupUser,
-  loginUser,
   promoteUser,
   demoteUser,
   getAllUsers,
