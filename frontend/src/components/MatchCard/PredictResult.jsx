@@ -11,37 +11,8 @@ const PredictResult = ({ matchId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    const prediction = {
-      matchId,
-      homeScore,
-      awayScore,
-      overTime,
-    }
-
-    const makePrediction = async () => {
-      const response = await fetch('/api/match/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-          prediction,
-        ),
-      })
-
-      const json = await response.json()
-
-      const {
-        status, data, message,
-      } = json
-
-      if (status === 'success') {
-        successToast(message)
-      } else {
-        errorToast(message)
-      }
-    }
-
-    await makePrediction()
+    setParticipated(true)
+    await makePrediction(matchId, homeScore, awayScore, overTime)
   }
 
   return !participated ? (
