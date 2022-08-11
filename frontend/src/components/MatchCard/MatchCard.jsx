@@ -7,7 +7,6 @@ import { useMatchContext } from '../../hooks/useMatchContext'
 import { useModalContext } from '../../hooks/useModalContext'
 import FinalResult from './FinalResult'
 import PredictResult from './PredictResult'
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal'
 
 const MatchCard = ({
   startingTime,
@@ -30,12 +29,8 @@ const MatchCard = ({
   const { dispatchModal } = useModalContext()
   const isAdmin = user?.roles?.includes(2000)
 
-  const alreadyParticipated = usersParticipating.some(
-    (obj) => obj.email === user.email,
-  )
-  const indexOfUser = usersParticipating?.findIndex(
-    (obj) => obj.email === user.email,
-  )
+  const alreadyParticipated = usersParticipating.some(({ email }) => email === user.email)
+  const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
   const usersBet = usersParticipating[indexOfUser]
   const hasMatchScore = homeTeamScore || awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
@@ -43,14 +38,13 @@ const MatchCard = ({
   const handleDelete = async (id) => {
     const response = await fetch(`/api/match/${id}`, {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${user.token}` },
     })
 
-    const json = await response.json()
+    const { data, message, status } = await response.json()
 
-    if (response.ok) {
-      successToast(json.message)
-      dispatch({ type: 'DELETE_MATCH', payload: json })
+    if (status === 'success') {
+      successToast(message)
+      dispatch({ type: 'DELETE_MATCH', payload: data })
     }
 
     setIsDeleted(true)

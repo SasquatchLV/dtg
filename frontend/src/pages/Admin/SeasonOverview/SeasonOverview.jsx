@@ -59,7 +59,7 @@ const SeasonOverview = () => {
   }
 
   const getTeamSelection = async () => {
-    const response = await fetch('/api/season/seasonTeams', {
+    const response = await fetch('/api/season/teams', {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 

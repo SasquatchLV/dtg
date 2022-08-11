@@ -7,23 +7,18 @@ import { errorToast } from '../../utils/toast'
 const CurrentStandings = () => {
   const [groupA, setGroupA] = useState([])
   const [groupB, setGroupB] = useState([])
-  const [activeSeason, setActiveSeason] = useState(false)
   const { user } = useAuthContext()
 
   const getAllTeams = async () => {
-    const response = await fetch('/api/team/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
+    const response = await fetch('/api/team/all')
 
-    const json = await response.json()
+    const { data, status, message } = await response.json()
 
-    if (response.ok) {
-      setGroupA(json.filter(({ group }) => group === 'A'))
-      setGroupB(json.filter(({ group }) => group === 'B'))
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
+    if (status === 'success') {
+      setGroupA(data.filter(({ group }) => group === 'A'))
+      setGroupB(data.filter(({ group }) => group === 'B'))
+    } else {
+      errorToast(message)
     }
   }
 
@@ -35,7 +30,6 @@ const CurrentStandings = () => {
 
   return (
     groupA.length ? (
-
       <div className={styles.container}>
         <div className={styles.teamWrapper}>
           <h4>GROUP A</h4>

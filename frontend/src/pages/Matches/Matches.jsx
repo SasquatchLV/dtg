@@ -13,17 +13,9 @@ const Matches = () => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
     const getAllMatches = async () => {
-      const response = await fetch(`/api/match/all?timezone=${timezone}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
+      const response = await fetch(`/api/match/all?timezone=${timezone}`)
 
-      const json = await response.json()
-
-      const {
-        status, data, message,
-      } = json
+      const { data, status, message } = await response.json()
 
       if (status === 'success') {
         dispatch({ type: 'SET_MATCHES', payload: data })
@@ -42,7 +34,7 @@ const Matches = () => {
       <div className={styles.matches}>
         <div className={styles.matchWrapper}>
           <h1>Upcoming games</h1>
-          {matches && matches.map((match) => (
+          {matches?.map((match) => (
             !match.isMatchFinished && (
               <MatchCard key={match._id} {...match} />
             )
@@ -50,7 +42,7 @@ const Matches = () => {
         </div>
         <div className={styles.matchWrapper}>
           <h1>Finished games</h1>
-          {matches && matches.map((match) => (
+          {matches?.map((match) => (
             (match.isMatchFinished && (match.homeTeamScore || match.awayTeamScore)) ? (
               <MatchCard key={match._id} {...match} />
             )

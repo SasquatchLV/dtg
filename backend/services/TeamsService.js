@@ -40,18 +40,14 @@ class TeamsService {
     }
 
     // delete a team
-    static async removeTeam ({ id }) {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw new Error ("Not valid id")
-        }
-
-        const team = await Team.findOne({ _id: id })
-
+    static async removeTeam ({ _id }) {
+        const team = await Team.findOne({ _id })
+        console.log(_id)
         if (!team) {
             throw new Error("No such team exists in db")
         }
 
-        await Team.deleteOne({ _id: id })
+        await Team.deleteOne({ _id})
     }
 }
 
