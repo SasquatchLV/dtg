@@ -58,7 +58,6 @@ router.post("/new", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
     } 
 
     catch (error) {
-        console.log(error)
         res.send({
             data: null,
             message: error.message,
