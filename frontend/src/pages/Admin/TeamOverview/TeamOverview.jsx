@@ -29,14 +29,14 @@ const TeamOverview = () => {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 
-    const json = await response.json()
+    const { data, error } = await response.json()
 
     if (response.ok) {
-      setTeams(json)
+      setTeams(data)
     }
 
     if (!response.ok) {
-      toast.error(json.error, {
+      toast.error(error, {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,

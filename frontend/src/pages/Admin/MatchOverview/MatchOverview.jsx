@@ -25,9 +25,9 @@ const MatchOverview = () => {
         credentials: 'include',
       })
 
-      const json = await response.json()
+      const { data } = await response.json()
       if (response.ok) {
-        setTeams(json)
+        setTeams(data)
       }
     }
 
