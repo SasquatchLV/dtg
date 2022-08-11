@@ -5,14 +5,10 @@ const morgan = require('./middleware/morgan')
 const mongoose = require('mongoose')
 const cookieParser = require("cookie-parser")
 const path = require('path')
-const userRoutes = require('./routes/user')
-const teamRoutes = require('./routes/team')
-const matchRoutes = require('./routes/match')
-const seasonRoutes = require('./routes/season')
 const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const credentials = require('./middleware/credentials')
-// const routes = require('./routes/index')
+const routes = require('./routes/index')
 
 // express app
 const app = express()
@@ -41,10 +37,7 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 
 // routes
 app.use('/', require('./routes/root'))
-app.use('/api/user', userRoutes)
-app.use('/api/team', teamRoutes)
-app.use('/api/match', matchRoutes)
-app.use('/api/season', seasonRoutes)
+app.use('/api', routes)
 
 
 
