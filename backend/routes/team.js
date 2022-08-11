@@ -17,7 +17,28 @@ router.get('/all', verifyRoles(ROLE_LIST.User), async (req, res) => {
     res.send({
       data: teams,
       message: "All Teams",
-      status: "Success",
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
+
+// delete team by id
+router.delete('/', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { _id } = req.body
+
+  try {
+    await TeamsService.removeTeam({ _id })
+
+    res.send({
+      data: null,
+      message: "Team removed",
+      status: "success",
     })
   } catch (error) {
     res.send({
@@ -38,7 +59,7 @@ router.post('/new', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
     res.send({
       data: null,
       message: "Team added",
-      status: "Success",
+      status: "success",
     })
   } catch (error) {
     res.send({
@@ -48,35 +69,5 @@ router.post('/new', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
     })
   }
 })
-
-// delete team by id
-router.delete('/:id', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
-  const { id } = req.params
-
-  try {
-    await TeamsService.removeTeam({ id })
-
-    res.send({
-      data: null,
-      message: "Team removed",
-      status: "Success",
-    })
-  } catch (error) {
-    res.send({
-      data: null,
-      message: error.message,
-      status: "error",
-    })
-  }
-})
-
-// GET all teams
-// router.get("/all", getAllTeams)
-
-// POST a new team
-// router.post("/new", verifyRoles(ROLE_LIST.Admin), addNewTeam)
-
-// DELETE a team
-// router.delete("/:id", verifyRoles(ROLE_LIST.Admin), removeTeam)
 
 module.exports = router

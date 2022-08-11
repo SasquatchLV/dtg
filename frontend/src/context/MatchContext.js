@@ -17,7 +17,7 @@ export const matchReducer = (state, action) => {
     case 'DELETE_MATCH':
       return {
         ...state,
-        matches: state.matches.filter((w) => w._id !== action.payload._id),
+        matches: state.matches.filter(({ _id }) => _id !== action.payload._id),
       }
     case 'SET_UNSETTLED_MATCHES':
       return {
