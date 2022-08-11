@@ -42,7 +42,6 @@ class TeamsService {
     // delete a team
     static async removeTeam ({ _id }) {
         const team = await Team.findOne({ _id })
-        console.log(_id)
         if (!team) {
             throw new Error("No such team exists in db")
         }

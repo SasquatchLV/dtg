@@ -20,6 +20,7 @@ router.post("/login", async (req, res) => {
     res.cookie('accessCookie', `Bearer ${response.token}`, {
       httpOnly: true,
       sameSite: 'strict',
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     })
 
     res.send({
@@ -35,5 +36,29 @@ router.post("/login", async (req, res) => {
     })
   }
 })
+
+// logout route
+router.post("/logout", requireAuth,verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { user } = req
+
+  try {
+
+    await UsersService.logoutUser(user)
+    
+    res.clearCookie('accessCookie')
+
+    res.send({
+      data: null,
+      status: 'success',
+      message: 'User logged out successfully',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      status: 'error',
+      message: error.message,
+    })
+  }
+} )
 
 module.exports = router

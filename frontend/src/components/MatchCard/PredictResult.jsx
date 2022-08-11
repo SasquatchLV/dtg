@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { errorToast, successToast } from '../../utils/toast'
-import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './MatchCard.module.scss'
 
 const PredictResult = ({ matchId }) => {
@@ -31,7 +30,7 @@ const PredictResult = ({ matchId }) => {
       const json = await response.json()
 
       const {
-        status, data, message,
+        status, message,
       } = json
 
       if (status === 'success') {
