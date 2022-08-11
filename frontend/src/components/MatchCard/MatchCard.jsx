@@ -34,9 +34,9 @@ const MatchCard = ({
   const usersBet = usersParticipating[indexOfUser]
   const hasMatchScore = homeTeamScore || awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
-
-  const handleDelete = async (id) => {
-    const response = await fetch(`/api/match/${id}`, {
+  console.log(user.email)
+  const handleDelete = async () => {
+    const response = await fetch(`/api/match/${_id}`, {
       method: 'DELETE',
     })
 
@@ -53,7 +53,7 @@ const MatchCard = ({
   const modalProps = {
     text: 'Confirm to delete match!',
     confirm: async () => {
-      await handleDelete(_id)
+      await handleDelete()
       dispatchModal({ type: 'CLOSE_MODAL' })
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
