@@ -33,11 +33,12 @@ export const MatchContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(matchReducer, {
     matches: [],
     unsettledMatches: [],
+    refreshMatches: () => { },
   })
 
   return (
     <MatchContext.Provider value={{ ...state, dispatch }}>
-      { children }
+      {children}
     </MatchContext.Provider>
   )
 }

@@ -97,6 +97,24 @@ router.post('/new', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
 })
 
 // DELETE match
-router.delete('/:id', verifyRoles(ROLE_LIST.Admin), removeMatch)
+router.delete('/:id', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { id } = req.params
+
+  try {
+    await MatchesService.removeMatch({ id })
+
+    res.send({
+      data: null,
+      message: 'Match deleted',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
+})
 
 module.exports = router

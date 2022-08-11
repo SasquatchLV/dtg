@@ -150,6 +150,21 @@ class MatchesService {
       userPrediction,
     }
   }
+
+  // delete a match
+  static async removeMatch({ id }) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: 'No such match exists in db' })
+    }
+
+    const match = await Match.findOne({ _id: id })
+
+    if (!match) {
+      return res.status(400).json({ error: 'No such match exists in db' })
+    }
+
+      await Match.deleteOne({ _id: id })
+  }
 }
 
 module.exports = MatchesService

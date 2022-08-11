@@ -30,6 +30,13 @@ class MatchesService {
     await AccessTokenService.deleteToken(token)
     return
   }
+
+  // delete user
+  static async deleteUser({ email }) {
+      await User.delete(email)
+
+      return{ email }
+  }
 }
 
 module.exports = MatchesService

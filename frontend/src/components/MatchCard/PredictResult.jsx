@@ -22,19 +22,14 @@ const PredictResult = ({ matchId }) => {
       const response = await fetch('/api/match/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-          prediction,
-        ),
+        body: JSON.stringify(prediction),
       })
 
-      const json = await response.json()
-
-      const {
-        status, message,
-      } = json
+      const { status, message } = await response.json()
 
       if (status === 'success') {
         successToast(message)
+        setParticipated(true)
       } else {
         errorToast(message)
       }
@@ -43,40 +38,42 @@ const PredictResult = ({ matchId }) => {
     await makePrediction()
   }
 
-  return !participated ? (
-    <div className={styles.inputWrapper}>
-      <div className={styles.inputTop}>
-        <div className={styles.inputBox}>
-          <span>TEAM 1</span>
-          <input
-            type="number"
-            placeholder="0"
-            value={homeScore}
-            onChange={(e) => setHomeScore(e.target.value)}
-            required
-          />
+  return (
+    !participated ? (
+      <div className={styles.inputWrapper}>
+        <div className={styles.inputTop}>
+          <div className={styles.inputBox}>
+            <span>TEAM 1</span>
+            <input
+              type="number"
+              placeholder="0"
+              value={homeScore}
+              onChange={(e) => setHomeScore(e.target.value)}
+              required
+            />
+          </div>
+          <div className={styles.inputBox}>
+            <span>TEAM 2</span>
+            <input
+              type="number"
+              placeholder="0"
+              value={awayScore}
+              onChange={(e) => setAwayScore(e.target.value)}
+              required
+            />
+          </div>
+          <div className={styles.inputBox}>
+            <span>OT</span>
+            <input type="checkbox" onChange={() => setOverTime(!overTime)} />
+          </div>
         </div>
-        <div className={styles.inputBox}>
-          <span>TEAM 2</span>
-          <input
-            type="number"
-            placeholder="0"
-            value={awayScore}
-            onChange={(e) => setAwayScore(e.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.inputBox}>
-          <span>OT</span>
-          <input type="checkbox" onChange={() => setOverTime(!overTime)} />
-        </div>
+        <button className={styles.predictBtn} onClick={(e) => handleSubmit(e)}>
+          SUBMIT
+        </button>
       </div>
-      <button className={styles.predictBtn} onClick={(e) => handleSubmit(e)}>
-        SUBMIT
-      </button>
-    </div>
-  ) : (
-    <h4>Accepted</h4>
+    ) : (
+      <h4>Accepted</h4>
+    )
   )
 }
 
