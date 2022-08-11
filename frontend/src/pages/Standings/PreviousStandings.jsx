@@ -34,7 +34,6 @@ const PreviousStandings = ({ seasonYear }) => {
       setGroupB(teams.filter(({ group }) => group === 'B'))
       setTopThreeUsers(users)
       const sortedRankings = sortRankingsForTeams(teams)
-
       setOverallRanking(sortedRankings)
     } else {
       errorToast(message)

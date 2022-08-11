@@ -14,7 +14,7 @@ const LeaderBoard = () => {
       const response = await fetch('/api/user/all')
 
       const { data, status, message } = await response.json()
-
+      console.log(data)
       // Sort users by points
       const sortedUsers = data.sort((a, b) => b.points - a.points)
 

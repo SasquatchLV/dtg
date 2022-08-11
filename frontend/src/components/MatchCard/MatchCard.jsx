@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useState } from 'react'
-import { successToast } from '../../utils/toast'
+import { successToast, errorToast } from '../../utils/toast'
 import styles from './MatchCard.module.scss'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatchContext } from '../../hooks/useMatchContext'
@@ -17,7 +17,7 @@ const MatchCard = ({
   _id,
   usersParticipating,
   title,
-  ot,
+  overTime,
   userStartTime,
   userStartDate,
   isMatchFinished,
@@ -25,7 +25,7 @@ const MatchCard = ({
 }) => {
   const [isDeleted, setIsDeleted] = useState(false)
   const { user } = useAuthContext()
-  const { dispatch } = useMatchContext()
+  const { dispatch, refreshMatches } = useMatchContext()
   const { dispatchModal } = useModalContext()
   const isAdmin = user?.roles?.includes(2000)
 
@@ -34,7 +34,7 @@ const MatchCard = ({
   const usersBet = usersParticipating[indexOfUser]
   const hasMatchScore = homeTeamScore || awayTeamScore
   const isMatchPublished = isMatchFinished && hasMatchScore && isAdmin
-  console.log(user.email)
+
   const handleDelete = async () => {
     const response = await fetch(`/api/match/${_id}`, {
       method: 'DELETE',
@@ -44,7 +44,11 @@ const MatchCard = ({
 
     if (status === 'success') {
       successToast(message)
-      dispatch({ type: 'DELETE_MATCH', payload: data })
+      await dispatch({ type: 'DELETE_MATCH', payload: data })
+    }
+
+    if (status === 'error') {
+      errorToast(message)
     }
 
     setIsDeleted(true)
@@ -94,7 +98,7 @@ const MatchCard = ({
                 <b>-</b>
                 <b>{`${awayTeamScore}`}</b>
               </div>
-              {ot && <p>OT</p>}
+              {overTime && <p>OT</p>}
             </div>
           ) : (
             <div className={styles.result}>
@@ -108,29 +112,28 @@ const MatchCard = ({
         </div>
         <span className={styles.timeRemaining}>{userTimeTillGame}</span>
       </div>
+      {alreadyParticipated && (
+      <h4 className={styles.info}>
+        <i>You`ve participated</i>
+        <p>Predicted Score:</p>
+        <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
+      </h4>
+      )}
 
-      {!alreadyParticipated ? (
+      {!alreadyParticipated && (
         <div className={styles.prediction}>
           {!isMatchFinished ? (
             !isAdmin ? (
-              <>
-                <PredictResult matchId={_id} />
-              </>
+              <PredictResult matchId={_id} />
             ) : (
               <h4>Admins can`t participate</h4>
             )
           ) : !isMatchPublished ? (
             isAdmin && <FinalResult matchId={_id} />
           ) : (
-            <h5>Points distributed</h5>
+            <h4>Points distributed</h4>
           )}
         </div>
-      ) : (
-        <h5 className={styles.info}>
-          <i>You`ve participated</i>
-          <p>Predicted Score:</p>
-          <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
-        </h5>
       )}
     </div>
   )

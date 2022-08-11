@@ -121,7 +121,7 @@ const publishMatch = async (req, res) => {
   }
 }
 
-// delete a team
+// delete a match
 const removeMatch = async (req, res) => {
   const { id } = req.params
 
@@ -137,8 +137,8 @@ const removeMatch = async (req, res) => {
 
   try {
     await Match.deleteOne({ _id: id })
-
-    res.status(200).json({ message: `Match deleted successfully!` })
+    const matches = await Match.find()
+    res.status(200).json({ matches })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }

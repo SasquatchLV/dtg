@@ -6,7 +6,7 @@ import { useMatchContext } from '../../hooks/useMatchContext'
 import styles from './Matches.module.scss'
 
 const Matches = () => {
-  const { matches, dispatch } = useMatchContext()
+  const { matches, dispatch, refreshMatches } = useMatchContext()
   const { user } = useAuthContext()
 
   useEffect(() => {

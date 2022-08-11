@@ -15,6 +15,13 @@ class MatchesService {
       return { email, token, userId: user._id, avatar, lastFiveGames, roles, points }
       
   }
+
+  // delete user
+  static async deleteUser({ email }) {
+      await User.delete(email)
+
+      return{ email }
+  }
 }
 
 module.exports = MatchesService;
