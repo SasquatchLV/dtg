@@ -1,11 +1,14 @@
-const express = require("express")
-const { 
-    createMatch, makePrediction, finishMatch, publishMatch, removeMatch,
-} = require("../controllers/matchController")
-const requireAuth = require("../middleware/requireAuth")
-const verifyRoles = require("../middleware/verifyRoles")
-const ROLE_LIST = require("../config/rolesList")
-const MatchesService = require ("../services/MatchesService")
+const express = require('express')
+const {
+  makePrediction,
+  finishMatch,
+  publishMatch,
+  removeMatch,
+} = require('../controllers/matchController')
+const requireAuth = require('../middleware/requireAuth')
+const verifyRoles = require('../middleware/verifyRoles')
+const ROLE_LIST = require('../config/rolesList')
+const MatchesService = require('../services/MatchesService')
 
 const router = express.Router()
 
@@ -13,61 +16,87 @@ const router = express.Router()
 router.use(requireAuth)
 
 // make prediction of the match outcome
-router.post("/predict", verifyRoles(ROLE_LIST.User), makePrediction)
+router.post('/predict', verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { matchId, homeScore, awayScore, overTime } = req.body
+  const { email } = req.user
+
+  try {
+    const { userPrediction } = await MatchesService.makePrediction({
+      matchId,
+      homeScore,
+      awayScore,
+      overTime,
+      email,
+    })
+
+    res.send({
+      data: userPrediction,
+      message: 'Prediction made successfully',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
+})
 
 // match updates as finished
-router.post("/finish", verifyRoles(ROLE_LIST.User), finishMatch)
+router.post('/finish', verifyRoles(ROLE_LIST.User), finishMatch)
 
 // make prediction of the match outcome
-router.post("/publish", verifyRoles(ROLE_LIST.Admin), publishMatch)
+router.post('/publish', verifyRoles(ROLE_LIST.Admin), publishMatch)
 
 // create a new match
-router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
-    const { timezone } = req.query
+router.get('/all', verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { timezone } = req.query
 
-    try {
-        const { matches } = await MatchesService.getMatches({timezone})
+  try {
+    const { matches } = await MatchesService.getMatches({ timezone })
 
-        res.send({ 
-            data: matches,
-            message: "All matches",
-            status: "success",
-        })
-    }
-    catch (error) {
-        res.send({
-            data: null,
-            message: error.message,
-            status: "error",
-        })
-    }
+    res.send({
+      data: matches,
+      message: 'All matches',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
 })
 
 // create a new match
-router.post("/new", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
-    const { homeTeam, awayTeam, startingTime, selectedGameType } = req.body
+router.post('/new', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { homeTeam, awayTeam, startingTime, selectedGameType } = req.body
 
-    try {
-        const { match } = await MatchesService.createMatch({homeTeam, awayTeam, startingTime, selectedGameType})
+  try {
+    const { match } = await MatchesService.createMatch({
+      homeTeam,
+      awayTeam,
+      startingTime,
+      selectedGameType,
+    })
 
-        res.send({ 
-            data: match,
-            message: "Match created",
-            status: "success",
-        })
-    } 
-
-    catch (error) {
-        res.send({
-            data: null,
-            message: error.message,
-            status: "error",
-        })
-
-    }
+    res.send({
+      data: match,
+      message: 'Match created',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
 })
 
 // DELETE match
-router.delete("/:id", verifyRoles(ROLE_LIST.Admin), removeMatch)
+router.delete('/:id', verifyRoles(ROLE_LIST.Admin), removeMatch)
 
 module.exports = router

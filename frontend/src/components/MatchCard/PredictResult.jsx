@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useMatch } from '../../hooks/useMatch'
+import { errorToast, successToast } from '../../utils/toast'
+import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './MatchCard.module.scss'
 
 const PredictResult = ({ matchId }) => {
@@ -7,12 +8,40 @@ const PredictResult = ({ matchId }) => {
   const [awayScore, setAwayScore] = useState(0)
   const [participated, setParticipated] = useState(false)
   const [overTime, setOverTime] = useState(false)
-  const { makePrediction } = useMatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await makePrediction(matchId, homeScore, awayScore, overTime)
+    const prediction = {
+      matchId,
+      homeScore,
+      awayScore,
+      overTime,
+    }
+
+    const makePrediction = async () => {
+      const response = await fetch('/api/match/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          prediction,
+        ),
+      })
+
+      const json = await response.json()
+
+      const {
+        status, data, message,
+      } = json
+
+      if (status === 'success') {
+        successToast(message)
+      } else {
+        errorToast(message)
+      }
+    }
+
+    await makePrediction()
   }
 
   return !participated ? (

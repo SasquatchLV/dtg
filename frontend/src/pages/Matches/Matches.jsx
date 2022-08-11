@@ -16,7 +16,6 @@ const Matches = () => {
       const response = await fetch(`/api/match/all?timezone=${timezone}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
       })
 
       const json = await response.json()

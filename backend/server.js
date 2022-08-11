@@ -39,8 +39,6 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 app.use('/', require('./routes/root'))
 app.use('/api', routes)
 
-
-
 // connect to db
 mongoose
   .connect(process.env.MONGO_URI)
