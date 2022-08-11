@@ -1,6 +1,6 @@
 const express = require("express")
 const { 
-    createMatch, getAllMatches, makePrediction, finishMatch, publishMatch, removeMatch,
+    createMatch, makePrediction, finishMatch, publishMatch, removeMatch,
 } = require("../controllers/matchController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")

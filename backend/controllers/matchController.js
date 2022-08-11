@@ -7,70 +7,70 @@ const mongoose = require('mongoose')
 const { User } = require('../config/rolesList')
 
 // get all matches
-const getAllMatches = async (req, res) => {
-  // get timezone from request query
-  const { timezone } = req.query
+// const getAllMatches = async (req, res) => {
+//   // get timezone from request query
+//   const { timezone } = req.query
 
-  try {
-    const matches = await Match.find()
+//   try {
+//     const matches = await Match.find()
 
-    if (matches.length === 0) {
-      return res.status(404).json({
-        error: 'No upcoming matches',
-      })
-    }
+//     if (matches.length === 0) {
+//       return res.status(404).json({
+//         error: 'No upcoming matches',
+//       })
+//     }
 
-    // Sort matches by starting time
-    matches.sort((a, b) => {
-      return (
-        getTime(new Date(a.startingTime)) - getTime(new Date(b.startingTime))
-      )
-    })
+//     // Sort matches by starting time
+//     matches.sort((a, b) => {
+//       return (
+//         getTime(new Date(a.startingTime)) - getTime(new Date(b.startingTime))
+//       )
+//     })
 
-    const matchesWithUsersGameTime = matches.map((match) => {
-      const { startingTime } = match
+//     const matchesWithUsersGameTime = matches.map((match) => {
+//       const { startingTime } = match
 
-      // Get the starting time of the match in the user's timezone
-      const usersGameTime = utcToZonedTime(startingTime, timezone)
+//       // Get the starting time of the match in the user's timezone
+//       const usersGameTime = utcToZonedTime(startingTime, timezone)
 
-      const userStartTime = format(usersGameTime, 'HH:mm (z)', {
-        timeZone: timezone,
-      })
-      const userStartDate = format(usersGameTime, 'dd.MM.yyyy', {
-        timeZone: timezone,
-      })
+//       const userStartTime = format(usersGameTime, 'HH:mm (z)', {
+//         timeZone: timezone,
+//       })
+//       const userStartDate = format(usersGameTime, 'dd.MM.yyyy', {
+//         timeZone: timezone,
+//       })
 
-      const isMatchFinished =
-        getTime(new Date(startingTime)) < getTime(new Date())
+//       const isMatchFinished =
+//         getTime(new Date(startingTime)) < getTime(new Date())
 
-      const userTimeTillGame = isMatchFinished
-        ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })}`
-        : formatDistance(new Date(startingTime), new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })
+//       const userTimeTillGame = isMatchFinished
+//         ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
+//             addSuffix: true,
+//             includeSeconds: true,
+//           })}`
+//         : formatDistance(new Date(startingTime), new Date(), {
+//             addSuffix: true,
+//             includeSeconds: true,
+//           })
 
-      if (isMatchFinished) {
-        match.isMatchFinished = true
-        match.save()
-      }
+//       if (isMatchFinished) {
+//         match.isMatchFinished = true
+//         match.save()
+//       }
 
-      return {
-        ...match._doc,
-        userStartTime,
-        userStartDate,
-        userTimeTillGame,
-      }
-    })
+//       return {
+//         ...match._doc,
+//         userStartTime,
+//         userStartDate,
+//         userTimeTillGame,
+//       }
+//     })
 
-    res.status(200).json(matchesWithUsersGameTime)
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-}
+//     res.status(200).json(matchesWithUsersGameTime)
+//   } catch (error) {
+//     res.status(400).json({ error: error.message })
+//   }
+// }
 
 // create new match
 const createMatch = async (req, res) => {
@@ -246,7 +246,6 @@ const removeMatch = async (req, res) => {
 }
 
 module.exports = {
-  getAllMatches,
   createMatch,
   makePrediction,
   finishMatch,
