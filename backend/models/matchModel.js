@@ -84,13 +84,13 @@ const matchSchema = new Schema({
 })
 
 // static prediction method
-matchSchema.statics.prediction = async function (
+matchSchema.statics.prediction = async function ({
   _id,
   email,
   homeScore,
   awayScore,
-  ot
-) {
+  overTime,
+}) {
   const match = await this.findOne({ _id })
 
   if (!match) {
@@ -98,10 +98,10 @@ matchSchema.statics.prediction = async function (
   }
 
   const userPrediction = {
-    email: email,
+    email,
     homeTeamScore: homeScore,
     awayTeamScore: awayScore,
-    overTime: ot,
+    overTime,
   }
 
   match.usersParticipating = [...match.usersParticipating, userPrediction]
@@ -129,7 +129,7 @@ matchSchema.statics.finish = async function (_id) {
 // static method to set final result of the match
 matchSchema.statics.setResult = async function (_id, homeScore, awayScore, ot) {
   const match = await this.findOne({ _id })
-  
+
   if (!match) {
     throw Error("Can't find match")
   }

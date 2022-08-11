@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useMatch } from '../../hooks/useMatch'
+import { errorToast, successToast } from '../../utils/toast'
+import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './MatchCard.module.scss'
 
 const PredictResult = ({ matchId }) => {
@@ -7,7 +8,6 @@ const PredictResult = ({ matchId }) => {
   const [awayScore, setAwayScore] = useState(0)
   const [participated, setParticipated] = useState(false)
   const [overTime, setOverTime] = useState(false)
-  const { makePrediction } = useMatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()

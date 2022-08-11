@@ -6,107 +6,6 @@ const { formatDistance, getTime, getDate } = require('date-fns')
 const mongoose = require('mongoose')
 const { User } = require('../config/rolesList')
 
-// get all matches
-// const getAllMatches = async (req, res) => {
-//   // get timezone from request query
-//   const { timezone } = req.query
-
-//   try {
-//     const matches = await Match.find()
-
-//     if (matches.length === 0) {
-//       return res.status(404).json({
-//         error: 'No upcoming matches',
-//       })
-//     }
-
-//     // Sort matches by starting time
-//     matches.sort((a, b) => {
-//       return (
-//         getTime(new Date(a.startingTime)) - getTime(new Date(b.startingTime))
-//       )
-//     })
-
-//     const matchesWithUsersGameTime = matches.map((match) => {
-//       const { startingTime } = match
-
-//       // Get the starting time of the match in the user's timezone
-//       const usersGameTime = utcToZonedTime(startingTime, timezone)
-
-//       const userStartTime = format(usersGameTime, 'HH:mm (z)', {
-//         timeZone: timezone,
-//       })
-//       const userStartDate = format(usersGameTime, 'dd.MM.yyyy', {
-//         timeZone: timezone,
-//       })
-
-//       const isMatchFinished =
-//         getTime(new Date(startingTime)) < getTime(new Date())
-
-//       const userTimeTillGame = isMatchFinished
-//         ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
-//             addSuffix: true,
-//             includeSeconds: true,
-//           })}`
-//         : formatDistance(new Date(startingTime), new Date(), {
-//             addSuffix: true,
-//             includeSeconds: true,
-//           })
-
-//       if (isMatchFinished) {
-//         match.isMatchFinished = true
-//         match.save()
-//       }
-
-//       return {
-//         ...match._doc,
-//         userStartTime,
-//         userStartDate,
-//         userTimeTillGame,
-//       }
-//     })
-
-//     res.status(200).json(matchesWithUsersGameTime)
-//   } catch (error) {
-//     res.status(400).json({ error: error.message })
-//   }
-// }
-
-// create new match
-const createMatch = async (req, res) => {
-  const { homeTeam, awayTeam, startingTime, selectedGameType } = req.body
-
-  let emptyFields = []
-
-  if (!homeTeam) {
-    emptyFields.push('Home Team')
-  }
-  if (!awayTeam) {
-    emptyFields.push('Away Team')
-  }
-  if (!startingTime) {
-    emptyFields.push('Date')
-  }
-  if (!selectedGameType) {
-    emptyFields.push('Date')
-  }
-  if (emptyFields.length > 0) {
-    return res.status(400).json({ error: `Please fill in all the fields` })
-  }
-
-  // add doc to db
-  try {
-    const match = await Match.create({
-      homeTeam,
-      awayTeam,
-      startingTime,
-      title: selectedGameType
-    })
-    res.status(200).json(match)
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-}
 
 // get user prediction
 const makePrediction = async (req, res) => {
@@ -246,7 +145,6 @@ const removeMatch = async (req, res) => {
 }
 
 module.exports = {
-  createMatch,
   makePrediction,
   finishMatch,
   publishMatch,

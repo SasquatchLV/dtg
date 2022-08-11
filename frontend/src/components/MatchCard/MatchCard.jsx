@@ -113,7 +113,9 @@ const MatchCard = ({
         <div className={styles.prediction}>
           {!isMatchFinished ? (
             !isAdmin ? (
-              <PredictResult matchId={_id} />
+              <>
+                <PredictResult matchId={_id} />
+              </>
             ) : (
               <h4>Admins can`t participate</h4>
             )

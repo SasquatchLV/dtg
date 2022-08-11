@@ -41,11 +41,12 @@ const requireAuth = async (req, res, next) => {
           sameSite: 'strict',
         });
 
-        user = await User.findOne({ _id: userId }).select("_id")
+        user = await User.findOne({ _id: userId })
   
         req.user = {
           _id: userId,
           token: updatedToken,
+          email: user.email,
         };
   
         next();

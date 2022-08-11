@@ -26,7 +26,7 @@ export const useLogin = () => {
 
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify({
-        userId, avatar, lastFiveGames, roles, points,
+        userId, avatar, lastFiveGames, roles, points, email,
       }))
 
       // update the auth context
