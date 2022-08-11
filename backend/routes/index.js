@@ -13,4 +13,5 @@ router
   .use('/team', requireAuth, teams)
   .use('/auth', auth)
 
+
 module.exports = router;

@@ -29,6 +29,7 @@ const MatchCard = ({
   const { dispatch } = useMatchContext()
   const { dispatchModal } = useModalContext()
   const isAdmin = user?.roles?.includes(2000)
+
   const alreadyParticipated = usersParticipating.some(
     (obj) => obj.email === user.email,
   )

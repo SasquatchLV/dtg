@@ -44,7 +44,28 @@ router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
 })
 
 // create a new match
-router.post("/new", verifyRoles(ROLE_LIST.Admin), createMatch)
+router.post("/new", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+    const { homeTeam, awayTeam, startingTime, selectedGameType } = req.body
+
+    try {
+        const { match } = await MatchesService.createMatch({homeTeam, awayTeam, startingTime, selectedGameType})
+
+        res.send({ 
+            data: match,
+            message: "Match created",
+            status: "success",
+        })
+    } 
+
+    catch (error) {
+        res.send({
+            data: null,
+            message: error.message,
+            status: "error",
+        })
+
+    }
+})
 
 // DELETE match
 router.delete("/:id", verifyRoles(ROLE_LIST.Admin), removeMatch)
