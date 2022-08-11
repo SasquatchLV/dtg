@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import TeamsCard from '../../components/TeamsCard/TeamsCard'
 import styles from './Standings.module.scss'
 import { errorToast } from '../../utils/toast'
-import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal'
 import CurrentStandings from './CurrentStandings'
 import PreviousStandings from './PreviousStandings'
 
@@ -13,18 +11,14 @@ const Standings = () => {
   const { user } = useAuthContext()
 
   const getAllSeasons = async () => {
-    const response = await fetch('/api/season/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
+    const response = await fetch('/api/season/all')
 
-    const json = await response.json()
+    const { data, status, message } = await response.json()
 
-    if (response.ok) {
-      setYears(json.filter((season) => season.status === 'finished').map(({ year }) => year))
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
+    if (status === 'success') {
+      setYears(data.filter((season) => season.status === 'finished').map(({ year }) => year))
+    } else {
+      errorToast(message)
     }
   }
 
@@ -34,50 +28,8 @@ const Standings = () => {
     }
   }, [user])
 
-  // const finishSeason = async () => {
-  //   const year = 2021
-  //   const response = await fetch('/api/season/end', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${user.token}`,
-  //     },
-  //     body: JSON.stringify({ year }),
-  //   })
-
-  //   await response.json()
-  // }
-
-  // const newSeason = async () => {
-
-  // }
-
   return (
     <div className={styles.container}>
-      {/* <button
-        onClick={() => setFinishSeasonModal(true)}
-      >
-        Finish season
-      </button>
-      <button
-        onClick={() => setNewSeasonModal(true)}
-      >
-        Start new season
-      </button>
-      {newSeasonModal && (
-      <ConfirmationModal
-        text="Start new season?"
-        handleConfirmation={newSeason}
-        handleCancelation={() => setNewSeasonModal(false)}
-      />
-      )}
-      {finishSeasonModal && (
-      <ConfirmationModal
-        text="Finish the season and reset all teams with matches?"
-        handleConfirmation={finishSeason}
-        handleCancelation={() => setFinishSeasonModal(false)}
-      />
-      )} */}
       <div className={styles.yearWrapper}>
         {years.map((year) => (
           <button

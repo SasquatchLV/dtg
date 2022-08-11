@@ -3,16 +3,21 @@ import { toast } from 'react-toastify'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './TeamsCard.module.scss'
 
-const TeamsCard = ({
-  _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, deletable,
-}) => {
+const TeamsCard = (props) => {
+  const {
+    _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, deletable,
+  } = props
   const { user } = useAuthContext()
   const isAdmin = user?.roles?.includes(2000)
 
-  const handleDelete = async (id) => {
-    const response = await fetch(`/api/team/${id}`, {
+  const handleDelete = async () => {
+    const response = await fetch('/api/team/', {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id }),
     })
 
     const json = await response.json()
@@ -50,7 +55,7 @@ const TeamsCard = ({
   return (
     <div className={styles.teamRow}>
       {(isAdmin && deletable) && (
-      <button className={styles.delete} onClick={() => handleDelete(_id)}>
+      <button className={styles.delete} onClick={handleDelete}>
         <img src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png" alt="delete" className={styles.deleteImg} />
       </button>
       )}

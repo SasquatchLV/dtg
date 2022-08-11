@@ -11,21 +11,17 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const response = await fetch('/api/user/all', {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
+      const response = await fetch('/api/user/all')
 
-      const json = await response.json()
+      const { data, status, message } = await response.json()
 
       // Sort users by points
-      const sortedUsers = json.sort((a, b) => b.points - a.points)
+      const sortedUsers = data.sort((a, b) => b.points - a.points)
 
-      if (response.ok) {
+      if (status === 'success') {
         setUsers(sortedUsers)
-      }
-
-      if (!response.ok) {
-        errorToast(json.error)
+      } else {
+        errorToast(message)
       }
     }
 

@@ -13,12 +13,10 @@ const PreviousStandings = ({ seasonYear }) => {
   const [overallRanking, setOverallRanking] = useState([])
   const { user } = useAuthContext()
 
-  const getSeason = async (year) => {
-    const response = await fetch(`/api/season/${year}`, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
+  const getSeason = async () => {
+    const response = await fetch(`/api/season/${seasonYear}`)
 
-    const json = await response.json()
+    const { data: { season: { users, teams } }, status, message } = await response.json()
 
     const sortRankingsForTeams = (teamArr) => {
       const sortedEliminatedTeams = teamArr.filter(({ position }) => position === 'eliminated')
@@ -31,24 +29,21 @@ const PreviousStandings = ({ seasonYear }) => {
       return sortedArr
     }
 
-    if (response.ok) {
-      setGroupA(json.teams.filter(({ group }) => group === 'A'))
-      setGroupB(json.teams.filter(({ group }) => group === 'B'))
-      setTopThreeUsers(json.users)
-
-      const sortedRankings = sortRankingsForTeams(json.teams)
+    if (status === 'success') {
+      setGroupA(teams.filter(({ group }) => group === 'A'))
+      setGroupB(teams.filter(({ group }) => group === 'B'))
+      setTopThreeUsers(users)
+      const sortedRankings = sortRankingsForTeams(teams)
 
       setOverallRanking(sortedRankings)
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
+    } else {
+      errorToast(message)
     }
   }
 
   useEffect(() => {
     if (user) {
-      getSeason(seasonYear)
+      getSeason()
     }
   }, [seasonYear])
 
