@@ -11,7 +11,7 @@ const PredictResult = ({ matchId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    setParticipated(true)
     await makePrediction(matchId, homeScore, awayScore, overTime)
   }
 
