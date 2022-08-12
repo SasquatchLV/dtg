@@ -12,11 +12,8 @@ export const useLogout = () => {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     })
-    const json = await response.json()
 
-    const {
-      status, message,
-    } = json
+    const { status, message } = await response.json()
 
     if (status === 'success') {
       successToast(`${message}`)

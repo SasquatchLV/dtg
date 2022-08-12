@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import TeamsCard from '../../components/TeamsCard/TeamsCard'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import TeamsCard from '../../../components/TeamsCard/TeamsCard'
+import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
-import { errorToast } from '../../utils/toast'
-import RankingCard from '../../components/RankingCard/RankingCard'
-import UserRankingCard from '../../components/UserRankingCard/UserRankingCard'
+import { errorToast } from '../../../utils/toast'
+import RankingCard from '../../../components/RankingCard/RankingCard'
+import UserRankingCard from '../../../components/UserRankingCard/UserRankingCard'
 
 const PreviousStandings = ({ seasonYear }) => {
   const [groupA, setGroupA] = useState([])

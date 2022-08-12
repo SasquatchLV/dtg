@@ -1,21 +1,20 @@
 import { errorToast, successToast } from './toast'
 
-export const fetchData = async (token, routeParams, methodType, bodyParams, successMsg) => {
+export const fetchData = async (routeParams, methodType, bodyParams) => {
   const response = await fetch(`/api/${routeParams}`, {
     method: methodType,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: bodyParams ? JSON.stringify(bodyParams) : null,
-
+    body: bodyParams.length ? JSON.stringify(bodyParams) : null,
   })
 
-  const json = await response.json()
+  const { data, message, status } = await response.json()
 
-  if (!response.ok) errorToast(json.error)
+  if (status === 'error') {
+    errorToast(message)
+  }
 
-  if (response.ok && successMsg !== null) successToast(successMsg)
+  if (status === 'success') {
+    successToast(message)
+  }
 
-  return json
+  return data
 }

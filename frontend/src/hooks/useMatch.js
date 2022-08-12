@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import { useAuthContext } from './useAuthContext'
 import { useMatchContext } from './useMatchContext'
 import { fetchData } from '../utils/fetch'
+import { errorToast, successToast } from '../utils/toast'
 
 export const useMatch = () => {
-  const [unsettledMatches, setUnsettledMatches] = useState([])
-  const { user } = useAuthContext()
   const { dispatch } = useMatchContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime, selectedGameType) => {
@@ -13,37 +10,30 @@ export const useMatch = () => {
     const bodyParams = {
       homeTeam, awayTeam, startingTime, selectedGameType,
     }
-    const successMsg = 'Match created'
 
-    fetchData(user.token, route, 'POST', bodyParams, successMsg)
+    fetchData(route, 'POST', bodyParams)
   }
 
   const makePrediction = async (_id, homeScore, awayScore, ot) => {
-    const { email, token } = user
     const route = 'match/predict'
     const bodyParams = {
       _id,
-      email,
       homeScore,
       awayScore,
       ot,
     }
-    const successMsg = 'Prediction submitted'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    fetchData(route, 'POST', bodyParams)
   }
 
   const finishMatch = async (_id) => {
-    const { token } = user
     const route = 'match/finish'
     const bodyParams = { _id }
-    const successMsg = ''
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    fetchData(route, 'POST', bodyParams)
   }
 
   const publishResult = async (_id, homeScore, awayScore, ot) => {
-    const { token } = user
     const route = 'match/publish'
     const bodyParams = {
       _id,
@@ -51,26 +41,35 @@ export const useMatch = () => {
       awayScore,
       ot,
     }
-    const successMsg = 'Match results published'
 
-    fetchData(token, route, 'POST', bodyParams, successMsg)
+    fetchData(route, 'POST', bodyParams)
   }
 
   const getAllMatches = async () => {
-    const response = await fetch('/api/match/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const { data, status, message } = await (await fetch(`/api/match/all?timezone=${timezone}`)).json()
+
+    if (status === 'success') {
+      dispatch({ type: 'SET_MATCHES', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
+  const deleteMatch = async (id) => {
+    const response = await fetch(`/api/match/${id}`, {
+      method: 'DELETE',
     })
 
-    const json = await response.json()
-    if (response.ok) {
-      const matchesWithNoScore = json.filter(
-        (match) => match.isMatchFinished
-          && !match.homeTeamScore
-          && !match.awayTeamScore
-          && !match.overTime,
-      )
+    const { message, status } = await response.json()
 
-      setUnsettledMatches(matchesWithNoScore)
+    if (status === 'success') {
+      successToast(message)
+      await getAllMatches()
+    }
+
+    if (status === 'error') {
+      errorToast(message)
     }
   }
 
@@ -80,6 +79,6 @@ export const useMatch = () => {
     finishMatch,
     publishResult,
     getAllMatches,
-    unsettledMatches,
+    deleteMatch,
   }
 }

@@ -5,8 +5,8 @@ import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useMatchContext } from '../../../hooks/useMatchContext'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './MatchOverview.module.scss'
-import MatchCard from '../../../components/MatchCard/MatchCard'
 import { successToast, errorToast } from '../../../utils/toast'
+import AdminMatchCard from '../../../components/MatchCard/Cards/AdminMatchCard/AdminMatchCard'
 
 registerLocale('lv', lv)
 
@@ -151,7 +151,7 @@ const MatchOverview = () => {
       <div className={styles.matchWrapper}>
         {unsettledMatches
           && unsettledMatches.map((match) => (
-            <MatchCard key={match._id} {...match} />
+            <AdminMatchCard key={match._id} {...match} />
           ))}
         {!unsettledMatches && <h3>No unsettled matches</h3>}
       </div>

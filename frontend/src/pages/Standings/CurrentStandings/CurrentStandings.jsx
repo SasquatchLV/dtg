@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import TeamsCard from '../../components/TeamsCard/TeamsCard'
-import { useAuthContext } from '../../hooks/useAuthContext'
+import TeamsCard from '../../../components/TeamsCard/TeamsCard'
+import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './CurrentStandings.module.scss'
-import { errorToast } from '../../utils/toast'
+import { errorToast } from '../../../utils/toast'
 
 const CurrentStandings = () => {
   const [groupA, setGroupA] = useState([])
@@ -11,9 +11,7 @@ const CurrentStandings = () => {
 
   const getAllTeams = async () => {
     const response = await fetch('/api/team/all')
-
     const { data, status, message } = await response.json()
-
     if (status === 'success') {
       setGroupA(data.filter(({ group }) => group === 'A'))
       setGroupB(data.filter(({ group }) => group === 'B'))

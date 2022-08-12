@@ -1,33 +1,21 @@
 import { useEffect } from 'react'
-import { errorToast } from '../../utils/toast'
-import MatchCard from '../../components/MatchCard/MatchCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useMatchContext } from '../../hooks/useMatchContext'
 import styles from './Matches.module.scss'
+import FinishedCard from '../../components/MatchCard/Cards/FinishedMatchCard/FinishedCard'
+import PredictCard from '../../components/MatchCard/Cards/PredictMatchCard/PredictCard'
+import { useMatch } from '../../hooks/useMatch'
 
 const Matches = () => {
-  const { matches, dispatch, refreshMatches } = useMatchContext()
+  const { matches } = useMatchContext()
   const { user } = useAuthContext()
+  const { getAllMatches } = useMatch()
 
   useEffect(() => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-    const getAllMatches = async () => {
-      const response = await fetch(`/api/match/all?timezone=${timezone}`)
-
-      const { data, status, message } = await response.json()
-
-      if (status === 'success') {
-        dispatch({ type: 'SET_MATCHES', payload: data })
-      } else {
-        errorToast(message)
-      }
-    }
-
     if (user) {
       getAllMatches()
     }
-  }, [user, dispatch])
+  }, [user])
 
   return (
     <div className={styles.container}>
@@ -35,18 +23,17 @@ const Matches = () => {
         <div className={styles.matchWrapper}>
           <h1>Upcoming games</h1>
           {matches?.map((match) => (
-            !match.isMatchFinished && (
-              <MatchCard key={match._id} {...match} />
-            )
+            !match.isMatchFinished ? (
+              <PredictCard key={match._id} {...match} />
+            ) : null
           ))}
         </div>
         <div className={styles.matchWrapper}>
           <h1>Finished games</h1>
           {matches?.map((match) => (
             (match.isMatchFinished && (match.homeTeamScore || match.awayTeamScore)) ? (
-              <MatchCard key={match._id} {...match} />
-            )
-              : null
+              <FinishedCard key={match._id} {...match} />
+            ) : null
           ))}
         </div>
       </div>

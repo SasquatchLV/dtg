@@ -3,48 +3,27 @@ import { toast } from 'react-toastify'
 import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './TeamOverview.module.scss'
+import { useTeam } from '../../../hooks/useTeam'
+import { useTeamContext } from '../../../hooks/useTeamContext'
 
 const TeamOverview = () => {
-  const [teams, setTeams] = useState([])
   const [countryName, setCountryName] = useState('')
   const [countryFlag, setCountryFlag] = useState('')
   const [countryGroup, setCountryGroup] = useState('')
   const [seasonAlreadyRunning, setSeasonAlreadyRunning] = useState(false)
   const { user } = useAuthContext()
+  const { getTeams } = useTeam()
+  const { teams } = useTeamContext()
 
   const getAllSeasons = async () => {
     const response = await fetch('/api/season/all', {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 
-    const json = await response.json()
+    const { data, message, status } = await response.json()
 
-    if (response.ok) {
-      json.some(({ status }) => status === 'active' && setSeasonAlreadyRunning(true))
-    }
-  }
-
-  const getAllTeams = async () => {
-    const response = await fetch('/api/team/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const { data, error } = await response.json()
-
-    if (response.ok) {
-      setTeams(data)
-    }
-
-    if (!response.ok) {
-      toast.error(error, {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      })
+    if (status === 'success') {
+      data.some((season) => season.status === 'active' && setSeasonAlreadyRunning(true))
     }
   }
 
@@ -71,12 +50,13 @@ const TeamOverview = () => {
     setCountryFlag('')
     setCountryName('')
 
-    getAllTeams()
+    getTeams()
   }
 
   useEffect(() => {
     if (user) {
-      getAllTeams()
+      getTeams()
+
       getAllSeasons()
     }
   }, [user])

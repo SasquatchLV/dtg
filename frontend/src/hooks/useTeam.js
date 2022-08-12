@@ -1,19 +1,20 @@
-import { fetchData } from '../utils/fetch'
-import { useAuthContext } from './useAuthContext'
+import { errorToast, successToast } from '../utils/toast'
+import { useTeamContext } from './useTeamContext'
 
 export const useTeam = () => {
-  const { user } = useAuthContext()
+  const { dispatch } = useTeamContext()
 
-  const getAllTeams = async () => {
-    const { token } = user
-    const route = 'team/all'
-    const bodyParams = {}
-    const successMsg = ''
+  const getTeams = async () => {
+    const { data, status, message } = await (await fetch('/api/team/all')).json()
 
-    fetchData(token, route, 'GET', bodyParams, successMsg)
+    if (status === 'success') {
+      await dispatch({ type: 'SET_TEAMS', payload: data })
+    } else {
+      errorToast(message)
+    }
   }
 
   return {
-    getAllTeams,
+    getTeams,
   }
 }
