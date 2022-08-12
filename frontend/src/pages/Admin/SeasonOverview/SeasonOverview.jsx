@@ -16,17 +16,17 @@ const SeasonOverview = () => {
 
   const getAllSeasons = async () => {
     const response = await fetch('/api/season/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
+      headers: { 'Content-Type': 'application/json' },
     })
 
-    const json = await response.json()
+    const { status, data, message } = await response.json()
 
-    if (response.ok) {
-      json.some(({ status }) => status === 'active' && setSeasonAlreadyRunning(true))
+    if (status === 'success') {
+      data.some((seasonData) => seasonData.status === 'active' && setSeasonAlreadyRunning(true))
     }
 
-    if (!response.ok) {
-      errorToast('Can`t load')
+    if (status === 'error') {
+      errorToast(message)
     }
   }
 
@@ -63,14 +63,14 @@ const SeasonOverview = () => {
       headers: { Authorization: `Bearer ${user.token}` },
     })
 
-    const json = await response.json()
+    const { status, data, message } = await response.json()
 
-    if (response.ok) {
-      setTeamSelection(json)
+    if (status === 'success') {
+      setTeamSelection(data)
     }
 
-    if (!response.ok) {
-      errorToast('Can`t load')
+    if (status === 'error') {
+      errorToast(message)
     }
   }
 

@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
     res.cookie('accessCookie', `Bearer ${response.token}`, {
       httpOnly: true,
       sameSite: 'strict',
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      expires: new Date(Date.now() + (1000 * 60 * 60 * 24 * 30)),
     })
 
     res.send({
