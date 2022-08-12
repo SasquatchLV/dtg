@@ -1,7 +1,4 @@
 const express = require("express")
-const {
-  loginUser,
-} = require("../controllers/userController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
 const ROLE_LIST = require("../config/rolesList")

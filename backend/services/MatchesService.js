@@ -4,6 +4,7 @@ const Match = require('../models/matchModel')
 const User = require('../models/userModel')
 
 class MatchesService {
+  // get all matches
   static async getMatches({ timezone }) {
     const matches = await Match.find()
 
@@ -38,13 +39,13 @@ class MatchesService {
 
       const userTimeTillGame = isMatchFinished
         ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })}`
+          addSuffix: true,
+          includeSeconds: true,
+        })}`
         : formatDistance(new Date(startingTime), new Date(), {
-            addSuffix: true,
-            includeSeconds: true,
-          })
+          addSuffix: true,
+          includeSeconds: true,
+        })
 
       if (isMatchFinished) {
         match.isMatchFinished = true
@@ -103,6 +104,7 @@ class MatchesService {
     }
   }
 
+  // make a prediction
   static async makePrediction({
     matchId,
     homeScore,
@@ -153,17 +155,65 @@ class MatchesService {
 
   // delete a match
   static async removeMatch({ id }) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ error: 'No such match exists in db' })
-    }
-
     const match = await Match.findOne({ _id: id })
 
     if (!match) {
       return res.status(400).json({ error: 'No such match exists in db' })
     }
 
-      await Match.deleteOne({ _id: id })
+    await Match.deleteOne({ _id: id })
+  }
+
+  // publish final result of the game
+  static async publishMatch({ _id, homeScore, awayScore, ot }) {
+    const match = await Match.setResult(_id, homeScore, awayScore, ot)
+
+    const { usersParticipating, title } = match
+
+    await usersParticipating.forEach(
+      ({ email, homeTeamScore, awayTeamScore }) =>
+        UserModel.determinePoints(
+          email,
+          homeScore,
+          awayScore,
+          homeTeamScore,
+          awayTeamScore
+        )
+    )
+
+    let homePoints = 0
+    let awayPoints = 0
+
+    if (homeScore > awayScore) {
+      if (!ot) {
+        homePoints += 3
+      } else {
+        homePoints += 2
+        awayPoints += 1
+      }
+    } else {
+      if (!ot) {
+        awayPoints += 3
+      } else {
+        awayPoints += 2
+        homePoints += 1
+      }
+    }
+
+    const homeTeam = match.homeTeam._id
+    const awayTeam = match.awayTeam._id
+
+    await Team.updatePoints(homeTeam, homePoints, title)
+    await Team.updatePoints(awayTeam, awayPoints, title)
+
+    return { match }
+  }
+
+  // update finished match
+  static async finishMatch({ _id }) {
+    const match = await Match.finish(_id)
+
+    return { match }
   }
 }
 

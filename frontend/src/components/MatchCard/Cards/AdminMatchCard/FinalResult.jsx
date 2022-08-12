@@ -1,25 +1,21 @@
-import { useEffect, useState } from 'react'
-import { useMatch } from '../../hooks/useMatch'
-import styles from './MatchCard.module.scss'
+import { useState } from 'react'
+import { useMatch } from '../../../../hooks/useMatch'
+import styles from './AdminMatchCard.module.scss'
 
-const FinalResult = (matchId) => {
+const FinalResult = ({ matchId, isAdmin }) => {
   const [finalHomeScore, setFinalHomeScore] = useState(0)
   const [finalAwayScore, setFinalAwayScore] = useState(0)
-  const [accepted, setAccepted] = useState(false)
   const [overTime, setOverTime] = useState(false)
   const { publishResult } = useMatch()
 
   const handlePublish = async (e) => {
     e.preventDefault()
 
-    // eslint-disable-next-line react/destructuring-assignment
-    await publishResult(matchId.matchId, finalHomeScore, finalAwayScore, overTime)
-
-    setAccepted(true)
+    await publishResult(matchId, finalHomeScore, finalAwayScore, overTime)
   }
 
   return (
-    !accepted ? (
+    isAdmin && (
       <div className={styles.inputWrapper}>
         <h4>Add final result</h4>
         <div className={styles.inputTop}>
@@ -55,8 +51,6 @@ const FinalResult = (matchId) => {
           Publish
         </button>
       </div>
-    ) : (
-      <h4>Accepted</h4>
     )
   )
 }

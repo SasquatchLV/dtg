@@ -1,10 +1,4 @@
 const express = require('express')
-const {
-  makePrediction,
-  finishMatch,
-  publishMatch,
-  removeMatch,
-} = require('../controllers/matchController')
 const requireAuth = require('../middleware/requireAuth')
 const verifyRoles = require('../middleware/verifyRoles')
 const ROLE_LIST = require('../config/rolesList')
@@ -44,10 +38,46 @@ router.post('/predict', verifyRoles(ROLE_LIST.User), async (req, res) => {
 })
 
 // match updates as finished
-router.post('/finish', verifyRoles(ROLE_LIST.User), finishMatch)
+router.post('/finish', verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { _id } = req.body
+
+  try {
+    const { match } = await MatchesService.finishMatch({ _id })
+
+    res.send({
+      data: match,
+      message: 'match updated',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
+})
 
 // make prediction of the match outcome
-router.post('/publish', verifyRoles(ROLE_LIST.Admin), publishMatch)
+router.post('/publish', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { _id, homeScore, awayScore, ot } = req.body
+
+  try {
+    const { match } = await MatchesService.publishMatch({ _id, homeScore, awayScore, ot })
+
+    res.send({
+      data: match,
+      message: 'Match results made public',
+      status: 'success',
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: 'error',
+    })
+  }
+})
 
 // create a new match
 router.get('/all', verifyRoles(ROLE_LIST.User), async (req, res) => {

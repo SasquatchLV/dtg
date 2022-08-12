@@ -1,17 +1,4 @@
 const express = require("express")
-const {
-  loginUser,
-  signupUser,
-  promoteUser,
-  demoteUser,
-  getAllUsers,
-  getSingleUser,
-  toggleHasPaid,
-  deleteUser,
-  updateUsersAvatar,
-  changeUserPassword,
-  getPrizePool,
-} = require("../controllers/userController")
 const requireAuth = require("../middleware/requireAuth")
 const verifyRoles = require("../middleware/verifyRoles")
 const ROLE_LIST = require("../config/rolesList")
@@ -19,14 +6,13 @@ const UsersService = require("../services/UsersService")
 
 const router = express.Router()
 
-
 // login route
 router.post("/login", async (req, res) => {
   const userAgent = req.headers['user-agent'] || 'local placeholder';
   const { email, password } = req.body
 
   try {
-    const response = await UsersService.loginUser({email, password, userAgent})
+    const response = await UsersService.loginUser({ email, password, userAgent })
 
     res.cookie('accessCookie', `Bearer ${response.token}`, {
       httpOnly: true,
@@ -69,34 +55,213 @@ router.get('/is-authorized', (req, res) => {
 });
 
 // register a user route
-router.post("/signup", verifyRoles(ROLE_LIST.Admin), signupUser)
+router.post('/signup', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { email, password } = req.body;
+  console.log(req.body)
+  try {
+    await UsersService.signupUser({ email, password })
+
+    res.send({
+      data: email,
+      status: 'success',
+      message: `${email} created`,
+    });
+  } catch (error) {
+    res.send({
+      data: null,
+      status: 'error',
+      message: error.message,
+    });
+  }
+})
 
 // give admin access route
-router.post("/promote/:email", verifyRoles(ROLE_LIST.Admin), promoteUser)
+router.post("/promote/:email", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    await UsersService.promoteUser({ email })
+
+    res.send({
+      data: email,
+      message: `${email} promoted`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // remove admin access route
-router.post("/demote/:email", verifyRoles(ROLE_LIST.Admin), demoteUser)
+router.post("/demote/:email", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { email } = req.params
+  const { _id } = req.user
+
+  try {
+    await UsersService.demoteUser({ email, _id })
+
+    res.send({
+      data: email,
+      message: `${email} demoted`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // delete user route
-router.post("/delete/:email", verifyRoles(ROLE_LIST.Admin), deleteUser)
+router.delete("/delete/:email", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { email } = req.params
+
+  try {
+    await UsersService.deleteUser({ email })
+
+    res.send({
+      data: email,
+      message: `${email} deleted`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // toggle user paid status route
-router.post("/toggleHasPaid/:email", verifyRoles(ROLE_LIST.Admin), toggleHasPaid)
+router.post("/paid/:email", verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { email } = req.params
+
+  try {
+    await UsersService.toggleHasPaid({ email })
+
+    res.send({
+      data: email,
+      message: `${email} paid status changed`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // give new avatar to user
-router.post("/avatar", verifyRoles(ROLE_LIST.User), updateUsersAvatar)
+router.post("/avatar", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { avatarLink } = req.body
+  const { email } = req.user
+
+  try {
+    await UsersService.updateUsersAvatar({ email, avatarLink })
+
+    res.send({
+      data: email,
+      message: 'Avatar changed!',
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // get all users route
-router.get("/all", verifyRoles(ROLE_LIST.User), getAllUsers)
+router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  try {
+    const { users } = await UsersService.getAllUsers()
+
+    res.send({
+      data: users,
+      message: 'Got all users!',
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // change password
-router.post("/password", verifyRoles(ROLE_LIST.User), changeUserPassword)
+router.post("/password", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { newPass } = req.body
+  const { email } = req.user
+
+  try {
+    await UsersService.changeUserPassword({ email, newPass })
+
+    res.send({
+      data: email,
+      message: 'Password changed!',
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // get prize pool route
-router.get("/getprizepool", verifyRoles(ROLE_LIST.User), getPrizePool)
+router.get("/prize", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  try {
+    const { prizePool } = await UsersService.getPrizePool()
+
+    res.send({
+      data: prizePool,
+      message: 'Prize pool found',
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 // get single user route
-router.get("/:email", verifyRoles(ROLE_LIST.User), getSingleUser)
+router.get("/:email", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { email } = req.params
+
+  try {
+    const { user } = await UsersService.getSingleUser({ email })
+
+    res.send({
+      data: user,
+      message: `${email} found`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
 
 
 module.exports = router

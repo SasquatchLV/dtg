@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { errorToast, successToast } from '../../utils/toast'
-import styles from './MatchCard.module.scss'
+import { errorToast, successToast } from '../../../../utils/toast'
+import styles from './PredictCard.module.scss'
 
-const PredictResult = ({ matchId }) => {
+const PredictResult = ({ matchId, isAdmin }) => {
   const [homeScore, setHomeScore] = useState(0)
   const [awayScore, setAwayScore] = useState(0)
-  const [participated, setParticipated] = useState(false)
   const [overTime, setOverTime] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -29,7 +28,6 @@ const PredictResult = ({ matchId }) => {
 
       if (status === 'success') {
         successToast(message)
-        setParticipated(true)
       } else {
         errorToast(message)
       }
@@ -39,7 +37,7 @@ const PredictResult = ({ matchId }) => {
   }
 
   return (
-    !participated ? (
+    !isAdmin ? (
       <div className={styles.inputWrapper}>
         <div className={styles.inputTop}>
           <div className={styles.inputBox}>
@@ -71,9 +69,7 @@ const PredictResult = ({ matchId }) => {
           SUBMIT
         </button>
       </div>
-    ) : (
-      <h4>Accepted</h4>
-    )
+    ) : <h4 className={styles.info}>Admins can`t participate</h4>
   )
 }
 

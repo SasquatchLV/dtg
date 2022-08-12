@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './Standings.module.scss'
 import { errorToast } from '../../utils/toast'
-import CurrentStandings from './CurrentStandings'
-import PreviousStandings from './PreviousStandings'
+import CurrentStandings from './CurrentStandings/CurrentStandings'
+import PreviousStandings from './PreviousStandings/PreviousStandings'
 
 const Standings = () => {
   const [years, setYears] = useState([])

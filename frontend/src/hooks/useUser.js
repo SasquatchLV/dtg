@@ -1,81 +1,117 @@
 import { fetchData } from '../utils/fetch'
-import { useAuthContext } from './useAuthContext'
+import { useUserContext } from './useUserContext'
+import { errorToast, successToast } from '../utils/toast'
 
 export const useUser = () => {
-  const { user } = useAuthContext()
+  const { dispatch } = useUserContext()
 
   const signupUser = async (email, password) => {
-    const { token } = user
-    const route = 'user/signup'
-    const bodyParams = { email, password }
-    const successMsg = `User ${email} successfully created`
+    const response = await fetch('/api/user/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
+    }
   }
 
-  const fetchUser = async (email) => {
-    const { token } = user
-    const route = `user/${email}`
-    const bodyParams = null
-    const successMsg = null
+  const getUser = async (email) => {
+    const { data, status, message } = await (await fetch(`/api/user/${email}`)).json()
 
-    const singleUser = await fetchData(token, route, 'GET', bodyParams, successMsg)
+    if (status === 'success') {
+      dispatch({ type: 'SET_USER', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
 
-    return singleUser
+  const getUsers = async () => {
+    const { data, status, message } = await (await fetch('/api/user/all')).json()
+
+    if (status === 'success') {
+      await dispatch({ type: 'SET_USERS', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
+  const getPrizePoolAndUsers = async () => {
+    const { data, status, message } = await (await fetch('/api/user/prize')).json()
+
+    if (status === 'success') {
+      dispatch({ type: 'SET_PRIZEPOOL', payload: data })
+      await getUsers()
+    } else {
+      errorToast(message)
+    }
   }
 
   const promoteUser = async (email) => {
-    const { token } = user
-    const route = `user/promote/${email}`
-    const bodyParams = {}
-    const successMsg = 'User promoted'
+    const { status, message } = await (await fetch(`/api/user/promote/${email}`, {
+      method: 'POST',
+    })).json()
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    if (status === 'success') {
+      await getUser(email)
+    } else {
+      errorToast(message)
+    }
   }
 
   const demoteUser = async (email) => {
-    const { token } = user
-    const route = `user/demote/${email}`
-    const bodyParams = {}
-    const successMsg = 'User demoted'
+    const { status, message } = await (await fetch(`/api/user/demote/${email}`, {
+      method: 'POST',
+    })).json()
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    if (status === 'success') {
+      await getUser(email)
+    } else {
+      errorToast(message)
+    }
   }
 
   const toggleHasPaid = async (email) => {
-    const { token } = user
-    const route = `user/toggleHasPaid/${email}`
-    const bodyParams = {}
-    const successMsg = 'User hasPaid toggled'
+    const { status, message } = await (await fetch(`/api/user/paid/${email}`, {
+      method: 'POST',
+    })).json()
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    if (status === 'success') {
+      await getUser(email)
+    } else {
+      errorToast(message)
+    }
   }
 
-  const deleteUser = async (id) => {
-    const { token } = user
-    const route = `user/delete/${id}`
-    const bodyParams = {}
-    const successMsg = 'User deleted'
+  const deleteUser = async (email) => {
+    const { status, message } = await (await fetch(`/api/user/delete/${email}`, {
+      method: 'POST',
+    })).json()
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    if (status === 'success') {
+      getUser(email)
+    } else {
+      errorToast(message)
+    }
   }
 
   const updateAvatar = async (avatarLink) => {
-    const { email, token } = user
     const route = 'user/avatar'
-    const bodyParams = { email, avatarLink }
-    const successMsg = 'Avatar has been changed'
+    const bodyParams = { avatarLink }
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(route, 'POST', bodyParams)
   }
 
   const changeUserPassword = async (newPass) => {
-    const { email, token } = user
     const route = 'user/password'
-    const bodyParams = { email, newPass }
-    const successMsg = 'Password changed'
+    const bodyParams = { newPass }
 
-    await fetchData(token, route, 'POST', bodyParams, successMsg)
+    await fetchData(route, 'POST', bodyParams)
   }
 
   return {
@@ -83,9 +119,11 @@ export const useUser = () => {
     demoteUser,
     deleteUser,
     updateAvatar,
-    fetchUser,
     changeUserPassword,
     signupUser,
     toggleHasPaid,
+    getUsers,
+    getUser,
+    getPrizePoolAndUsers,
   }
 }
