@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { errorToast, successToast } from '../../../../utils/toast'
 import styles from './PredictCard.module.scss'
-import { useMatch } from '../../../../hooks/useMatch'
+import { useMatch } from '../../../hooks/useMatch'
 
-const PredictResult = ({ matchId, isAdmin }) => {
+const PredictionInput = ({ matchId, locked }) => {
   const [homeScore, setHomeScore] = useState(0)
   const [awayScore, setAwayScore] = useState(0)
   const [overTime, setOverTime] = useState(false)
@@ -15,8 +14,12 @@ const PredictResult = ({ matchId, isAdmin }) => {
     await makePrediction(matchId, homeScore, awayScore, overTime)
   }
 
+  const scoreGapIsOne = (Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)) === 1
+
+  const evenScore = (homeScore === awayScore)
+
   return (
-    !isAdmin ? (
+    !locked ? (
       <div className={styles.inputWrapper}>
         <div className={styles.inputTop}>
           <div className={styles.inputBox}>
@@ -39,17 +42,27 @@ const PredictResult = ({ matchId, isAdmin }) => {
               required
             />
           </div>
+          {scoreGapIsOne && (
           <div className={styles.inputBox}>
             <span>OT</span>
             <input type="checkbox" onChange={() => setOverTime(!overTime)} />
           </div>
+          )}
         </div>
-        <button className={styles.predictBtn} onClick={(e) => handleSubmit(e)}>
+        <button
+          className={styles.predictBtn}
+          onClick={(e) => handleSubmit(e)}
+          disabled={evenScore}
+        >
           SUBMIT
         </button>
       </div>
-    ) : <h4 className={styles.info}>Admins can`t participate</h4>
+    ) : (
+      <h4 className={styles.lockedInfo}>
+        Match locked
+      </h4>
+    )
   )
 }
 
-export default PredictResult
+export default PredictionInput

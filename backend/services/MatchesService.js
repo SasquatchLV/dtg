@@ -1,7 +1,8 @@
-const { zonedTimeToUtc, utcToZonedTime, format } = require('date-fns-tz')
-const { formatDistance, getTime, getDate } = require('date-fns')
+const { utcToZonedTime, format } = require('date-fns-tz')
+const { formatDistance, getTime } = require('date-fns')
 const Match = require('../models/matchModel')
 const User = require('../models/userModel')
+const Team = require('../models/teamModel')
 
 class MatchesService {
   // get all matches
@@ -34,10 +35,11 @@ class MatchesService {
         timeZone: timezone,
       })
 
+      
       const isMatchFinished =
         getTime(new Date(startingTime)) < getTime(new Date())
-
-      const userTimeTillGame = isMatchFinished
+        
+        const userTimeTillGame = isMatchFinished
         ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
           addSuffix: true,
           includeSeconds: true,
@@ -46,10 +48,16 @@ class MatchesService {
           addSuffix: true,
           includeSeconds: true,
         })
-
+        
       if (isMatchFinished) {
         match.isMatchFinished = true
         match.save()
+      }
+      
+      const timeToLockMatch = (getTime(new Date(startingTime)) - getTime(new Date())) < 3600000
+
+      if (timeToLockMatch) {
+        match.locked = true
       }
 
       return {
@@ -114,12 +122,8 @@ class MatchesService {
   }) {
     const user = await User.findOne({ email })
     const match = await Match.findOne({ _id: matchId })
-    console.log(matchId,
-      homeScore,
-      awayScore,
-      overTime,
-      email)
-    const { startingTime, isMatchFinished } = match
+
+    const { startingTime, isMatchFinished, locked } = match
 
     if (!user) {
       throw new Error('User not found')

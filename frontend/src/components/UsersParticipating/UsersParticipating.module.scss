@@ -1,0 +1,21 @@
+ul {
+    margin-top: .5rem;
+}
+
+li {
+    display: grid;
+    grid-template-columns: 40% 10% 50%;
+    border: 1px solid black;
+}
+
+li span:nth-child(1) {
+    text-align: center;
+}
+
+li span:nth-child(2) {
+    text-align: center;
+}
+
+li span:nth-child(3) {
+    text-align: center;
+}

@@ -21,7 +21,7 @@ export const useMatch = () => {
       errorToast(message)
     }
 
-    getAllMatches()
+    getMatches()
   }
 
   const makePrediction = async (matchId, homeScore, awayScore, overTime) => {
@@ -41,7 +41,7 @@ export const useMatch = () => {
       errorToast(message)
     }
 
-    getAllMatches()
+    getMatches()
   }
 
   const finishMatch = async (matchId) => {
@@ -73,19 +73,38 @@ export const useMatch = () => {
 
     if (status === 'success') {
       successToast(message)
-    } else {
+    }
+
+    if (status === 'error') {
       errorToast(message)
     }
 
-    getAllMatches()
+    getMatches()
   }
 
-  const getAllMatches = async () => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  const getMatches = async () => {
     const { data, status, message } = await (await fetch(`/api/match/all?timezone=${timezone}`)).json()
 
     if (status === 'success') {
       dispatch({ type: 'SET_MATCHES', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
+  const getUnsettledMatches = async () => {
+    const { data, status, message } = await (await fetch(`/api/match/all?timezone=${timezone}`)).json()
+
+    if (status === 'success') {
+      dispatch({
+        type: 'SET_UNSETTLED_MATCHES',
+        payload: data.filter(
+          (match) => match.isMatchFinished
+              && (!match.homeTeamScore && !match.awayTeamScore),
+        ),
+      })
     } else {
       errorToast(message)
     }
@@ -100,7 +119,7 @@ export const useMatch = () => {
 
     if (status === 'success') {
       successToast(message)
-      await getAllMatches()
+      getMatches()
     }
 
     if (status === 'error') {
@@ -113,7 +132,8 @@ export const useMatch = () => {
     makePrediction,
     finishMatch,
     publishResult,
-    getAllMatches,
+    getMatches,
     deleteMatch,
+    getUnsettledMatches,
   }
 }

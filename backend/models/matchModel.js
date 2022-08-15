@@ -76,6 +76,10 @@ const matchSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  locked: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     immutable: true,

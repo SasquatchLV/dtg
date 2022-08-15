@@ -1,11 +1,11 @@
 import React from 'react'
-import styles from './PredictCard.module.scss'
-import { useAuthContext } from '../../../../hooks/useAuthContext'
-import { useModalContext } from '../../../../hooks/useModalContext'
-import PredictResult from './PredictResult'
-import { useMatch } from '../../../../hooks/useMatch'
+import styles from './AdminMatchCard.module.scss'
+import { useAuthContext } from '../../../hooks/useAuthContext'
+import { useModalContext } from '../../../hooks/useModalContext'
+import FinalResult from './FinalResult'
+import { useMatch } from '../../../hooks/useMatch'
 
-const PredictCard = ({
+const AdminMatchCard = ({
   homeTeam,
   awayTeam,
   _id,
@@ -19,9 +19,6 @@ const PredictCard = ({
   const { dispatchModal } = useModalContext()
   const { deleteMatch } = useMatch()
   const isAdmin = user?.roles?.includes(2000)
-  const hasParticipated = usersParticipating.some(({ email }) => email === user.email)
-  const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
-  const usersBet = usersParticipating[indexOfUser]
 
   const modalProps = {
     text: 'Confirm to delete match!',
@@ -47,10 +44,12 @@ const PredictCard = ({
             />
           </button>
           )}
+
       <div className={styles.time}>
         <h4>{userStartTime}</h4>
         <span>{userStartDate}</span>
       </div>
+
       <div className={styles.middle}>
         <h5>{title}</h5>
         <div className={styles.teams}>
@@ -70,14 +69,9 @@ const PredictCard = ({
           {userTimeTillGame}
         </span>
       </div>
-      {hasParticipated ? (
-        <h4 className={styles.info}>
-          <p>Predicted Score:</p>
-          <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
-        </h4>
-      ) : <PredictResult matchId={_id} isAdmin={isAdmin} />}
+      <FinalResult matchId={_id} isAdmin={isAdmin} />
     </div>
   )
 }
 
-export default PredictCard
+export default AdminMatchCard

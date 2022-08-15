@@ -5,99 +5,33 @@ import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useTotoContext } from '../../../hooks/useTotoContext'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './MatchOverview.module.scss'
-import { successToast, errorToast } from '../../../utils/toast'
-import AdminMatchCard from '../../../components/MatchCard/Cards/AdminMatchCard/AdminMatchCard'
+import AdminMatchCard from '../../../components/MatchCard/AdminMatchCard/AdminMatchCard'
+import { useTeam } from '../../../hooks/useTeam'
+import { useMatch } from '../../../hooks/useMatch'
 
 registerLocale('lv', lv)
 
 const MatchOverview = () => {
-  const [teams, setTeams] = useState([])
   const [homeTeam, setHomeTeam] = useState(null)
   const [awayTeam, setAwayTeam] = useState(null)
   const [startingTime, setStartingTime] = useState(null)
   const [selectedGameType, setSelectedGameType] = useState('Regular game')
   const { user } = useAuthContext()
-  const { matches, dispatch, unsettledMatches } = useTotoContext()
+  const { unsettledMatches, teams } = useTotoContext()
+  const { getTeams } = useTeam()
+  const { getUnsettledMatches, createMatch } = useMatch()
 
   useEffect(() => {
-    const getAllTeams = async () => {
-      const response = await fetch('/api/team/all', {
-        credentials: 'include',
-      })
-
-      const { data, status } = await response.json()
-      if (status === 'success') {
-        setTeams(data)
-      }
-    }
-
     if (user) {
-      getAllTeams()
-    }
-  }, [user])
-
-  useEffect(() => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-    const getUnsettledMatches = async () => {
-      const response = await fetch(`/api/match/all?timezone=${timezone}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-
-      const { data, message, status } = await response.json()
-
-      if (status === 'success') {
-        dispatch({
-          type: 'SET_UNSETTLED_MATCHES',
-          payload: data.filter(
-            (match) => match.isMatchFinished
-              && (!match.homeTeamScore && !match.awayTeamScore),
-          ),
-        })
-      } else {
-        errorToast(message)
-      }
-    }
-
-    if (user) {
+      getTeams()
       getUnsettledMatches()
     }
-  }, [user, dispatch, matches])
+  }, [user])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const match = {
-      homeTeam,
-      awayTeam,
-      startingTime,
-      selectedGameType,
-    }
-
-    const response = await fetch('/api/match/new', {
-      method: 'POST',
-      body: JSON.stringify(match),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    })
-
-    const json = await response.json()
-
-    const { data, message, status } = json
-
-    if (status === 'success') {
-      successToast(message)
-      setHomeTeam(null)
-      setAwayTeam(null)
-      setStartingTime(null)
-      setSelectedGameType('Regular game')
-      dispatch({ type: 'CREATE_MATCH', payload: data })
-      e.target.reset()
-    } else {
-      errorToast(message)
-    }
+    createMatch(homeTeam, awayTeam, startingTime, selectedGameType)
   }
 
   return (
@@ -153,7 +87,7 @@ const MatchOverview = () => {
           && unsettledMatches.map((match) => (
             <AdminMatchCard key={match._id} {...match} />
           ))}
-        {!unsettledMatches && <h3>No unsettled matches</h3>}
+        {!unsettledMatches.length && <h3>No unsettled matches</h3>}
       </div>
     </div>
   )

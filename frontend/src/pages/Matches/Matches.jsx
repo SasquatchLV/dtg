@@ -2,18 +2,18 @@ import { useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Matches.module.scss'
-import FinishedCard from '../../components/MatchCard/Cards/FinishedMatchCard/FinishedCard'
-import PredictCard from '../../components/MatchCard/Cards/PredictMatchCard/PredictCard'
+import FinishedCard from '../../components/MatchCard/FinishedMatchCard/FinishedCard'
+import PredictCard from '../../components/MatchCard/PredictMatchCard/PredictCard'
 import { useMatch } from '../../hooks/useMatch'
 
 const Matches = () => {
   const { matches } = useTotoContext()
   const { user } = useAuthContext()
-  const { getAllMatches } = useMatch()
+  const { getMatches } = useMatch()
 
   useEffect(() => {
     if (user) {
-      getAllMatches()
+      getMatches()
     }
   }, [user])
 
