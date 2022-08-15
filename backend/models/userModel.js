@@ -223,14 +223,16 @@ userSchema.statics.determinePoints = async function (
   const winningDiff =
     Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
 
-  const winningTeam = homeScore > awayScore ? 'Home' : 'Away'
-  const pWinningTeam = pHomeScore > pAwayScore ? 'Home' : 'Away'
+  const winningTeam = (homeScore > awayScore) ? 'Home' : 'Away'
+  const pWinningTeam = (pHomeScore > pAwayScore) ? 'Home' : 'Away'
 
   const precisePrediction =
-    Number(homeScore) === pHomeScore && Number(awayScore) === pAwayScore
+    (Number(homeScore) === pHomeScore) && (Number(awayScore) === pAwayScore)
+
   const preciseDiff =
-    winningTeam === pWinningTeam && winningDiff === pWinningDiff
-  const preciseWinningTeam = winningTeam === pWinningTeam
+    (winningTeam === pWinningTeam) && (winningDiff === pWinningDiff)
+
+  const preciseWinningTeam = (winningTeam === pWinningTeam)
 
   const addGameToHistory = (points) => {
     if (user.lastFiveGames.length === 5) {

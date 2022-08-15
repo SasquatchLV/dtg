@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useMatch } from '../../../../hooks/useMatch'
+import { useMatch } from '../../../hooks/useMatch'
 import styles from './AdminMatchCard.module.scss'
 
 const FinalResult = ({ matchId, isAdmin }) => {

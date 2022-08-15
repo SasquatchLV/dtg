@@ -1,16 +1,18 @@
 import React from 'react'
-import styles from './AdminMatchCard.module.scss'
-import { useAuthContext } from '../../../../hooks/useAuthContext'
-import { useModalContext } from '../../../../hooks/useModalContext'
-import FinalResult from './FinalResult'
-import { useMatch } from '../../../../hooks/useMatch'
+import styles from './FinishedCard.module.scss'
+import { useAuthContext } from '../../../hooks/useAuthContext'
+import { useModalContext } from '../../../hooks/useModalContext'
+import { useMatch } from '../../../hooks/useMatch'
 
-const AdminMatchCard = ({
+const FinishedCard = ({
   homeTeam,
+  homeTeamScore,
   awayTeam,
+  awayTeamScore,
   _id,
   usersParticipating,
   title,
+  overTime,
   userStartTime,
   userStartDate,
   userTimeTillGame,
@@ -19,6 +21,9 @@ const AdminMatchCard = ({
   const { dispatchModal } = useModalContext()
   const { deleteMatch } = useMatch()
   const isAdmin = user?.roles?.includes(2000)
+  const hasParticipated = usersParticipating.some(({ email }) => email === user.email)
+  const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
+  const usersBet = usersParticipating[indexOfUser]
 
   const modalProps = {
     text: 'Confirm to delete match!',
@@ -44,12 +49,10 @@ const AdminMatchCard = ({
             />
           </button>
           )}
-
       <div className={styles.time}>
         <h4>{userStartTime}</h4>
         <span>{userStartDate}</span>
       </div>
-
       <div className={styles.middle}>
         <h5>{title}</h5>
         <div className={styles.teams}>
@@ -58,7 +61,12 @@ const AdminMatchCard = ({
             <img src={homeTeam.flag} alt="flag" className={styles.flag} />
           </div>
           <div className={styles.resultBox}>
-            <b> - </b>
+            <div className={styles.result}>
+              <b>{`${homeTeamScore} `}</b>
+              <b>-</b>
+              <b>{`${awayTeamScore}`}</b>
+            </div>
+            {overTime && <p className={styles.overtime}>OT</p>}
           </div>
           <div className={styles.team}>
             <img src={awayTeam.flag} alt="flag" className={styles.flag} />
@@ -69,9 +77,18 @@ const AdminMatchCard = ({
           {userTimeTillGame}
         </span>
       </div>
-      <FinalResult matchId={_id} isAdmin={isAdmin} />
+      {hasParticipated ? (
+        <h4 className={styles.info}>
+          <p>Predicted Score:</p>
+          <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
+        </h4>
+      ) : (
+        <h4 className={styles.info}>
+          No prediction made
+        </h4>
+      )}
     </div>
   )
 }
 
-export default AdminMatchCard
+export default FinishedCard
