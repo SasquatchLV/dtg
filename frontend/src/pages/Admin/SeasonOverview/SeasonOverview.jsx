@@ -11,6 +11,7 @@ const SeasonOverview = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
+
   const { ongoingSeason, teamSelection } = useTotoContext()
   const {
     getTeamSelection, startSeason, finishSeason,
