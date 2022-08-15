@@ -1,51 +1,24 @@
 import { useState, useEffect } from 'react'
-import { toast } from 'react-toastify'
 import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './TeamOverview.module.scss'
 import { useTeam } from '../../../hooks/useTeam'
-import { useTeamContext } from '../../../hooks/useTeamContext'
+import { useTotoContext } from '../../../hooks/useTotoContext'
+import { useSeason } from '../../../hooks/useSeason'
 
 const TeamOverview = () => {
   const [countryName, setCountryName] = useState('')
   const [countryFlag, setCountryFlag] = useState('')
   const [countryGroup, setCountryGroup] = useState('')
-  const [seasonAlreadyRunning, setSeasonAlreadyRunning] = useState(false)
   const { user } = useAuthContext()
-  const { getTeams } = useTeam()
-  const { teams } = useTeamContext()
-
-  const getAllSeasons = async () => {
-    const response = await fetch('/api/season/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const { data, message, status } = await response.json()
-
-    if (status === 'success') {
-      data.some((season) => season.status === 'active' && setSeasonAlreadyRunning(true))
-    }
-  }
-
-  const addTeam = async () => {
-    const country = countryName
-    const flag = countryFlag
-    const group = countryGroup
-
-    await fetch('/api/team/new', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ country, flag, group }),
-    })
-  }
+  const { getTeams, addTeam } = useTeam()
+  const { getSeasons } = useSeason()
+  const { teams, ongoingSeason } = useTotoContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await addTeam()
+    await addTeam(countryName, countryFlag, countryGroup)
 
     setCountryFlag('')
     setCountryName('')
@@ -56,8 +29,7 @@ const TeamOverview = () => {
   useEffect(() => {
     if (user) {
       getTeams()
-
-      getAllSeasons()
+      getSeasons()
     }
   }, [user])
 
@@ -88,7 +60,7 @@ const TeamOverview = () => {
             <option value="A">A</option>
             <option value="B">B</option>
           </select>
-          {!seasonAlreadyRunning
+          {!ongoingSeason
           && (
           <h5 className={styles.err}>
             No active season. Start season to add teams here.
@@ -97,7 +69,7 @@ const TeamOverview = () => {
           <button
             className={styles.addBtn}
             type="submit"
-            disabled={!seasonAlreadyRunning}
+            disabled={!ongoingSeason}
           >
             Add Team
           </button>
@@ -114,7 +86,7 @@ const TeamOverview = () => {
           <span>GP</span>
           <span>Points</span>
         </div>
-        {teams.map(({
+        {teams?.map(({
           _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, id,
         }) => (
           <TeamsCard

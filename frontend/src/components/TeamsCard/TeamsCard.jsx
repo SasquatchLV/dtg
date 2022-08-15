@@ -1,61 +1,26 @@
 import React from 'react'
-import { toast } from 'react-toastify'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './TeamsCard.module.scss'
+import { useTeam } from '../../hooks/useTeam'
 
 const TeamsCard = (props) => {
   const {
     _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, deletable,
   } = props
   const { user } = useAuthContext()
+  const { deleteTeam } = useTeam()
   const isAdmin = user?.roles?.includes(2000)
-
-  const handleDelete = async () => {
-    const response = await fetch('/api/team/', {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ _id }),
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      toast.success(json.message, {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      })
-    }
-
-    if (!response.ok) {
-      toast.error(json.error, {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-      })
-    }
-  }
 
   const totalGames = (won, lost) => {
     const total = won + lost
+
     return total
   }
 
   return (
     <div className={styles.teamRow}>
       {(isAdmin && deletable) && (
-      <button className={styles.delete} onClick={handleDelete}>
+      <button className={styles.delete} onClick={() => deleteTeam(_id)}>
         <img src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png" alt="delete" className={styles.deleteImg} />
       </button>
       )}

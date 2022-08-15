@@ -1,11 +1,10 @@
 import styles from './UserInfo.module.scss'
 import { useUser } from '../../hooks/useUser'
 import { useModalContext } from '../../hooks/useModalContext'
-import { useUserContext } from '../../hooks/useUserContext'
+import { useTotoContext } from '../../hooks/useTotoContext'
 
 const UserInfo = () => {
-  const { activeUser } = useUserContext()
-
+  const { activeUser } = useTotoContext()
   const {
     promoteUser, demoteUser, toggleHasPaid, deleteUser,
   } = useUser()

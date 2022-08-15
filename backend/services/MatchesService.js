@@ -114,6 +114,11 @@ class MatchesService {
   }) {
     const user = await User.findOne({ email })
     const match = await Match.findOne({ _id: matchId })
+    console.log(matchId,
+      homeScore,
+      awayScore,
+      overTime,
+      email)
     const { startingTime, isMatchFinished } = match
 
     if (!user) {
@@ -165,8 +170,8 @@ class MatchesService {
   }
 
   // publish final result of the game
-  static async publishMatch({ _id, homeScore, awayScore, ot }) {
-    const match = await Match.setResult(_id, homeScore, awayScore, ot)
+  static async publishMatch({ matchId, homeScore, awayScore, overTime }) {
+    const match = await Match.setResult(matchId, homeScore, awayScore, overTime)
 
     const { usersParticipating, title } = match
 
@@ -185,14 +190,14 @@ class MatchesService {
     let awayPoints = 0
 
     if (homeScore > awayScore) {
-      if (!ot) {
+      if (!overTime) {
         homePoints += 3
       } else {
         homePoints += 2
         awayPoints += 1
       }
     } else {
-      if (!ot) {
+      if (!overTime) {
         awayPoints += 3
       } else {
         awayPoints += 2
@@ -210,8 +215,8 @@ class MatchesService {
   }
 
   // update finished match
-  static async finishMatch({ _id }) {
-    const match = await Match.finish(_id)
+  static async finishMatch({ matchId }) {
+    const match = await Match.finish(matchId)
 
     return { match }
   }

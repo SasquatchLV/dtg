@@ -40,7 +40,7 @@ const CurrentStandings = () => {
             <span>GP</span>
             <span>Points</span>
           </div>
-          {groupA.map(({
+          {groupA?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
           }) => (
             <TeamsCard
@@ -68,7 +68,7 @@ const CurrentStandings = () => {
             <span>GP</span>
             <span>Points</span>
           </div>
-          {groupB.map(({
+          {groupB?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
           }) => (
             <TeamsCard

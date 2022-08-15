@@ -39,10 +39,10 @@ router.post('/predict', verifyRoles(ROLE_LIST.User), async (req, res) => {
 
 // match updates as finished
 router.post('/finish', verifyRoles(ROLE_LIST.User), async (req, res) => {
-  const { _id } = req.body
+  const { matchId } = req.body
 
   try {
-    const { match } = await MatchesService.finishMatch({ _id })
+    const { match } = await MatchesService.finishMatch({ matchId })
 
     res.send({
       data: match,
@@ -60,10 +60,10 @@ router.post('/finish', verifyRoles(ROLE_LIST.User), async (req, res) => {
 
 // make prediction of the match outcome
 router.post('/publish', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
-  const { _id, homeScore, awayScore, ot } = req.body
+  const { matchId, homeScore, awayScore, overTime } = req.body
 
   try {
-    const { match } = await MatchesService.publishMatch({ _id, homeScore, awayScore, ot })
+    const { match } = await MatchesService.publishMatch({ matchId, homeScore, awayScore, overTime })
 
     res.send({
       data: match,

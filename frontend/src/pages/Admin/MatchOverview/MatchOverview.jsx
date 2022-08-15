@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import lv from 'date-fns/locale/lv'
 import { useAuthContext } from '../../../hooks/useAuthContext'
-import { useMatchContext } from '../../../hooks/useMatchContext'
+import { useTotoContext } from '../../../hooks/useTotoContext'
 import 'react-datepicker/dist/react-datepicker.css'
 import styles from './MatchOverview.module.scss'
 import { successToast, errorToast } from '../../../utils/toast'
@@ -17,7 +17,7 @@ const MatchOverview = () => {
   const [startingTime, setStartingTime] = useState(null)
   const [selectedGameType, setSelectedGameType] = useState('Regular game')
   const { user } = useAuthContext()
-  const { matches, dispatch, unsettledMatches } = useMatchContext()
+  const { matches, dispatch, unsettledMatches } = useTotoContext()
 
   useEffect(() => {
     const getAllTeams = async () => {

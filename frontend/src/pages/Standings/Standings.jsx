@@ -1,37 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Standings.module.scss'
-import { errorToast } from '../../utils/toast'
 import CurrentStandings from './CurrentStandings/CurrentStandings'
 import PreviousStandings from './PreviousStandings/PreviousStandings'
+import { useSeason } from '../../hooks/useSeason'
 
 const Standings = () => {
-  const [years, setYears] = useState([])
   const [chosenYear, setChosenYear] = useState('')
   const { user } = useAuthContext()
-
-  const getAllSeasons = async () => {
-    const response = await fetch('/api/season/all')
-
-    const { data, status, message } = await response.json()
-
-    if (status === 'success') {
-      setYears(data.filter((season) => season.status === 'finished').map(({ year }) => year))
-    } else {
-      errorToast(message)
-    }
-  }
+  const { years } = useTotoContext()
+  const { getSeasons } = useSeason()
 
   useEffect(() => {
     if (user) {
-      getAllSeasons()
+      getSeasons()
     }
   }, [user])
 
   return (
     <div className={styles.container}>
       <div className={styles.yearWrapper}>
-        {years.map((year) => (
+        {years?.map((year) => (
           <button
             key={year}
             onClick={() => setChosenYear(year)}

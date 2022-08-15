@@ -1,9 +1,8 @@
-import { fetchData } from '../utils/fetch'
-import { useUserContext } from './useUserContext'
+import { useTotoContext } from './useTotoContext'
 import { errorToast, successToast } from '../utils/toast'
 
 export const useUser = () => {
-  const { dispatch } = useUserContext()
+  const { dispatch } = useTotoContext()
 
   const signupUser = async (email, password) => {
     const response = await fetch('/api/user/signup', {
@@ -101,17 +100,31 @@ export const useUser = () => {
   }
 
   const updateAvatar = async (avatarLink) => {
-    const route = 'user/avatar'
-    const bodyParams = { avatarLink }
+    const { status, message } = await (await fetch('/api/user/avatar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ avatarLink }),
+    })).json()
 
-    await fetchData(route, 'POST', bodyParams)
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
+    }
   }
 
   const changeUserPassword = async (newPass) => {
-    const route = 'user/password'
-    const bodyParams = { newPass }
+    const { status, message } = await (await fetch('/api/user/password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPass }),
+    })).json()
 
-    await fetchData(route, 'POST', bodyParams)
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
+    }
   }
 
   return {

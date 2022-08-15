@@ -6,44 +6,25 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './UserModal.module.scss'
 import { avatars } from '../../data/avatars'
 import { useUser } from '../../hooks/useUser'
+import { useTotoContext } from '../../hooks/useTotoContext'
 
 const UserModal = () => {
   const [avatarSelectionActive, setAvatarSelectionActive] = useState(false)
   const [passwordInputActive, setPasswordInputActive] = useState(false)
   const [newPassValue, setNewPassValue] = useState('')
-  const [activeUser, setActiveUser] = useState({})
+  const { activeUser } = useTotoContext()
   const { user } = useAuthContext()
-  const { updateAvatar, changeUserPassword } = useUser()
+  const { updateAvatar, changeUserPassword, getUser } = useUser()
 
   const userFound = Object.keys(activeUser).length
 
-  const fetchUser = async () => {
-    const response = await fetch(`/api/user/${user.email}`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      setActiveUser(json)
-    }
-
-    if (!response.ok) {
-      setActiveUser({})
-    }
-  }
-
   useEffect(() => {
-    fetchUser()
+    getUser(user.email)
   }, [])
 
   const handleSelection = async (avatarLink) => {
     await updateAvatar(avatarLink)
-
-    fetchUser()
+    await getUser(user.email)
   }
 
   const handleClickAway = () => {

@@ -1,48 +1,83 @@
-import { useMatchContext } from './useMatchContext'
-import { fetchData } from '../utils/fetch'
+import { useTotoContext } from './useTotoContext'
 import { errorToast, successToast } from '../utils/toast'
 
 export const useMatch = () => {
-  const { dispatch } = useMatchContext()
+  const { dispatch } = useTotoContext()
 
   const createMatch = async (homeTeam, awayTeam, startingTime, selectedGameType) => {
-    const route = 'match/new'
-    const bodyParams = {
-      homeTeam, awayTeam, startingTime, selectedGameType,
+    const response = await fetch('/api/match/new', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        homeTeam, awayTeam, startingTime, selectedGameType,
+      }),
+    })
+
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
     }
 
-    fetchData(route, 'POST', bodyParams)
+    getAllMatches()
   }
 
-  const makePrediction = async (_id, homeScore, awayScore, ot) => {
-    const route = 'match/predict'
-    const bodyParams = {
-      _id,
-      homeScore,
-      awayScore,
-      ot,
+  const makePrediction = async (matchId, homeScore, awayScore, overTime) => {
+    const response = await fetch('/api/match/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        matchId, homeScore, awayScore, overTime,
+      }),
+    })
+
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
     }
 
-    fetchData(route, 'POST', bodyParams)
+    getAllMatches()
   }
 
-  const finishMatch = async (_id) => {
-    const route = 'match/finish'
-    const bodyParams = { _id }
+  const finishMatch = async (matchId) => {
+    const response = await fetch('/api/match/finish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matchId }),
+    })
 
-    fetchData(route, 'POST', bodyParams)
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
+    }
   }
 
-  const publishResult = async (_id, homeScore, awayScore, ot) => {
-    const route = 'match/publish'
-    const bodyParams = {
-      _id,
-      homeScore,
-      awayScore,
-      ot,
+  const publishResult = async (matchId, homeScore, awayScore, overTime) => {
+    const response = await fetch('/api/match/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        matchId, homeScore, awayScore, overTime,
+      }),
+    })
+
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
+    } else {
+      errorToast(message)
     }
 
-    fetchData(route, 'POST', bodyParams)
+    getAllMatches()
   }
 
   const getAllMatches = async () => {
