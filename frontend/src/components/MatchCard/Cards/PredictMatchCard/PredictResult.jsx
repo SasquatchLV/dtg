@@ -1,39 +1,18 @@
 import { useState } from 'react'
 import { errorToast, successToast } from '../../../../utils/toast'
 import styles from './PredictCard.module.scss'
+import { useMatch } from '../../../../hooks/useMatch'
 
 const PredictResult = ({ matchId, isAdmin }) => {
   const [homeScore, setHomeScore] = useState(0)
   const [awayScore, setAwayScore] = useState(0)
   const [overTime, setOverTime] = useState(false)
+  const { makePrediction } = useMatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const prediction = {
-      matchId,
-      homeScore,
-      awayScore,
-      overTime,
-    }
-
-    const makePrediction = async () => {
-      const response = await fetch('/api/match/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(prediction),
-      })
-
-      const { status, message } = await response.json()
-
-      if (status === 'success') {
-        successToast(message)
-      } else {
-        errorToast(message)
-      }
-    }
-
-    await makePrediction()
+    await makePrediction(matchId, homeScore, awayScore, overTime)
   }
 
   return (

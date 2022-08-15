@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import LeaderBoardCard from '../../components/LeaderBoardCard/LeaderBoardCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import { useUserContext } from '../../hooks/useUserContext'
+import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './LeaderBoard.module.scss'
 import { useUser } from '../../hooks/useUser'
 
 const LeaderBoard = () => {
   const { user } = useAuthContext()
-  const { users, prizepool } = useUserContext()
+  const { users, prizepool } = useTotoContext()
   const { getPrizePoolAndUsers } = useUser()
 
   useEffect(() => {

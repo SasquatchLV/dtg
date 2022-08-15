@@ -1,82 +1,23 @@
 import { useState, useEffect } from 'react'
 import styles from './SeasonOverview.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
-import { errorToast } from '../../../utils/toast'
 import { useModalContext } from '../../../hooks/useModalContext'
+import { useTotoContext } from '../../../hooks/useTotoContext'
+import { useSeason } from '../../../hooks/useSeason'
 
 const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState(0)
-  const [teamSelection, setTeamSelection] = useState([])
   const [selectedTeams, setSelectedTeams] = useState([])
-  const [seasonAlreadyRunning, setSeasonAlreadyRunning] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
-  const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
-
-  const getAllSeasons = async () => {
-    const response = await fetch('/api/season/all', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      json.some(({ status }) => status === 'active' && setSeasonAlreadyRunning(true))
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
-    }
-  }
-
-  const startSeason = async () => {
-    const response = await fetch('/api/season/new', {
-      method: 'POST',
-      body: JSON.stringify({ seasonsYear, selectedTeams }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-    })
-
-    await response.json()
-
-    setSubmitted(true)
-  }
-
-  const finishSeason = async () => {
-    const response = await fetch('/api/season/finish', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-    })
-
-    await response.json()
-    setSubmitted(true)
-  }
-
-  const getTeamSelection = async () => {
-    const response = await fetch('/api/season/teams', {
-      headers: { Authorization: `Bearer ${user.token}` },
-    })
-
-    const json = await response.json()
-
-    if (response.ok) {
-      setTeamSelection(json)
-    }
-
-    if (!response.ok) {
-      errorToast('Can`t load')
-    }
-  }
+  const { ongoingSeason, teamSelection } = useTotoContext()
+  const {
+    getTeamSelection, startSeason, finishSeason,
+  } = useSeason()
 
   useEffect(() => {
     getTeamSelection()
-    getAllSeasons()
   }, [user])
 
   const teamAlreadySelected = (country) => selectedTeams.some((team) => team.country === country)
@@ -114,7 +55,7 @@ const SeasonOverview = () => {
   const seasonStartProps = {
     text: 'Confirm to start new season!',
     confirm: async () => {
-      await startSeason()
+      await startSeason(seasonsYear, selectedTeams)
       dispatchModal({ type: 'CLOSE_MODAL' })
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
@@ -130,64 +71,64 @@ const SeasonOverview = () => {
   }
 
   return (
-    !submitted ? (
-      <div className={styles.seasonOverview}>
-        <div className={styles.seasonActions}>
-          <div className={styles.seasonForm}>
-            <h3>Start new season</h3>
-            <label>Year</label>
-            <input
-              type="number"
-              onChange={(e) => setSeasonsYear(e.target.value)}
-              value={seasonsYear}
-              placeholder="year..."
-              required
-            />
-            {allHaveBeenSelected ? (
-              <div className={styles.selectedContainer}>
-                <h6>Group A</h6>
-                <div className={styles.selectedWrapper}>
-                  {selectedTeams.map(({ group, flag }) => (group === 'A'
-                    ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
-                    : ''))}
-                </div>
-                <h6>Group B</h6>
-                <div className={styles.selectedWrapper}>
-                  {selectedTeams.map(({ group, flag }) => (group === 'B'
-                    ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
-                    : ''))}
-                </div>
+    <div className={styles.seasonOverview}>
+      <div className={styles.seasonActions}>
+        <div className={styles.seasonForm}>
+          <h3>Start/Finish season</h3>
+          <label>Year</label>
+          <input
+            type="number"
+            onChange={(e) => setSeasonsYear(e.target.value)}
+            value={seasonsYear}
+            placeholder="year..."
+            required
+          />
+          {allHaveBeenSelected ? (
+            <div className={styles.selectedContainer}>
+              <h6>Group A</h6>
+              <div className={styles.selectedWrapper}>
+                {selectedTeams?.map(({ group, flag }) => (group === 'A'
+                  ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
+                  : ''))}
               </div>
-            ) : (
-              <h5 className={styles.err}>
-                Please select at least 10 teams,
-                <br />
-                not more than 16
-              </h5>
-            )}
-            {seasonAlreadyRunning
+              <h6>Group B</h6>
+              <div className={styles.selectedWrapper}>
+                {selectedTeams?.map(({ group, flag }) => (group === 'B'
+                  ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
+                  : ''))}
+              </div>
+            </div>
+          ) : (
+            <h5 className={styles.err}>
+              Please select at least 10 teams,
+              <br />
+              not more than 16
+            </h5>
+          )}
+          {ongoingSeason
               && (
               <h5 className={styles.err}>
                 Can`t start new season, while a season is already ongoing.
                 Please finish the season to start a new one!
               </h5>
               )}
-            <button
-              className={styles.addBtn}
-              disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || seasonAlreadyRunning}
-              onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonStartProps })}
-            >
-              Start Season
-            </button>
-            <button
-              className={styles.addBtn}
-              disabled={!seasonAlreadyRunning}
-              onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })}
-            >
-              Finish Season
-            </button>
-          </div>
+          <button
+            className={styles.addBtn}
+            disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || ongoingSeason}
+            onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonStartProps })}
+          >
+            Start Season
+          </button>
+          <button
+            className={styles.addBtn}
+            disabled={!ongoingSeason}
+            onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })}
+          >
+            Finish Season
+          </button>
         </div>
+      </div>
+      {teamSelection.length ? (
         <div className={styles.selectionWrapper}>
           <h4>
             <i>
@@ -235,10 +176,8 @@ const SeasonOverview = () => {
             </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <h1>All done!</h1>
-    )
+      ) : null}
+    </div>
   )
 }
 

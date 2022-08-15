@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import styles from './ConfirmationModal.module.scss'
 import Portal from './Portal'
 
 const ConfirmationModal = ({ text, handleConfirmation, handleCancelation }) => {

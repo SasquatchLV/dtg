@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
-import { useMatchContext } from '../../hooks/useMatchContext'
+import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Matches.module.scss'
 import FinishedCard from '../../components/MatchCard/Cards/FinishedMatchCard/FinishedCard'
 import PredictCard from '../../components/MatchCard/Cards/PredictMatchCard/PredictCard'
 import { useMatch } from '../../hooks/useMatch'
 
 const Matches = () => {
-  const { matches } = useMatchContext()
+  const { matches } = useTotoContext()
   const { user } = useAuthContext()
   const { getAllMatches } = useMatch()
 
