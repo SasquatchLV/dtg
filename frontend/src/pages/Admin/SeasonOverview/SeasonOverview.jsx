@@ -4,6 +4,7 @@ import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useModalContext } from '../../../hooks/useModalContext'
 import { useTotoContext } from '../../../hooks/useTotoContext'
 import { useSeason } from '../../../hooks/useSeason'
+import TeamInput from './TeamInput'
 
 const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState(0)
@@ -128,15 +129,10 @@ const SeasonOverview = () => {
             Finish Season
           </button>
         </div>
+        <TeamInput />
       </div>
       {teamSelection.length ? (
         <div className={styles.selectionWrapper}>
-          <h4>
-            <i>
-              If a team is not in the selection, start the season without it
-              and afterwards add the team manually in Team Overview
-            </i>
-          </h4>
           <h5 className={styles.err}>{errorMsg}</h5>
           <div className={styles.selection}>
             <h3>Teams for group A</h3>

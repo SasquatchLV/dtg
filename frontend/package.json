@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "totoBuild": "npm run winBuild && scp -r build/ koderis@toto.dtg.lv:/var/www/html/",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --max-warnings=0"

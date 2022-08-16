@@ -16,7 +16,47 @@ router.get('/all', verifyRoles(ROLE_LIST.User), async (req, res) => {
 
     res.send({
       data: teams,
+      message: "All Season Teams",
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
+
+// GET team selection
+router.get('/selection', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  try {
+    const { teamSelection } = await TeamsService.getTeamSelection()
+    
+    res.send({
+      data: teamSelection,
       message: "All Teams",
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
+
+// POST team to selection
+router.post('/selection', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
+  const { countryName, countryFlag } = req.body
+
+  try {
+    await TeamsService.addTeamToSelection({ countryName, countryFlag })
+
+    res.send({
+      data: null,
+      message: "Team added to selection",
       status: "success",
     })
   } catch (error) {
