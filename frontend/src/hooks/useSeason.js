@@ -20,13 +20,31 @@ export const useSeason = () => {
   }
 
   const getTeamSelection = async () => {
-    const response = await fetch('/api/season/teams')
-
-    const { data, status, message } = await response.json()
+    const response = await fetch('/api/team/selection')
+    const { status, data, message } = await response.json()
 
     if (status === 'success') {
       await dispatch({ type: 'SET_TEAMSELECTION', payload: data })
+
       getSeasons()
+    }
+
+    if (status === 'error') {
+      errorToast(message)
+    }
+  }
+
+  const addTeamToSelection = async (countryName, countryFlag) => {
+    const response = await fetch('/api/team/selection', {
+      method: 'POST',
+      body: JSON.stringify({ countryName, countryFlag }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    const { status, message } = await response.json()
+
+    if (status === 'success') {
+      successToast(message)
     }
 
     if (status === 'error') {
@@ -72,6 +90,6 @@ export const useSeason = () => {
   }
 
   return {
-    getSeasons, getTeamSelection, startSeason, finishSeason,
+    getSeasons, getTeamSelection, startSeason, finishSeason, addTeamToSelection,
   }
 }

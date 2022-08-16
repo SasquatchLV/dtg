@@ -9,6 +9,7 @@ const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const credentials = require('./middleware/credentials')
 const routes = require('./routes/index')
+const startup = require('./startup/index')
 
 // express app
 const app = express()
@@ -41,11 +42,17 @@ app.use('/api', routes)
 
 // connect to db
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    autoIndex: true,
+  })
   .then(() => {
     // listen for requests
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, async () => {
       console.log('connected to db & listening on port', process.env.PORT)
+      await startup()
     })
   })
   .catch((error) => {

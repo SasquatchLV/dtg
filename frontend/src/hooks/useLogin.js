@@ -17,11 +17,11 @@ export const useLogin = () => {
       status, data, message,
     } = json
 
-    const {
-      userId, avatar, lastFiveGames, roles, points,
-    } = data
-
     if (status === 'success') {
+      const {
+        userId, avatar, lastFiveGames, roles, points,
+      } = data
+
       successToast(`Welcome ${data.email}!`)
 
       // save the user to local storage

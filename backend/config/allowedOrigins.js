@@ -4,6 +4,7 @@ const allowedOrigins = [
   "http://localhost:4000",
   "http://localhost:3000",
   "192.168.200.138",
+  "http://toto.dtg.lv",
 ];
 
 module.exports = allowedOrigins;
