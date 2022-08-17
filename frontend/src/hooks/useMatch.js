@@ -79,7 +79,7 @@ export const useMatch = () => {
       errorToast(message)
     }
 
-    getMatches()
+    getUnsettledMatches()
   }
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone

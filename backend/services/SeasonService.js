@@ -52,7 +52,7 @@ class SeasonService {
 
         // resets db for next season
         await Promise.all([
-            ...users.map((user) => User.updateOne({ "_id": user._id }, { "points": 0 })),
+            ...users.map((user) => User.updateOne({ "_id": user._id }, { "points": 0, "hasPaid": false })),
             Match.deleteMany({}),
             Team.deleteMany({}),
             activeSeason.save()

@@ -18,6 +18,22 @@ const UserModal = () => {
 
   const userFound = Object.keys(activeUser).length
 
+  const determineStyle = (game) => {
+    const style = {
+      backgroundColor: '#e0d315',
+    }
+
+    if (game === '0p') {
+      style.backgroundColor = '#E44D2E'
+    } else if (game === '1p') {
+      style.backgroundColor = '#9af3b4'
+    } else if (game === '2p') {
+      style.backgroundColor = '#03C03C'
+    }
+
+    return style
+  }
+
   useEffect(() => {
     getUser(user.email)
   }, [])
@@ -100,7 +116,8 @@ const UserModal = () => {
           <div className={styles.gameWrapper}>
             {activeUser.lastFiveGames.map((game, i) => (
               <span
-                className={game === '0p' ? styles.lost : styles.won}
+                className={styles.won}
+                style={determineStyle(game)}
                 key={i}
               >
                 {game}
@@ -111,7 +128,7 @@ const UserModal = () => {
       </div>
     </div>
   ) : (
-    <h1>Loading..</h1>
+    <h4>Loading..</h4>
   )
 }
 

@@ -10,6 +10,7 @@ const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState(0)
   const [selectedTeams, setSelectedTeams] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
+  const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
 
@@ -116,15 +117,21 @@ const SeasonOverview = () => {
               )}
           <button
             className={styles.addBtn}
-            disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || ongoingSeason}
-            onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonStartProps })}
+            disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || ongoingSeason || submitted}
+            onClick={() => {
+              dispatchModal({ type: 'OPEN_MODAL', payload: seasonStartProps })
+              setSubmitted(true)
+            }}
           >
             Start Season
           </button>
           <button
             className={styles.addBtn}
-            disabled={!ongoingSeason}
-            onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })}
+            disabled={!ongoingSeason || submitted}
+            onClick={() => {
+              dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })
+              setSubmitted(true)
+            }}
           >
             Finish Season
           </button>

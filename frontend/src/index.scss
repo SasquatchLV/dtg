@@ -37,3 +37,9 @@ body {
   padding: 20px;
   margin: 0 auto;
 }
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}

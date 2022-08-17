@@ -35,7 +35,12 @@ const Signup = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button type="submit">Add</button>
+      <button
+        type="submit"
+        disabled={!email || !password}
+      >
+        Add
+      </button>
     </form>
   )
 }

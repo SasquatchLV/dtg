@@ -114,6 +114,31 @@
     width: 100%;
 }
 
+.participators {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: transparent;
+    border: none;
+    opacity: 0.6;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
+    font-weight: 700;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: none;
+    }
+}
+
+.participatorImg {
+    max-width: 25px;
+    width: 100%;
+}
+
 .inputWrapper {
     display: flex;
     flex-direction: column;

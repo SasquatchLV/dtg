@@ -44,36 +44,12 @@ const teamSchema = new Schema(
 const userSchema = new Schema({
   email: {
     type: String,
-    required: true,
   },
   avatar: {
     type: String,
-    default:
-      'https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png',
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  roles: {
-    User: {
-      type: Number,
-      default: 1000,
-    },
-    Admin: Number,
   },
   points: {
     type: Number,
-    default: 0,
-  },
-  lastFiveGames: {
-    type: Array,
-    default: [],
-  },
-  createdAt: {
-    type: Date,
-    immutable: true,
-    default: () => new Date(),
   },
 })
 

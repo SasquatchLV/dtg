@@ -1,8 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
 import styles from './FinishedCard.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useModalContext } from '../../../hooks/useModalContext'
 import { useMatch } from '../../../hooks/useMatch'
+import UsersParticipating from '../../UsersParticipating/UsersParticipating'
 
 const FinishedCard = ({
   homeTeam,
@@ -17,6 +18,7 @@ const FinishedCard = ({
   userStartDate,
   userTimeTillGame,
 }) => {
+  const [showingUsers, setShowingUsers] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
   const { deleteMatch } = useMatch()
@@ -36,7 +38,8 @@ const FinishedCard = ({
 
   return (
     <div className={styles.container}>
-      {isAdmin
+      <div className={styles.card}>
+        {isAdmin
           && (
           <button
             className={styles.delete}
@@ -49,44 +52,57 @@ const FinishedCard = ({
             />
           </button>
           )}
-      <div className={styles.time}>
-        <h4>{userStartTime}</h4>
-        <span>{userStartDate}</span>
-      </div>
-      <div className={styles.middle}>
-        <h5>{title}</h5>
-        <div className={styles.teams}>
-          <div className={styles.team}>
-            <span>{homeTeam.country}</span>
-            <img src={homeTeam.flag} alt="flag" className={styles.flag} />
-          </div>
-          <div className={styles.resultBox}>
-            <div className={styles.result}>
-              <b>{`${homeTeamScore} `}</b>
-              <b>-</b>
-              <b>{`${awayTeamScore}`}</b>
-            </div>
-            {overTime && <p className={styles.overtime}>OT</p>}
-          </div>
-          <div className={styles.team}>
-            <img src={awayTeam.flag} alt="flag" className={styles.flag} />
-            <span>{awayTeam.country}</span>
-          </div>
+        <button
+          className={styles.participators}
+          onClick={() => setShowingUsers(!showingUsers)}
+        >
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1232/1232140.png"
+            alt="delete"
+            className={styles.participatorImg}
+          />
+          <span>{usersParticipating.length}</span>
+        </button>
+        <div className={styles.time}>
+          <h4>{userStartTime}</h4>
+          <span>{userStartDate}</span>
         </div>
-        <span className={styles.timeRemaining}>
-          {userTimeTillGame}
-        </span>
+        <div className={styles.middle}>
+          <h5>{title}</h5>
+          <div className={styles.teams}>
+            <div className={styles.team}>
+              <span>{homeTeam.country}</span>
+              <img src={homeTeam.flag} alt="flag" className={styles.flag} />
+            </div>
+            <div className={styles.resultBox}>
+              <div className={styles.result}>
+                <b>{`${homeTeamScore} `}</b>
+                <b>-</b>
+                <b>{`${awayTeamScore}`}</b>
+              </div>
+              {overTime && <p className={styles.overtime}>OT</p>}
+            </div>
+            <div className={styles.team}>
+              <img src={awayTeam.flag} alt="flag" className={styles.flag} />
+              <span>{awayTeam.country}</span>
+            </div>
+          </div>
+          <span className={styles.timeRemaining}>
+            {userTimeTillGame}
+          </span>
+        </div>
+        {hasParticipated ? (
+          <h4 className={styles.info}>
+            <p>Predicted Score:</p>
+            <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
+          </h4>
+        ) : (
+          <h4 className={styles.info}>
+            No prediction made
+          </h4>
+        )}
       </div>
-      {hasParticipated ? (
-        <h4 className={styles.info}>
-          <p>Predicted Score:</p>
-          <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
-        </h4>
-      ) : (
-        <h4 className={styles.info}>
-          No prediction made
-        </h4>
-      )}
+      {showingUsers && <UsersParticipating users={usersParticipating} />}
     </div>
   )
 }
