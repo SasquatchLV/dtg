@@ -257,7 +257,7 @@ userSchema.statics.determinePoints = async function (
 
   await user.save()
 
-  return user
+  return user.lastFiveGames[0]
 }
 
 module.exports = mongoose.model('User', userSchema)

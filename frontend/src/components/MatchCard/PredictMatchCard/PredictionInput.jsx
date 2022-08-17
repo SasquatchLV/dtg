@@ -6,10 +6,13 @@ const PredictionInput = ({ matchId, locked }) => {
   const [homeScore, setHomeScore] = useState(0)
   const [awayScore, setAwayScore] = useState(0)
   const [overTime, setOverTime] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const { makePrediction } = useMatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    setSubmitted(true)
 
     await makePrediction(matchId, homeScore, awayScore, overTime)
   }
@@ -52,14 +55,14 @@ const PredictionInput = ({ matchId, locked }) => {
         <button
           className={styles.predictBtn}
           onClick={(e) => handleSubmit(e)}
-          disabled={evenScore}
+          disabled={evenScore || submitted}
         >
           SUBMIT
         </button>
       </div>
     ) : (
       <h4 className={styles.lockedInfo}>
-        Match locked
+        Match locked, one hour before start!
       </h4>
     )
   )

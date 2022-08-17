@@ -40,6 +40,7 @@ const usersParticipatingSchema = new Schema({
   homeTeamScore: Number,
   awayTeamScore: Number,
   overTime: Boolean,
+  pointsEarned: String,
 })
 
 const matchSchema = new Schema({
@@ -106,6 +107,7 @@ matchSchema.statics.prediction = async function ({
     homeTeamScore: homeScore,
     awayTeamScore: awayScore,
     overTime,
+    pointsEarned: '',
   }
 
   match.usersParticipating = [...match.usersParticipating, userPrediction]

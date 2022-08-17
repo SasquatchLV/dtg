@@ -37,7 +37,7 @@ const TeamOverview = () => {
     <div className={styles.teamOverview}>
       <div className={styles.teamActions}>
         <form className={styles.teamForm} onSubmit={handleSubmit}>
-          <h3>New team for this season</h3>
+          <h3>Additional team for this season</h3>
           <label>Team name:</label>
           <input
             type="text"
@@ -69,7 +69,7 @@ const TeamOverview = () => {
           <button
             className={styles.addBtn}
             type="submit"
-            disabled={!ongoingSeason}
+            disabled={!ongoingSeason || !countryName || !countryFlag}
           >
             Add Team
           </button>

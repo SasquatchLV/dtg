@@ -35,11 +35,11 @@ class MatchesService {
         timeZone: timezone,
       })
 
-      
+
       const isMatchFinished =
         getTime(new Date(startingTime)) < getTime(new Date())
-        
-        const userTimeTillGame = isMatchFinished
+
+      const userTimeTillGame = isMatchFinished
         ? `Finished ${formatDistance(new Date(startingTime), new Date(), {
           addSuffix: true,
           includeSeconds: true,
@@ -48,12 +48,12 @@ class MatchesService {
           addSuffix: true,
           includeSeconds: true,
         })
-        
+
       if (isMatchFinished) {
         match.isMatchFinished = true
         match.save()
       }
-      
+
       const timeToLockMatch = (getTime(new Date(startingTime)) - getTime(new Date())) < 3600000
 
       if (timeToLockMatch) {
@@ -123,7 +123,7 @@ class MatchesService {
     const user = await User.findOne({ email })
     const match = await Match.findOne({ _id: matchId })
 
-    const { startingTime, isMatchFinished, locked } = match
+    const { startingTime, isMatchFinished, locked, usersParticipating } = match
 
     if (!user) {
       throw new Error('User not found')
@@ -139,6 +139,12 @@ class MatchesService {
 
     if (isMatchFinished) {
       throw new Error('You can not make a prediction for a finished match')
+    }
+
+    const alreadyParticipating = usersParticipating.some((user) => user.email === email)
+
+    if (alreadyParticipating) {
+      throw new Error('Already participating')
     }
 
     const timeTillMatch = getTime(new Date(startingTime)) - getTime(new Date())
@@ -179,16 +185,25 @@ class MatchesService {
 
     const { usersParticipating, title } = match
 
-    await usersParticipating.forEach(
-      ({ email, homeTeamScore, awayTeamScore }) =>
-        UserModel.determinePoints(
-          email,
-          homeScore,
-          awayScore,
-          homeTeamScore,
-          awayTeamScore
-        )
-    )
+    const userArr = []
+
+    for (let x = 0; x < usersParticipating.length; x++) {
+      let user = usersParticipating[x];
+
+      const points = await User.determinePoints(
+        user.email,
+        homeScore,
+        awayScore,
+        user.homeTeamScore,
+        user.awayTeamScore,
+      );
+
+      user.pointsEarned = points;
+      
+      userArr.push(user);
+    }
+
+    match.save()
 
     let homePoints = 0
     let awayPoints = 0

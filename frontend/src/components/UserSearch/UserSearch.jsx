@@ -24,7 +24,11 @@ const UserSearch = () => {
         placeholder="Search..."
         required
       />
-      <button className={styles.findBtn} type="submit">
+      <button
+        className={styles.findBtn}
+        type="submit"
+        disabled={!email}
+      >
         Find
       </button>
     </form>

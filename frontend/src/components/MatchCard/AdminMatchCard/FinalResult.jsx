@@ -6,10 +6,13 @@ const FinalResult = ({ matchId, isAdmin }) => {
   const [finalHomeScore, setFinalHomeScore] = useState(0)
   const [finalAwayScore, setFinalAwayScore] = useState(0)
   const [overTime, setOverTime] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const { publishResult } = useMatch()
 
   const handlePublish = async (e) => {
     e.preventDefault()
+
+    setSubmitted(true)
 
     await publishResult(matchId, finalHomeScore, finalAwayScore, overTime)
   }
@@ -47,6 +50,7 @@ const FinalResult = ({ matchId, isAdmin }) => {
         <button
           className={styles.predictBtn}
           onClick={(e) => handlePublish(e)}
+          disabled={submitted}
         >
           Publish
         </button>

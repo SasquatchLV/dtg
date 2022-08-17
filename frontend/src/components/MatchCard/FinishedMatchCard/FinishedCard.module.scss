@@ -1,7 +1,4 @@
 .container {
-    display: grid;
-    grid-template-columns: 20% 50% 30%;
-    justify-content: center;
     background-color: var(--formBg);
     border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -9,6 +6,14 @@
     padding: 1rem;
     margin-bottom: 1rem;
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 20% 50% 30%;
+    justify-content: center;
 }
 
 .time {
@@ -86,6 +91,35 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.participators {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: transparent;
+    border: none;
+    opacity: 0.6;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .5rem;
+    font-weight: 700;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: none;
+    }
+
+    &:focus {
+        border: none;
+    }
+}
+
+.participatorImg {
+    max-width: 25px;
+    width: 100%;
 }
 
 .delete {

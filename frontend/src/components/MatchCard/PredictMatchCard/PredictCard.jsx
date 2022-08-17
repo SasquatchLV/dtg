@@ -38,8 +38,7 @@ const PredictCard = ({
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {isAdmin
-          && (
+        {isAdmin && (
           <button
             className={styles.delete}
             onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: modalProps })}
@@ -50,7 +49,20 @@ const PredictCard = ({
               className={styles.deleteImg}
             />
           </button>
-          )}
+        )}
+        {locked && (
+        <button
+          className={styles.participators}
+          onClick={() => setShowingUser(!showingUser)}
+        >
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1232/1232140.png"
+            alt="delete"
+            className={styles.participatorImg}
+          />
+          <span>{usersParticipating.length}</span>
+        </button>
+        )}
         <div className={styles.time}>
           <h4>{userStartTime}</h4>
           <span>{userStartDate}</span>
