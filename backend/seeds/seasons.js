@@ -11,19 +11,6 @@ const teams2022 = [
         gamesWO: 1,
         gamesLO: 0,
         position: "5",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b740"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Germany",
@@ -35,19 +22,6 @@ const teams2022 = [
         gamesWO: 0,
         gamesLO: 1,
         position: "5",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b741"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Canada",
@@ -59,19 +33,6 @@ const teams2022 = [
         gamesWO: 0,
         gamesLO: 0,
         position: "2",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b742"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Slovakia",
@@ -83,19 +44,6 @@ const teams2022 = [
         gamesWO: 0,
         gamesLO: 0,
         position: "5",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b743"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Denmark",
@@ -106,19 +54,6 @@ const teams2022 = [
         gamesLost: 3,
         gamesWO: 0,
         gamesLO: 0,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b744"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "France",
@@ -129,19 +64,6 @@ const teams2022 = [
         gamesLost: 5,
         gamesWO: 1,
         gamesLO: 0,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b745"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Kazakhstan",
@@ -152,19 +74,6 @@ const teams2022 = [
         gamesLost: 6,
         gamesWO: 0,
         gamesLO: 0,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b746"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Italy",
@@ -175,19 +84,6 @@ const teams2022 = [
         gamesLost: 6,
         gamesWO: 0,
         gamesLO: 1,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b747"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Finland",
@@ -199,19 +95,6 @@ const teams2022 = [
         gamesWO: 0,
         gamesLO: 1,
         position: "1",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b748"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Sweden",
@@ -223,19 +106,6 @@ const teams2022 = [
         gamesWO: 1,
         gamesLO: 1,
         position: "5",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b749"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Czech Republic",
@@ -247,19 +117,6 @@ const teams2022 = [
         gamesWO: 0,
         gamesLO: 1,
         position: "3",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74a"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "United States",
@@ -271,19 +128,6 @@ const teams2022 = [
         gamesWO: 2,
         gamesLO: 0,
         position: "4",
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74b"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Latvia",
@@ -294,19 +138,6 @@ const teams2022 = [
         gamesLost: 4,
         gamesWO: 1,
         gamesLO: 0,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74c"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Austria",
@@ -317,19 +148,6 @@ const teams2022 = [
         gamesLost: 3,
         gamesWO: 1,
         gamesLO: 2,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74d"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Norway",
@@ -340,19 +158,6 @@ const teams2022 = [
         gamesLost: 5,
         gamesWO: 1,
         gamesLO: 0,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74e"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     },
     {
         country: "Great Britain",
@@ -363,19 +168,6 @@ const teams2022 = [
         gamesLost: 6,
         gamesWO: 0,
         gamesLO: 1,
-        _id: {
-            $oid: "62f2485aa6b7ba0eb2d0b74f"
-        },
-        updatedAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        },
-        createdAt: {
-            $date: {
-                $numberLong: "1660045402441"
-            }
-        }
     }
 ]
 
@@ -383,25 +175,16 @@ const users2022 = [
     {
         avatar: "https://freesvg.org/img/publicdomainq-scientist-Thomas_Alva_Edison.png",
         points: 17,
-        _id: {
-            $oid: "62f4c944ef9efa09017c7a41"
-        },
         email: "user@user.com",
     },
     {
         avatar: "https://icons.iconarchive.com/icons/sykonist/south-park/256/Butters-Mr-Biggles-icon.png",
         points: 7,
-        _id: {
-            $oid: "62ecd46a07c5aa83ef057ae7"
-        },
         email: "hacker2@hacker.com",
     },
     {
         avatar: "https://freesvg.org/img/publicdomainq-politician_mao_zedong.png",
         points: 3,
-        _id: {
-            $oid: "62f0bfb007170c8e17c392cb"
-        },
         email: "hacker@hacker.com",
     }
 ]
