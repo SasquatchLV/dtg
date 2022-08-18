@@ -1,13 +1,14 @@
 .userRow {
     display: grid;
-    grid-template-columns: 15% 60% 25%;
+    grid-template-columns: 10% 50% 25% 10%;
     justify-content: center;
     align-items: center;
     padding: 0.2rem;
     background-color: var(--rowBg);
     border-radius: 1rem;
     margin-bottom: 0.5rem;
-    max-width: 500px;
+    max-width: 600px;
+    width: 100%;
 }
 
 img {
@@ -15,6 +16,25 @@ img {
     width: 100%;
 }
 
-h4 {
+.email {
+    text-align: left;
+}
+
+.points {
     text-align: center;
+}
+
+.games {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    column-gap: 2px;
+}
+
+.won {
+    background-color: #03C03C;
+    font-weight: 600;
+    padding: .1rem .2rem;
+    border-radius: 5px;
+    border: 2px solid #024d19;
 }

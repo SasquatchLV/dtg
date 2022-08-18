@@ -7,7 +7,7 @@ import Navigation from '../Navigation/Navigation'
 import UserModal from '../UserModal/UserModal'
 
 const Header = () => {
-  const [userModalActive, setUserModalActive] = useState(false)
+  const [userModal, setUserModal] = useState(false)
   const { logout } = useLogout()
   const { user } = useAuthContext()
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ const Header = () => {
 
   const handleAdmin = () => navigate('/admin')
 
-  const toggleUserModal = () => setUserModalActive(!userModalActive)
+  const toggleUserModal = () => setUserModal(!userModal)
 
   return (
     user && (
@@ -31,7 +31,7 @@ const Header = () => {
               >
                 {user.email}
               </button>
-              {userModalActive && <UserModal />}
+              {userModal && <UserModal handleToggle={toggleUserModal} />}
               {isAdmin && (
               <button
                 className={styles.adminBtn}

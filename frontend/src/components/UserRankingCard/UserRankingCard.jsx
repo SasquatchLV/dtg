@@ -1,11 +1,11 @@
 import React from 'react'
 import styles from './UserRankingCard.module.scss'
 
-const RankingCard = ({
+const UserRankingCard = ({
   ranking, avatar, email, points,
 }) => (
-  <div className={styles.teamRow}>
-    <span className={styles.countryRank}>
+  <div className={styles.userRow}>
+    <span className={styles.points}>
       {points}
     </span>
     <img className={styles.icon} src={avatar} alt="avatar" />
@@ -19,4 +19,4 @@ const RankingCard = ({
   </div>
 )
 
-export default RankingCard
+export default UserRankingCard

@@ -110,7 +110,6 @@ const PreviousStandings = ({ seasonYear }) => {
             <h4>TOP PREDICTORS</h4>
             <div className={styles.rankingData}>
               <span>Points</span>
-              <span>User</span>
             </div>
             {topThreeUsers.map(({ email, avatar, points }, index) => (
               <UserRankingCard
@@ -124,20 +123,21 @@ const PreviousStandings = ({ seasonYear }) => {
           </div>
         ) : <h4>NO PREDICTORS</h4>}
       </div>
-      <div className={styles.teamWrapper}>
-        <h4>OVERALL STANDINGS</h4>
-        <div className={styles.rankingData}>
-          <span>Rank</span>
-          <span>Country</span>
+      <div className={styles.right}>
+        <div className={styles.overallWrapper}>
+          <h4>OVERALL STANDINGS</h4>
+          <div className={styles.rankingData}>
+            <span>Rank</span>
+          </div>
+          {overallRanking.map(({ country, flag }, index) => (
+            <RankingCard
+              key={Math.random(185)}
+              country={country}
+              flag={flag}
+              ranking={index + 1}
+            />
+          ))}
         </div>
-        {overallRanking.map(({ country, flag }, index) => (
-          <RankingCard
-            key={Math.random(185)}
-            country={country}
-            flag={flag}
-            ranking={index + 1}
-          />
-        ))}
       </div>
     </div>
   )

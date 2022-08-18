@@ -201,6 +201,25 @@ router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
   }
 })
 
+// get all users route
+router.get("/paid", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  try {
+    const { users } = await UsersService.getPaidUsers()
+
+    res.send({
+      data: users,
+      message: 'Got all users!',
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
+
 // change password
 router.post("/password", verifyRoles(ROLE_LIST.User), async (req, res) => {
   const { newPass } = req.body

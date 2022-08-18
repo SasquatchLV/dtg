@@ -206,3 +206,22 @@ input {
 span {
     font-size: 14px;
 }
+
+@media only screen and (max-width: 600px) {
+    .teams {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .team {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .inputTop {
+        display: flex;
+        flex-direction: column;
+    }
+}

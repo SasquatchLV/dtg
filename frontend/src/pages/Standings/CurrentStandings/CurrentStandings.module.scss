@@ -3,6 +3,7 @@
     grid-template-columns: 50% 50%;
     column-gap: 2rem;
     justify-content: center;
+    padding: 1rem;
 }
 
 .teamWrapper {
@@ -22,4 +23,13 @@
 
 h4 {
     margin: .5rem 0;
+}
+
+@media only screen and (max-width: 800px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        max-width: 800px;
+        width: 100%;
+    }
 }

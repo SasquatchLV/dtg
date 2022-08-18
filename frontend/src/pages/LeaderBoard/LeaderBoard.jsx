@@ -18,22 +18,27 @@ const LeaderBoard = () => {
 
   return (
     <div className={styles.container}>
-      <h4>
-        Prize Pool:
-        {' '}
-        {prizepool}
-        €
+      <h4 className={styles.prizePool}>
+        {`Prize Pool: ${prizepool}€`}
       </h4>
       <div className={styles.users}>
         {users?.length ? (
           <div className={styles.userWrapper}>
-            <h1>Top Predictors</h1>
-            {users.map((obj) => (
+            <h1>Participants</h1>
+            <div className={styles.infoWrapper}>
+              <span className={styles.info}>User</span>
+              <span className={styles.info}>Last games</span>
+              <span className={styles.info}>Points</span>
+            </div>
+            {users.map(({
+              avatar, email, points, lastFiveGames,
+            }) => (
               <LeaderBoardCard
-                avatar={obj.avatar}
-                email={obj.email}
-                points={obj.points}
-                key={obj.email}
+                avatar={avatar}
+                email={email}
+                points={points}
+                key={email}
+                lastFiveGames={lastFiveGames}
               />
             ))}
           </div>

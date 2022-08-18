@@ -1,43 +1,50 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import styles from './Navigation.module.scss'
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState('Matches')
+  const location = useLocation()
+  const [activeSection, setActiveSection] = useState(location.pathname)
   const navigate = useNavigate()
+  console.log(location)
 
   const sections = [
     {
       id: 1,
       title: 'Matches',
       handleClick: () => {
-        setActiveSection('Matches')
+        setActiveSection('/matches')
         navigate('/matches')
       },
+      pathname: '/matches',
     },
     {
       id: 2,
       title: 'Standings',
       handleClick: () => {
-        setActiveSection('Standings')
+        setActiveSection('/standings')
         navigate('/standings')
       },
+      pathname: '/standings',
     },
     {
       id: 3,
       title: 'Leaderboard',
       handleClick: () => {
-        setActiveSection('Leaderboard')
+        setActiveSection('/leaderboard')
         navigate('/leaderboard')
       },
+      pathname: '/leaderboard',
     },
   ]
 
   return (
     <div className={styles.navigation}>
-      {sections.map(({ id, title, handleClick }) => (
+      {sections.map(({
+        id, title, pathname, handleClick,
+      }) => (
         <span
-          className={title === activeSection ? styles.active : styles.section}
+          className={pathname === activeSection ? styles.active : styles.section}
           onClick={handleClick}
           key={id}
         >

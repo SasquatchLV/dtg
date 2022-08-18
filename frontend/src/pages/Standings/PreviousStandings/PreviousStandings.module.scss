@@ -12,6 +12,13 @@
     gap: 1rem;
 }
 
+.right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
 .teamWrapper {
     display: flex;
     flex-direction: column;
@@ -28,6 +35,18 @@
     }
 }
 
+.overallWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 550px;
+    width: 100%;
+}
+
+.rankingData {
+    padding-left: 1rem;
+}
+
 .teamData {
     display: grid;
     grid-template-columns: 1fr repeat(6, 10%);
@@ -36,17 +55,40 @@
     text-align: center;
 }
 
-.rankingData {
-    display: grid;
-    grid-template-columns: 1fr 7fr;
-    justify-content: center;
-    text-align: center;
-    padding-left: .5rem;
-    padding-right: 2rem;
-}
-
 h4 {
     margin: .5rem 0;
 }
 
-.userWrapper {}
+@media only screen and (max-width: 1400px) {
+    .container {
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overallWrapper {
+        justify-content: center;
+        align-items: center;
+    }
+}

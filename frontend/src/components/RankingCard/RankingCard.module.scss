@@ -1,6 +1,6 @@
 .teamRow {
     display: grid;
-    grid-template-columns: 1fr 1fr 4fr 2fr;
+    grid-template-columns: 0.35fr 0.35fr 2fr 0.35fr;
     column-gap: .5rem;
     align-items: center;
     padding: 0.2rem;
@@ -9,10 +9,7 @@
     margin-bottom: 0.5rem;
     position: relative;
     text-align: center;
-}
-
-.flagIcon {
-    max-width: 45px;
+    max-width: 400px;
     width: 100%;
 }
 

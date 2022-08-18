@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './RankingCard.module.scss'
 
 const RankingCard = ({ ranking, flag, country }) => (

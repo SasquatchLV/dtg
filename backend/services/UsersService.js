@@ -81,6 +81,21 @@ class UsersService {
       throw new Error("No users found")
     }
 
+    users.sort((a, b) => b.points - a.points)
+
+    return { users }
+  }
+
+  // get all paid users
+  static async getPaidUsers() {
+    const users = await User.find({ hasPaid: true })
+
+    if (!users) {
+      throw new Error("No users found")
+    }
+
+    users.sort((a, b) => b.points - a.points)
+
     return { users }
   }
 
@@ -98,9 +113,9 @@ class UsersService {
 
   // get single user
   static async getSingleUser({ email }) {
-      const user = await User.single(email)
+    const user = await User.single(email)
 
-      return { user }
+    return { user }
   }
 }
 

@@ -185,8 +185,7 @@ class MatchesService {
 
     const { usersParticipating, title } = match
 
-    const userArr = []
-
+    // adds points earned to users that participated
     for (let x = 0; x < usersParticipating.length; x++) {
       let user = usersParticipating[x];
 
@@ -199,9 +198,10 @@ class MatchesService {
       );
 
       user.pointsEarned = points;
-      
-      userArr.push(user);
     }
+
+    // sort by top winners in points
+    match.usersParticipating.sort((a, b) => b - a)
 
     match.save()
 

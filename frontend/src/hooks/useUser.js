@@ -40,12 +40,22 @@ export const useUser = () => {
     }
   }
 
+  const getPaidUsers = async () => {
+    const { data, status, message } = await (await fetch('/api/user/paid')).json()
+
+    if (status === 'success') {
+      await dispatch({ type: 'SET_USERS', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
   const getPrizePoolAndUsers = async () => {
     const { data, status, message } = await (await fetch('/api/user/prize')).json()
 
     if (status === 'success') {
       dispatch({ type: 'SET_PRIZEPOOL', payload: data })
-      await getUsers()
+      await getPaidUsers()
     } else {
       errorToast(message)
     }

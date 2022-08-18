@@ -10,6 +10,19 @@
 }
 
 .userWrapper {
-    max-width: 350px;
+    max-width: 600px;
     width: 100%;
 }
+
+.prizePool {
+    text-align: center;
+}
+
+.infoWrapper {
+    display: grid;
+    grid-template-columns: 65% 20% 15%;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: .5rem;
+}
+

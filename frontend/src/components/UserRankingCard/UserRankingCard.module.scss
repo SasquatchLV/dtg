@@ -1,6 +1,6 @@
-.teamRow {
+.userRow {
     display: grid;
-    grid-template-columns: 1fr 1fr 5fr 1fr;
+    grid-template-columns: 0.35fr 0.35fr 2fr 0.35fr;
     column-gap: .5rem;
     align-items: center;
     padding: 0.2rem;
@@ -9,6 +9,8 @@
     margin-bottom: 0.5rem;
     position: relative;
     text-align: center;
+    max-width: 400px;
+    width: 100%;
 }
 
 .flagIcon {
@@ -21,9 +23,13 @@
     width: 100%;
 }
 
+.points {
+    text-align: right;
+}
+
 .email {
     font-weight: 600;
-    text-align: start;
+    text-align: left;
 }
 
 .countryRank {

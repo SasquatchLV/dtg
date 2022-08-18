@@ -30,6 +30,19 @@
     flex-direction: column;
     row-gap: 10px;
     padding-left: .5rem;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 700;
+    top: -5px;
+    left: -5px;
+
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .userAvatar {

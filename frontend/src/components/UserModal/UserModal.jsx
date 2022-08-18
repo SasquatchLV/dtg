@@ -8,7 +8,7 @@ import { avatars } from '../../data/avatars'
 import { useUser } from '../../hooks/useUser'
 import { useTotoContext } from '../../hooks/useTotoContext'
 
-const UserModal = () => {
+const UserModal = ({ handleToggle }) => {
   const [avatarSelectionActive, setAvatarSelectionActive] = useState(false)
   const [passwordInputActive, setPasswordInputActive] = useState(false)
   const [newPassValue, setNewPassValue] = useState('')
@@ -59,6 +59,12 @@ const UserModal = () => {
   return userFound ? (
     <div className={styles.container}>
       <div className={styles.leftSide}>
+        <button
+          className={styles.close}
+          onClick={handleToggle}
+        >
+          X
+        </button>
         <img
           className={styles.userAvatar}
           src={activeUser.avatar}

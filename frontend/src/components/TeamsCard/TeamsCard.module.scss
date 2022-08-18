@@ -152,12 +152,24 @@
   width: 100%;
 }
 
-@media screen and (max-width: 1000px) {
-  .teamOverview {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 2rem;
+@media screen and (max-width: 1120px) {
+  .flagIcon {
+    width: 40px;
+  }
+
+  .countryName,
+  .countryInfo,
+  .countryPoints {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .flagIcon {
+    width: 25px;
+  }
+
+  .countryName, .countryInfo, .countryPoints {
+    font-size: 13px;
   }
 }
