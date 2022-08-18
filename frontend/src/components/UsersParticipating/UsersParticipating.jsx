@@ -25,7 +25,7 @@ const UsersParticipating = ({ users }) => {
           {users.map(({
             email, homeTeamScore, awayTeamScore, overTime, pointsEarned,
           }, i) => (
-            <li key={i}>
+            <li key={i} className={styles.row}>
               <span>{email}</span>
               <span>{`${homeTeamScore} - ${awayTeamScore}${overTime ? 'OT' : ''}`}</span>
               {pointsEarned

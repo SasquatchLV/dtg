@@ -6,21 +6,22 @@ import { useTotoContext } from '../../../hooks/useTotoContext'
 import { useSeason } from '../../../hooks/useSeason'
 import TeamInput from './TeamInput'
 
-const SeasonOverview = () => {
-  const [seasonsYear, setSeasonsYear] = useState(0)
+const SeasonOverview = ({ handleRefresh }) => {
+  const [seasonsYear, setSeasonsYear] = useState('')
   const [selectedTeams, setSelectedTeams] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
 
-  const { ongoingSeason, teamSelection } = useTotoContext()
+  const { ongoingSeason, teamSelection, activeSeason } = useTotoContext()
   const {
-    getTeamSelection, startSeason, finishSeason,
+    getTeamSelection, startSeason, finishSeason, getSeasons,
   } = useSeason()
 
   useEffect(() => {
     getTeamSelection()
+    getSeasons()
   }, [user])
 
   const teamAlreadySelected = (country) => selectedTeams.some((team) => team.country === country)
@@ -59,6 +60,7 @@ const SeasonOverview = () => {
     text: 'Confirm to start new season!',
     confirm: async () => {
       await startSeason(seasonsYear, selectedTeams)
+      handleRefresh()
       dispatchModal({ type: 'CLOSE_MODAL' })
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
@@ -68,6 +70,7 @@ const SeasonOverview = () => {
     text: 'Confirm to finish this season!',
     confirm: async () => {
       await finishSeason()
+      handleRefresh()
       dispatchModal({ type: 'CLOSE_MODAL' })
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
@@ -75,15 +78,16 @@ const SeasonOverview = () => {
 
   return (
     <div className={styles.seasonOverview}>
+      {!ongoingSeason
+      && (
       <div className={styles.seasonActions}>
         <div className={styles.seasonForm}>
-          <h3>Start/Finish season</h3>
-          <label>Year</label>
+          <h3>Start season</h3>
           <input
             type="number"
             onChange={(e) => setSeasonsYear(e.target.value)}
             value={seasonsYear}
-            placeholder="year..."
+            placeholder="year"
             required
           />
           {allHaveBeenSelected ? (
@@ -103,18 +107,9 @@ const SeasonOverview = () => {
             </div>
           ) : (
             <h5 className={styles.err}>
-              Please select at least 10 teams,
-              <br />
-              not more than 16
+              Select between 10 - 16 teams
             </h5>
           )}
-          {ongoingSeason
-              && (
-              <h5 className={styles.err}>
-                Can`t start new season, while a season is already ongoing.
-                Please finish the season to start a new one!
-              </h5>
-              )}
           <button
             className={styles.addBtn}
             disabled={!allHaveBeenSelected || seasonsYear.length !== 4 || ongoingSeason || submitted}
@@ -125,20 +120,11 @@ const SeasonOverview = () => {
           >
             Start Season
           </button>
-          <button
-            className={styles.addBtn}
-            disabled={!ongoingSeason || submitted}
-            onClick={() => {
-              dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })
-              setSubmitted(true)
-            }}
-          >
-            Finish Season
-          </button>
         </div>
         <TeamInput />
       </div>
-      {teamSelection.length ? (
+      )}
+      {!ongoingSeason ? (
         <div className={styles.selectionWrapper}>
           <h5 className={styles.err}>{errorMsg}</h5>
           <div className={styles.selection}>
@@ -180,7 +166,21 @@ const SeasonOverview = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className={styles.inProgress}>
+          <h2 className={styles.title}>Season in progress...</h2>
+          <button
+            className={styles.finishBtn}
+            disabled={!ongoingSeason || submitted}
+            onClick={() => {
+              dispatchModal({ type: 'OPEN_MODAL', payload: seasonFinishProps })
+              setSubmitted(true)
+            }}
+          >
+            Finish Season
+          </button>
+        </div>
+      )}
     </div>
   )
 }

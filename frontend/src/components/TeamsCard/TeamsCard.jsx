@@ -2,12 +2,14 @@ import React from 'react'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './TeamsCard.module.scss'
 import { useTeam } from '../../hooks/useTeam'
+import { useModalContext } from '../../hooks/useModalContext'
 
 const TeamsCard = (props) => {
   const {
     _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, deletable,
   } = props
   const { user } = useAuthContext()
+  const { dispatchModal } = useModalContext()
   const { deleteTeam } = useTeam()
   const isAdmin = user?.roles?.includes(2000)
 
@@ -15,6 +17,15 @@ const TeamsCard = (props) => {
     const total = won + lost
 
     return total
+  }
+
+  const modalProps = {
+    text: 'Confirm to delete match!',
+    confirm: async () => {
+      await deleteTeam(_id)
+      dispatchModal({ type: 'CLOSE_MODAL' })
+    },
+    cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
   }
 
   return (

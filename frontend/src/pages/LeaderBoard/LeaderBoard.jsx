@@ -43,7 +43,7 @@ const LeaderBoard = () => {
             ))}
           </div>
         ) : (
-          <h1>No users</h1>
+          <h1>At the moment no users have paid the entry fee</h1>
         )}
       </div>
     </div>

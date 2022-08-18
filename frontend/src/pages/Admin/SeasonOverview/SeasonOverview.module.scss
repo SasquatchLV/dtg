@@ -5,6 +5,13 @@
     justify-content: space-between;
     column-gap: 5rem;
     margin-top: 1rem;
+    position: relative;
+}
+
+.inProgress {
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
 }
 
 .seasonForm {
@@ -143,7 +150,7 @@ h3 {
     width: 100%;
 }
 
-.addBtn {
+.addBtn, .finishBtn {
     margin: 10px 0 0 0;
     width: 100%;
     background-color: var(--secondary);
@@ -167,4 +174,21 @@ h3 {
         opacity: .5;
         cursor: not-allowed;
     }
+}
+
+.finishBtn {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    margin-top: 2rem;
+}
+
+h5 {
+    text-align: center;
 }

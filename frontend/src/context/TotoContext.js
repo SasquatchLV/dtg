@@ -49,10 +49,10 @@ export const totoReducer = (state, action) => {
         ...state,
         seasons: action.payload,
       }
-    case 'SET_SEASON':
+    case 'SET_ACTIVESEASON':
       return {
         ...state,
-        season: action.payload,
+        activeSeason: action.payload,
       }
     case 'SET_YEARS':
       return {

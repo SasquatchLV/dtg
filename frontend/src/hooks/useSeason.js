@@ -13,7 +13,11 @@ export const useSeason = () => {
       dispatch({ type: 'SET_SEASONS', payload: data })
       const years = data.filter((season) => season.status === 'finished').map(({ year }) => year)
       dispatch({ type: 'SET_YEARS', payload: years })
-      data.some((season) => season.status === 'active' && dispatch({ type: 'SET_ONGOING', payload: true }))
+      const activeSeason = data.filter((season) => season.status === 'active')
+      dispatch({ type: 'SET_ACTIVESEASON', payload: activeSeason[0] })
+      if (activeSeason.length) {
+        dispatch({ type: 'SET_ONGOING', payload: true })
+      }
     } else {
       errorToast(message)
     }
@@ -63,7 +67,7 @@ export const useSeason = () => {
 
     if (status === 'success') {
       successToast(message)
-      getSeasons()
+      await getSeasons()
     }
 
     if (status === 'error') {
@@ -81,7 +85,7 @@ export const useSeason = () => {
 
     if (status === 'success') {
       successToast(message)
-      getSeasons()
+      await getSeasons()
     }
 
     if (status === 'error') {

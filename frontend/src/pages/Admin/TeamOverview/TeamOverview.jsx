@@ -75,35 +75,39 @@ const TeamOverview = () => {
           </button>
         </form>
       </div>
-      <div className={styles.teamWrapper}>
-        <h2>Current season teams</h2>
-        <div className={styles.teamData}>
-          <span>Country</span>
-          <span>Won</span>
-          <span>Lost</span>
-          <span>WO</span>
-          <span>LO</span>
-          <span>GP</span>
-          <span>Points</span>
+      {ongoingSeason ? (
+        <div className={styles.teamWrapper}>
+          <h2>Current season teams</h2>
+          <div className={styles.teamData}>
+            <span>Country</span>
+            <span>Won</span>
+            <span>Lost</span>
+            <span>WO</span>
+            <span>LO</span>
+            <span>GP</span>
+            <span>Points</span>
+          </div>
+          {teams?.map(({
+            _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, id,
+          }) => (
+            <TeamsCard
+              key={_id}
+              id={_id}
+              _id={_id}
+              country={country}
+              flag={flag}
+              gamesWon={gamesWon}
+              gamesLost={gamesLost}
+              gamesWO={gamesWO}
+              gamesLO={gamesLO}
+              points={points}
+              deletable
+            />
+          ))}
         </div>
-        {teams?.map(({
-          _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, id,
-        }) => (
-          <TeamsCard
-            key={_id}
-            id={_id}
-            _id={_id}
-            country={country}
-            flag={flag}
-            gamesWon={gamesWon}
-            gamesLost={gamesLost}
-            gamesWO={gamesWO}
-            gamesLO={gamesLO}
-            points={points}
-            deletable
-          />
-        ))}
-      </div>
+      ) : (
+        <h2>No active season</h2>
+      )}
     </div>
   )
 }
