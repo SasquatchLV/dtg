@@ -120,7 +120,7 @@ const teams2022 = [
     },
     {
         country: "United States",
-        flag: "https://cdn-icons.flaticon.com/png/512/4628/premium/4628635.png?token=exp=1659615904~hmac=74b2d9942ae96ad0f35bdbfb093ff270",
+        flag: 'https://cdn-icons-png.flaticon.com/512/323/323310.png',
         group: "B",
         points: 13,
         gamesWon: 3,
