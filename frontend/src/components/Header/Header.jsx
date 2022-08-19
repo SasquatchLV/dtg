@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLogout } from '../../hooks/useLogout'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './Header.module.scss'
@@ -8,10 +9,16 @@ import UserModal from '../UserModal/UserModal'
 
 const Header = () => {
   const [userModal, setUserModal] = useState(false)
-  const { logout } = useLogout()
   const { user } = useAuthContext()
+  const { logout } = useLogout()
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
+
   const isAdmin = user?.roles?.includes(2000)
+
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language)
+  }
 
   const handleAdmin = () => navigate('/admin')
 
@@ -21,8 +28,22 @@ const Header = () => {
     user && (
     <>
       <header>
+        <div className={styles.languages}>
+          <button
+            className={styles.languageBtn}
+            onClick={() => changeLanguage('en')}
+          >
+            ENG
+          </button>
+          <button
+            className={styles.languageBtn}
+            onClick={() => changeLanguage('lv')}
+          >
+            LAT
+          </button>
+        </div>
         <div className={styles.container}>
-          <div className={styles.infog}>
+          <div className={styles.info}>
             {user && (
             <div className={styles.actions}>
               <button
@@ -37,14 +58,14 @@ const Header = () => {
                 className={styles.adminBtn}
                 onClick={handleAdmin}
               >
-                Admin Panel
+                {t('header.admin')}
               </button>
               )}
               <button
                 className={styles.logoutBtn}
                 onClick={logout}
               >
-                Log out
+                {t('header.logout')}
               </button>
             </div>
             )}

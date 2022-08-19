@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Matches.module.scss'
@@ -12,6 +13,7 @@ const Matches = () => {
   const { user } = useAuthContext()
   const { getMatches } = useMatch()
   const { getSeasons } = useSeason()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (user) {
@@ -25,7 +27,7 @@ const Matches = () => {
       {ongoingSeason ? (
         <div className={styles.matches}>
           <div className={styles.matchWrapper}>
-            <h2>Upcoming games</h2>
+            <h2>{t('matches.upcoming')}</h2>
             {matches?.map((match) => (
               !match.isMatchFinished ? (
                 <PredictCard key={match._id} {...match} />
@@ -33,7 +35,7 @@ const Matches = () => {
             ))}
           </div>
           <div className={styles.matchWrapper}>
-            <h2>Finished games</h2>
+            <h2>{t('matches.finished')}</h2>
             {matches?.map((match) => (
               (match.isMatchFinished && (match.homeTeamScore || match.awayTeamScore)) ? (
                 <FinishedCard key={match._id} {...match} />
@@ -42,7 +44,7 @@ const Matches = () => {
           </div>
         </div>
       ) : (
-        <h2>Awaiting a new season to start...</h2>
+        <h2>{t('matches.noSeason')}</h2>
       )}
     </div>
   )

@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { errorToast, successToast } from '../utils/toast'
 import { useAuthContext } from './useAuthContext'
 
 export const useLogin = () => {
   const { dispatch } = useAuthContext()
+  const { t } = useTranslation()
 
   const login = async (email, password) => {
     const response = await fetch('/api/auth/login', {
@@ -22,7 +24,7 @@ export const useLogin = () => {
         userId, avatar, lastFiveGames, roles, points,
       } = data
 
-      successToast(`Welcome ${data.email}!`)
+      successToast(`${t('welcome')} ${data.email}!`)
 
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify({

@@ -157,6 +157,11 @@ input {
     &:active {
         opacity: 0.8;
     }
+
+    &:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
 }
 
 input::-webkit-outer-spin-button,

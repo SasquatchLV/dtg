@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './CurrentStandings.module.scss'
@@ -8,6 +9,7 @@ const CurrentStandings = () => {
   const [groupA, setGroupA] = useState([])
   const [groupB, setGroupB] = useState([])
   const { user } = useAuthContext()
+  const { t } = useTranslation()
 
   const getAllTeams = async () => {
     const response = await fetch('/api/team/all')
@@ -30,15 +32,15 @@ const CurrentStandings = () => {
     groupA.length ? (
       <div className={styles.container}>
         <div className={styles.teamWrapper}>
-          <h4>GROUP A</h4>
+          <h4>{t('standings.groupA')}</h4>
           <div className={styles.teamData}>
-            <span>Country</span>
-            <span>Won</span>
-            <span>Lost</span>
+            <span>{t('standings.country')}</span>
+            <span>W</span>
+            <span>L</span>
             <span>WO</span>
             <span>LO</span>
             <span>GP</span>
-            <span>Points</span>
+            <span>P</span>
           </div>
           {groupA?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
@@ -58,15 +60,15 @@ const CurrentStandings = () => {
           ))}
         </div>
         <div className={styles.teamWrapper}>
-          <h4>GROUP B</h4>
+          <h4>{t('standings.groupB')}</h4>
           <div className={styles.teamData}>
-            <span>Country</span>
-            <span>Won</span>
-            <span>Lost</span>
+            <span>{t('standings.country')}</span>
+            <span>W</span>
+            <span>L</span>
             <span>WO</span>
             <span>LO</span>
             <span>GP</span>
-            <span>Points</span>
+            <span>P</span>
           </div>
           {groupB?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
@@ -87,7 +89,7 @@ const CurrentStandings = () => {
         </div>
       </div>
     ) : (
-      <h2>No active season</h2>
+      <h2>{t('standings.noActive')}</h2>
     )
   )
 }

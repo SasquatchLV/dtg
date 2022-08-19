@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { errorToast } from '../../utils/toast'
 import { useAuthContext } from '../../hooks/useAuthContext'
@@ -6,8 +6,8 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
   const location = useLocation()
-  const navigate = useNavigate()
   const { dispatch } = useAuthContext()
+  const navigate = useNavigate()
 
   const isAuth = useCallback(() => {
     fetch('/api/user/is-authorized', {

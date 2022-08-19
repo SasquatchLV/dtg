@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useUser } from '../../hooks/useUser'
 import styles from './UserSearch.module.scss'
 
 const UserSearch = () => {
   const [email, setEmail] = useState('')
+  const { t } = useTranslation()
   const { getUser } = useUser()
 
   const handleSubmit = async (e) => {
@@ -15,13 +17,13 @@ const UserSearch = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h3>Find user</h3>
-      <label>Users e-mail:</label>
+      <h3>{t('user.findUser')}</h3>
+      <label>{t('user.email')}</label>
       <input
         type="email"
         onChange={(e) => setEmail(e.target.value)}
         value={email}
-        placeholder="Search..."
+        placeholder={t('placeholder.email')}
         required
       />
       <button
@@ -29,7 +31,7 @@ const UserSearch = () => {
         type="submit"
         disabled={!email}
       >
-        Find
+        {t('user.find')}
       </button>
     </form>
   )

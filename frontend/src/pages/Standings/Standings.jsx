@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Standings.module.scss'
@@ -11,6 +12,7 @@ const Standings = () => {
   const { user } = useAuthContext()
   const { years } = useTotoContext()
   const { getSeasons } = useSeason()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (user) {
@@ -34,10 +36,10 @@ const Standings = () => {
           onClick={() => setChosenYear('')}
           className={styles.yearBtn}
         >
-          Current standings
+          {t('standings.currentStandings')}
         </button>
       </div>
-      <h3>{chosenYear ? `${chosenYear} Standings ` : 'Current Standings'}</h3>
+      <h3>{chosenYear ? `${chosenYear} ${t('standings.standings')}` : t('standings.currentStandings')}</h3>
       {chosenYear && <PreviousStandings seasonYear={chosenYear} />}
       {!chosenYear && <CurrentStandings />}
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './AdminPanel.module.scss'
 import MatchOverview from './MatchOverview/MatchOverview'
 import TeamOverview from './TeamOverview/TeamOverview'
@@ -6,52 +7,52 @@ import UserOverview from './UserOverview/UserOverview'
 import SeasonOverview from './SeasonOverview/SeasonOverview'
 import { useTotoContext } from '../../hooks/useTotoContext'
 import { useSeason } from '../../hooks/useSeason'
-import { useAuthContext } from '../../hooks/useAuthContext'
 
 const AdminPanel = () => {
-  const [activePanel, setActivePanel] = useState('Season Overview')
+  const [activePanel, setActivePanel] = useState('User Overview')
   const { ongoingSeason } = useTotoContext()
+  const { t } = useTranslation()
   const { getSeasons } = useSeason()
 
-  const handleRefresh = () => {
-    getSeasons()
-  }
-
   useEffect(() => {
-    handleRefresh()
+    getSeasons()
   }, [])
 
   const actions = [
     {
       id: 1,
-      title: 'Season Overview',
-      handleClick: () => setActivePanel('Season Overview'),
+      title: t('admin.user'),
+      active: 'User Overview',
+      handleClick: () => setActivePanel('User Overview'),
       style: {
         display: 'block',
       },
     },
     {
       id: 2,
-      title: 'Match Overview',
+      title: t('admin.season'),
+      active: 'Season Overview',
+      handleClick: () => setActivePanel('Season Overview'),
+      style: {
+        display: 'block',
+      },
+    },
+    {
+      id: 3,
+      title: t('admin.match'),
+      active: 'Match Overview',
       handleClick: () => setActivePanel('Match Overview'),
       style: {
         display: ongoingSeason ? 'block' : 'none',
       },
     },
     {
-      id: 3,
-      title: 'Team Overview',
+      id: 4,
+      title: t('admin.team'),
+      active: 'Team Overview',
       handleClick: () => setActivePanel('Team Overview'),
       style: {
         display: ongoingSeason ? 'block' : 'none',
-      },
-    },
-    {
-      id: 4,
-      title: 'User Overview',
-      handleClick: () => setActivePanel('User Overview'),
-      style: {
-        display: 'block',
       },
     },
   ]
@@ -60,11 +61,11 @@ const AdminPanel = () => {
     <div className={styles.container}>
       <div className={styles.actions}>
         {actions.map(({
-          title, handleClick, id, style,
+          title, handleClick, id, style, active,
         }) => (
           <button
             className={
-              activePanel === title ? styles.activeBtn : styles.actionBtn
+              activePanel === active ? styles.activeBtn : styles.actionBtn
             }
             onClick={handleClick}
             key={id}
@@ -76,7 +77,7 @@ const AdminPanel = () => {
       </div>
       {activePanel === 'Match Overview' && <MatchOverview />}
       {activePanel === 'Team Overview' && <TeamOverview />}
-      {activePanel === 'Season Overview' && <SeasonOverview handleRefresh={handleRefresh} />}
+      {activePanel === 'Season Overview' && <SeasonOverview />}
       {activePanel === 'User Overview' && <UserOverview />}
     </div>
   )

@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import styles from './Navigation.module.scss'
 
 const Navigation = () => {
   const location = useLocation()
   const [activeSection, setActiveSection] = useState(location.pathname)
   const navigate = useNavigate()
-  console.log(location)
+  const { t } = useTranslation()
 
   const sections = [
     {
       id: 1,
-      title: 'Matches',
+      title: t('header.matches'),
       handleClick: () => {
         setActiveSection('/matches')
         navigate('/matches')
@@ -20,7 +21,7 @@ const Navigation = () => {
     },
     {
       id: 2,
-      title: 'Standings',
+      title: t('header.standings'),
       handleClick: () => {
         setActiveSection('/standings')
         navigate('/standings')
@@ -29,7 +30,7 @@ const Navigation = () => {
     },
     {
       id: 3,
-      title: 'Leaderboard',
+      title: t('header.leaderboard'),
       handleClick: () => {
         setActiveSection('/leaderboard')
         navigate('/leaderboard')

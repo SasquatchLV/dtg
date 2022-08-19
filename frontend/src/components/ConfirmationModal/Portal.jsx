@@ -1,4 +1,4 @@
-import React from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './ConfirmationModal.module.scss'
 import { useModalContext } from '../../hooks/useModalContext'
 
@@ -6,6 +6,7 @@ const Portal = () => {
   const {
     active, text, confirm, cancel,
   } = useModalContext()
+  const { t } = useTranslation()
 
   return (
     active
@@ -18,13 +19,13 @@ const Portal = () => {
             className={styles.cancel}
             onClick={cancel}
           >
-            Cancel
+            {t('confirmModal.cancel')}
           </button>
           <button
             className={styles.confirm}
             onClick={confirm}
           >
-            Confirm
+            {t('confirmModal.confirm')}
           </button>
         </div>
       </div>

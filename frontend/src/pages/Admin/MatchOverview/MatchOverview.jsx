@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import DatePicker, { registerLocale } from 'react-datepicker'
 import lv from 'date-fns/locale/lv'
+import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useTotoContext } from '../../../hooks/useTotoContext'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -20,6 +21,7 @@ const MatchOverview = () => {
   const { unsettledMatches, teams } = useTotoContext()
   const { getTeams } = useTeam()
   const { getUnsettledMatches, createMatch } = useMatch()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (user) {
@@ -38,11 +40,11 @@ const MatchOverview = () => {
     <div className={styles.matchOverview}>
       <div className={styles.matchActions}>
         <form className={styles.matchForm} onSubmit={(e) => handleSubmit(e)}>
-          <h3>Add a new match</h3>
-          <label>Home Team</label>
+          <h3>{t('matches.addNew')}</h3>
+          <label>{t('matches.homeTeam')}</label>
           <select onChange={(e) => setHomeTeam(JSON.parse(e.target.value))} selected={homeTeam}>
             <option value="" hidden>
-              Select
+              {t('matches.select')}
             </option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
@@ -50,10 +52,10 @@ const MatchOverview = () => {
               </option>
             ))}
           </select>
-          <label>Away Team</label>
+          <label>{t('matches.awayTeam')}</label>
           <select onChange={(e) => setAwayTeam(JSON.parse(e.target.value))}>
             <option value="" hidden>
-              Select
+              {t('matches.select')}
             </option>
             {teams.map((team) => (
               <option value={JSON.stringify(team)} key={team.country}>
@@ -61,7 +63,7 @@ const MatchOverview = () => {
               </option>
             ))}
           </select>
-          <label>Starting time</label>
+          <label>{t('matches.startingTime')}</label>
           <DatePicker
             showTimeSelect
             dateFormat="dd.MM.yyyy HH:mm"
@@ -69,16 +71,16 @@ const MatchOverview = () => {
             selected={startingTime}
             onChange={(date) => setStartingTime(date)}
           />
-          <label>Game Type</label>
+          <label>{t('matches.gameType')}</label>
           <select onChange={(e) => setSelectedGameType(e.target.value)}>
-            <option value="Regular game">Regular game</option>
-            <option value="Quarter Finals">Quarter Finals</option>
-            <option value="Semi Finals">Semi Finals</option>
-            <option value="Finals - Bronze">Finals - Bronze</option>
-            <option value="Finals - Gold">Finals - Gold</option>
+            <option value="Regular game">{t('matches.regular')}</option>
+            <option value="Quarter Finals">{t('matches.quarter')}</option>
+            <option value="Semi Finals">{t('matches.semi')}</option>
+            <option value="Finals - Bronze">{t('matches.bronze')}</option>
+            <option value="Finals - Gold">{t('matches.gold')}</option>
           </select>
           <button className={styles.addBtn} type="submit">
-            Add Match
+            {t('matches.addMatch')}
           </button>
         </form>
       </div>
@@ -87,7 +89,7 @@ const MatchOverview = () => {
           && unsettledMatches.map((match) => (
             <AdminMatchCard key={match._id} {...match} />
           ))}
-        {!unsettledMatches.length && <h3>No unsettled matches</h3>}
+        {!unsettledMatches.length && <h3>{t('matches.noUnsettled')}</h3>}
       </div>
     </div>
   )

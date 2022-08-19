@@ -1,9 +1,12 @@
 /* eslint-disable react/no-array-index-key */
+import { useTranslation } from 'react-i18next'
 import styles from './LeaderBoardCard.module.scss'
 
 const LeaderBoardCard = ({
   avatar, email, points, lastFiveGames,
 }) => {
+  const { t } = useTranslation()
+
   const determineStyle = (game) => {
     const style = {
       backgroundColor: '#e0d315',
@@ -33,7 +36,7 @@ const LeaderBoardCard = ({
           >
             {game}
           </span>
-        )) : <span>No games played</span>}
+        )) : <span>{t('noGames')}</span>}
       </div>
       <h4 className={styles.points}>
         {points}

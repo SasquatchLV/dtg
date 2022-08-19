@@ -1,11 +1,15 @@
 header {
-  background-image: url('headerImg.jpg');
-  height: 250px;
-  background-color: var(--secondary);
+  background-color: black;
+  position: relative;
+}
+
+.languages {
+  position: absolute;
+  right: 1%;
+  bottom: -65%;
 }
 
 .container {
-  max-width: 1400px;
   margin: 0 auto;
   padding: 10px 20px;
   display: flex;
@@ -30,7 +34,7 @@ button {
 }
 
 span {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .adminBtn,
@@ -42,7 +46,8 @@ span {
   border-radius: 4px;
   font-family: 'Poppins';
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 500;
   margin-top: 0;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: all 0.2s ease-in-out;
@@ -53,8 +58,19 @@ span {
   }
 }
 
+.modalBtn {
+  font-size: 14px;
+  color: white;
+  margin-right: 1rem;
+}
+
 .adminBtn {
   background-color: rgb(240, 203, 203);
   color: red;
-  border: 2px solid #d83838;
+  border: 1px solid #d83838;
+}
+
+.languageBtn {
+  font-size: 14px;
+  color: white;
 }

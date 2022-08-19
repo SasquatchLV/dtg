@@ -1,7 +1,10 @@
 /* eslint-disable react/no-array-index-key */
+import { useTranslation } from 'react-i18next'
 import styles from './UsersParticipating.module.scss'
 
 const UsersParticipating = ({ users }) => {
+  const { t } = useTranslation()
+
   const determineStyle = (game) => {
     const style = {
       backgroundColor: '#e0d315',
@@ -37,13 +40,13 @@ const UsersParticipating = ({ users }) => {
                     {pointsEarned}
                   </span>
                 )
-                : <span>Outcome unknown</span>}
+                : <span>{t('matchCard.outcomeUnknown')}</span>}
             </li>
           ))}
         </ul>
       ) : (
         <b className={styles.info}>
-          <i>No bettors for this match</i>
+          <i>{t('matchCard.noBettors')}</i>
         </b>
       )}
     </div>

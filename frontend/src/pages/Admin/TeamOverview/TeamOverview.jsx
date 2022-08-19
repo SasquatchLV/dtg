@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './TeamOverview.module.scss'
@@ -14,6 +15,7 @@ const TeamOverview = () => {
   const { getTeams, addTeam } = useTeam()
   const { getSeasons } = useSeason()
   const { teams, ongoingSeason } = useTotoContext()
+  const { t } = useTranslation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -29,7 +31,6 @@ const TeamOverview = () => {
   useEffect(() => {
     if (user) {
       getTeams()
-      getSeasons()
     }
   }, [user])
 
@@ -37,33 +38,33 @@ const TeamOverview = () => {
     <div className={styles.teamOverview}>
       <div className={styles.teamActions}>
         <form className={styles.teamForm} onSubmit={handleSubmit}>
-          <h3>Additional team for this season</h3>
-          <label>Team name:</label>
+          <h3>{t('teams.additionalTeam')}</h3>
+          <label>{t('teams.name')}</label>
           <input
             type="text"
             onChange={(e) => setCountryName(e.target.value)}
             value={countryName}
-            placeholder="type..."
+            placeholder={t('placeholder.country')}
             required
           />
-          <label>Link to team flag:</label>
+          <label>{t('teams.link')}</label>
           <input
             type="text"
             onChange={(e) => setCountryFlag(e.target.value)}
             value={countryFlag}
-            placeholder="type..."
+            placeholder={t('placeholder.link')}
             required
           />
-          <label>Teams group:</label>
+          <label>{t('teams.group')}</label>
           <select onChange={(e) => setCountryGroup(e.target.value)} required>
-            <option value="" hidden>Select</option>
+            <option value="" hidden>{t('teams.select')}</option>
             <option value="A">A</option>
             <option value="B">B</option>
           </select>
           {!ongoingSeason
           && (
           <h5 className={styles.err}>
-            No active season. Start season to add teams here.
+            {t('teams.err')}
           </h5>
           )}
           <button
@@ -71,21 +72,21 @@ const TeamOverview = () => {
             type="submit"
             disabled={!ongoingSeason || !countryName || !countryFlag}
           >
-            Add Team
+            {t('teams.add')}
           </button>
         </form>
       </div>
       {ongoingSeason ? (
         <div className={styles.teamWrapper}>
-          <h2>Current season teams</h2>
+          <h2>{t('teams.current')}</h2>
           <div className={styles.teamData}>
-            <span>Country</span>
-            <span>Won</span>
-            <span>Lost</span>
+            <span>{t('teams.country')}</span>
+            <span>W</span>
+            <span>L</span>
             <span>WO</span>
             <span>LO</span>
             <span>GP</span>
-            <span>Points</span>
+            <span>P</span>
           </div>
           {teams?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points, id,
@@ -106,7 +107,7 @@ const TeamOverview = () => {
           ))}
         </div>
       ) : (
-        <h2>No active season</h2>
+        <h2>{t('teams.noActive')}</h2>
       )}
     </div>
   )

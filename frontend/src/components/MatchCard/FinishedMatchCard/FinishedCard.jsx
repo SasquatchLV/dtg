@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './FinishedCard.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useModalContext } from '../../../hooks/useModalContext'
@@ -21,14 +22,16 @@ const FinishedCard = ({
   const [showingUsers, setShowingUsers] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
+  const { t } = useTranslation()
   const { deleteMatch } = useMatch()
+
   const isAdmin = user?.roles?.includes(2000)
   const hasParticipated = usersParticipating.some(({ email }) => email === user.email)
   const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
   const usersBet = usersParticipating[indexOfUser]
 
   const modalProps = {
-    text: 'Confirm to delete match!',
+    text: t('matchCard.confirmDelete'),
     confirm: async () => {
       await deleteMatch(_id)
       dispatchModal({ type: 'CLOSE_MODAL' })
@@ -93,12 +96,12 @@ const FinishedCard = ({
         </div>
         {hasParticipated ? (
           <h4 className={styles.info}>
-            <p>Predicted Score:</p>
+            <p>{t('matchCard.predictedScore')}</p>
             <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
           </h4>
         ) : (
           <h4 className={styles.info}>
-            No prediction made
+            {t('matchCard.noPrediction')}
           </h4>
         )}
       </div>

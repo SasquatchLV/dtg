@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
@@ -12,6 +13,7 @@ const PreviousStandings = ({ seasonYear }) => {
   const [topThreeUsers, setTopThreeUsers] = useState([])
   const [overallRanking, setOverallRanking] = useState([])
   const { user } = useAuthContext()
+  const { t } = useTranslation()
 
   const getSeason = async () => {
     const response = await fetch(`/api/season/${seasonYear}`)
@@ -50,15 +52,15 @@ const PreviousStandings = ({ seasonYear }) => {
     <div className={styles.container}>
       <div className={styles.left}>
         <div className={styles.teamWrapper}>
-          <h4>GROUP A</h4>
+          <h4>{t('standings.groupA')}</h4>
           <div className={styles.teamData}>
-            <span>Country</span>
-            <span>Won</span>
-            <span>Lost</span>
+            <span>{t('standings.country')}</span>
+            <span>W</span>
+            <span>L</span>
             <span>WO</span>
             <span>LO</span>
             <span>GP</span>
-            <span>Points</span>
+            <span>P</span>
           </div>
           {groupA?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
@@ -78,15 +80,15 @@ const PreviousStandings = ({ seasonYear }) => {
           ))}
         </div>
         <div className={styles.teamWrapper}>
-          <h4>GROUP B</h4>
+          <h4>{t('standings.groupB')}</h4>
           <div className={styles.teamData}>
-            <span>Country</span>
-            <span>Won</span>
-            <span>Lost</span>
+            <span>{t('standings.country')}</span>
+            <span>W</span>
+            <span>L</span>
             <span>WO</span>
             <span>LO</span>
             <span>GP</span>
-            <span>Points</span>
+            <span>P</span>
           </div>
           {groupB?.map(({
             _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
@@ -107,9 +109,9 @@ const PreviousStandings = ({ seasonYear }) => {
         </div>
         {topThreeUsers.length ? (
           <div className={styles.teamWrapper}>
-            <h4>TOP PREDICTORS</h4>
+            <h4>{t('standings.topPredictors')}</h4>
             <div className={styles.rankingData}>
-              <span>Points</span>
+              <span>{t('standings.points')}</span>
             </div>
             {topThreeUsers.map(({ email, avatar, points }, index) => (
               <UserRankingCard
@@ -121,13 +123,13 @@ const PreviousStandings = ({ seasonYear }) => {
               />
             ))}
           </div>
-        ) : <h4>NO PREDICTORS</h4>}
+        ) : <h4>{t('standings.noPredictors')}</h4>}
       </div>
       <div className={styles.right}>
         <div className={styles.overallWrapper}>
-          <h4>OVERALL STANDINGS</h4>
+          <h4>{t('standings.overall')}</h4>
           <div className={styles.rankingData}>
-            <span>Rank</span>
+            <span>{t('standings.rank')}</span>
           </div>
           {overallRanking.map(({ country, flag }, index) => (
             <RankingCard

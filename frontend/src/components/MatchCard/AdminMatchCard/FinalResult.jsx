@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useMatch } from '../../../hooks/useMatch'
 import styles from './AdminMatchCard.module.scss'
 
@@ -8,6 +9,7 @@ const FinalResult = ({ matchId, isAdmin }) => {
   const [overTime, setOverTime] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const { publishResult } = useMatch()
+  const { t } = useTranslation()
 
   const handlePublish = async (e) => {
     e.preventDefault()
@@ -17,13 +19,23 @@ const FinalResult = ({ matchId, isAdmin }) => {
     await publishResult(matchId, finalHomeScore, finalAwayScore, overTime)
   }
 
+  const onlyNumbers = (str) => /^[0-9]+$/.test(str)
+
+  const scoreGapIsOne = (Math.max(finalHomeScore, finalAwayScore) - Math.min(finalHomeScore, finalAwayScore)) === 1
+
+  const evenScore = (finalHomeScore === finalAwayScore)
+
+  const validScore = (finalHomeScore.length > 1 && finalHomeScore[0] === 0)
+  || (finalAwayScore.length > 1 && finalAwayScore[0] === 0)
+  || !onlyNumbers(finalHomeScore) || !onlyNumbers(finalAwayScore)
+
   return (
     isAdmin && (
       <div className={styles.inputWrapper}>
-        <h4>Add final result</h4>
+        <h4>{t('matchCard.addResult')}</h4>
         <div className={styles.inputTop}>
           <div className={styles.inputBox}>
-            <span>TEAM 1</span>
+            <span>{t('matchCard.team1')}</span>
             <input
               type="number"
               placeholder="0"
@@ -33,7 +45,7 @@ const FinalResult = ({ matchId, isAdmin }) => {
             />
           </div>
           <div className={styles.inputBox}>
-            <span>TEAM 2</span>
+            <span>{t('matchCard.team2')}</span>
             <input
               type="number"
               placeholder="0"
@@ -50,9 +62,9 @@ const FinalResult = ({ matchId, isAdmin }) => {
         <button
           className={styles.predictBtn}
           onClick={(e) => handlePublish(e)}
-          disabled={submitted}
+          disabled={evenScore || submitted || validScore}
         >
-          Publish
+          {t('matchCard.publish')}
         </button>
       </div>
     )

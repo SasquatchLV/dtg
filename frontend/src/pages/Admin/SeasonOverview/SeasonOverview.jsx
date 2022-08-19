@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './SeasonOverview.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useModalContext } from '../../../hooks/useModalContext'
@@ -6,22 +7,25 @@ import { useTotoContext } from '../../../hooks/useTotoContext'
 import { useSeason } from '../../../hooks/useSeason'
 import TeamInput from './TeamInput'
 
-const SeasonOverview = ({ handleRefresh }) => {
+const SeasonOverview = () => {
   const [seasonsYear, setSeasonsYear] = useState('')
   const [selectedTeams, setSelectedTeams] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
+  const { t } = useTranslation()
 
-  const { ongoingSeason, teamSelection, activeSeason } = useTotoContext()
+  const { ongoingSeason, teamSelection } = useTotoContext()
   const {
     getTeamSelection, startSeason, finishSeason, getSeasons,
   } = useSeason()
 
   useEffect(() => {
-    getTeamSelection()
-    getSeasons()
+    if (user) {
+      getTeamSelection()
+      getSeasons()
+    }
   }, [user])
 
   const teamAlreadySelected = (country) => selectedTeams.some((team) => team.country === country)
@@ -36,9 +40,9 @@ const SeasonOverview = ({ handleRefresh }) => {
     if (teamAlreadySelected(country)) {
       setSelectedTeams(selectedTeams.filter((team) => team.country !== country))
     } else if (group === 'A' && groupACount >= 8) {
-      setErrorMsg('Already 8 teams in group A')
+      setErrorMsg(t('seasons.errorA'))
     } else if (group === 'B' && groupBCount >= 8) {
-      setErrorMsg('Already 8 teams in group B')
+      setErrorMsg(t('seasons.errorB'))
     } else {
       setSelectedTeams([...selectedTeams, selectedTeam])
     }
@@ -54,24 +58,24 @@ const SeasonOverview = ({ handleRefresh }) => {
     return null
   }
 
-  const allHaveBeenSelected = selectedTeams.length >= 10 && selectedTeams.length <= 16
+  const allHaveBeenSelected = selectedTeams.length === 16
 
   const seasonStartProps = {
-    text: 'Confirm to start new season!',
+    text: t('seasons.confirmStart'),
     confirm: async () => {
       await startSeason(seasonsYear, selectedTeams)
-      handleRefresh()
       dispatchModal({ type: 'CLOSE_MODAL' })
+      window.location.reload()
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
   }
 
   const seasonFinishProps = {
-    text: 'Confirm to finish this season!',
+    text: t('seasons.confirmFinish'),
     confirm: async () => {
       await finishSeason()
-      handleRefresh()
       dispatchModal({ type: 'CLOSE_MODAL' })
+      window.location.reload()
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
   }
@@ -82,23 +86,23 @@ const SeasonOverview = ({ handleRefresh }) => {
       && (
       <div className={styles.seasonActions}>
         <div className={styles.seasonForm}>
-          <h3>Start season</h3>
+          <h3>{t('seasons.startSeason')}</h3>
           <input
             type="number"
             onChange={(e) => setSeasonsYear(e.target.value)}
             value={seasonsYear}
-            placeholder="year"
+            placeholder={t('placeholder.year')}
             required
           />
           {allHaveBeenSelected ? (
             <div className={styles.selectedContainer}>
-              <h6>Group A</h6>
+              <h6>{t('seasons.groupA')}</h6>
               <div className={styles.selectedWrapper}>
                 {selectedTeams?.map(({ group, flag }) => (group === 'A'
                   ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
                   : ''))}
               </div>
-              <h6>Group B</h6>
+              <h6>{t('seasons.groupB')}</h6>
               <div className={styles.selectedWrapper}>
                 {selectedTeams?.map(({ group, flag }) => (group === 'B'
                   ? <img src={flag} alt="flag" className={styles.smallFlag} key={flag} />
@@ -107,7 +111,7 @@ const SeasonOverview = ({ handleRefresh }) => {
             </div>
           ) : (
             <h5 className={styles.err}>
-              Select between 10 - 16 teams
+              {t('seasons.errorTeams')}
             </h5>
           )}
           <button
@@ -118,7 +122,7 @@ const SeasonOverview = ({ handleRefresh }) => {
               setSubmitted(true)
             }}
           >
-            Start Season
+            {t('seasons.start')}
           </button>
         </div>
         <TeamInput />
@@ -128,7 +132,7 @@ const SeasonOverview = ({ handleRefresh }) => {
         <div className={styles.selectionWrapper}>
           <h5 className={styles.err}>{errorMsg}</h5>
           <div className={styles.selection}>
-            <h3>Teams for group A</h3>
+            <h3>{t('seasons.teamsA')}</h3>
             <h5>{`${groupACount} selected`}</h5>
             <div className={styles.teamWrapper}>
               {teamSelection.map(({ flag, country, _id }) => (
@@ -147,7 +151,7 @@ const SeasonOverview = ({ handleRefresh }) => {
             </div>
           </div>
           <div className={styles.selection}>
-            <h3>Teams for group B</h3>
+            <h3>{t('seasons.teamsB')}</h3>
             <h5>{`${groupBCount} selected`}</h5>
             <div className={styles.teamWrapper}>
               {teamSelection.map(({ flag, country, _id }) => (
@@ -168,7 +172,7 @@ const SeasonOverview = ({ handleRefresh }) => {
         </div>
       ) : (
         <div className={styles.inProgress}>
-          <h2 className={styles.title}>Season in progress...</h2>
+          <h2 className={styles.title}>{t('seasons.inProgress')}</h2>
           <button
             className={styles.finishBtn}
             disabled={!ongoingSeason || submitted}
@@ -177,7 +181,7 @@ const SeasonOverview = ({ handleRefresh }) => {
               setSubmitted(true)
             }}
           >
-            Finish Season
+            {t('seasons.finish')}
           </button>
         </div>
       )}

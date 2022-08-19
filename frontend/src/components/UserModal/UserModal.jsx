@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ClickAwayListener from 'react-click-away-listener'
+import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './UserModal.module.scss'
 import { avatars } from '../../data/avatars'
@@ -15,6 +16,7 @@ const UserModal = ({ handleToggle }) => {
   const { activeUser } = useTotoContext()
   const { user } = useAuthContext()
   const { updateAvatar, changeUserPassword, getUser } = useUser()
+  const { t } = useTranslation()
 
   const userFound = Object.keys(activeUser).length
 
@@ -71,7 +73,7 @@ const UserModal = ({ handleToggle }) => {
           alt="avatar"
         />
         <button onClick={() => setAvatarSelectionActive(true)}>
-          Change Avatar
+          {t('userModal.changeAvatar')}
         </button>
         {avatarSelectionActive && (
           <ClickAwayListener onClickAway={handleClickAway}>
@@ -90,7 +92,7 @@ const UserModal = ({ handleToggle }) => {
         )}
         {!passwordInputActive ? (
           <button onClick={() => setPasswordInputActive(true)}>
-            Change Password
+            {t('userModal.changePassword')}
           </button>
         ) : (
           <ClickAwayListener onClickAway={handleClickAway}>
@@ -98,15 +100,16 @@ const UserModal = ({ handleToggle }) => {
               className={styles.passwordBox}
               onSubmit={(e) => confirmPassword(e)}
             >
-              <label>New Password</label>
+              <label>{t('userModal.newPassword')}</label>
               <input
                 type="password"
                 onChange={(e) => setNewPassValue(e.target.value)}
+                placeholder={t('placeholder.password')}
                 required
                 minLength="8"
               />
               <button type="submit" className={styles.confirm}>
-                Confirm
+                {t('userModal.confirm')}
               </button>
             </form>
           </ClickAwayListener>
@@ -114,11 +117,11 @@ const UserModal = ({ handleToggle }) => {
       </div>
       <div className={styles.rightSide}>
         <div className={styles.box}>
-          <span className={styles.title}>Collected points</span>
+          <span className={styles.title}>{t('userModal.points')}</span>
           <span className={styles.points}>{`${activeUser.points}p`}</span>
         </div>
         <div className={styles.box}>
-          <span className={styles.title}>Last five games</span>
+          <span className={styles.title}>{t('userModal.lastGames')}</span>
           <div className={styles.gameWrapper}>
             {activeUser.lastFiveGames.map((game, i) => (
               <span

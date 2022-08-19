@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styles from './PredictCard.module.scss'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import { useModalContext } from '../../../hooks/useModalContext'
@@ -17,17 +18,19 @@ const PredictCard = ({
   userTimeTillGame,
   locked,
 }) => {
-  const { user } = useAuthContext()
+  const [showingUser, setShowingUser] = useState(false)
   const { dispatchModal } = useModalContext()
+  const { user } = useAuthContext()
+  const { t } = useTranslation()
   const { deleteMatch } = useMatch()
+
   const isAdmin = user?.roles?.includes(2000)
   const hasParticipated = usersParticipating.some(({ email }) => email === user.email)
   const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
   const usersBet = usersParticipating[indexOfUser]
-  const [showingUser, setShowingUser] = useState(false)
 
   const modalProps = {
-    text: 'Confirm to delete match!',
+    text: t('matchCard.confirmDelete'),
     confirm: async () => {
       await deleteMatch(_id)
       dispatchModal({ type: 'CLOSE_MODAL' })
@@ -88,7 +91,7 @@ const PredictCard = ({
         </div>
         {hasParticipated ? (
           <h4 className={styles.info}>
-            <p>Predicted Score:</p>
+            <p>{t('matchCard.predictedScore')}</p>
             <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
           </h4>
         ) : <PredictResult matchId={_id} isAdmin={isAdmin} locked={locked} />}

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import LeaderBoardCard from '../../components/LeaderBoardCard/LeaderBoardCard'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
@@ -9,6 +10,7 @@ const LeaderBoard = () => {
   const { user } = useAuthContext()
   const { users, prizepool } = useTotoContext()
   const { getPrizePoolAndUsers } = useUser()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (user) {
@@ -19,16 +21,16 @@ const LeaderBoard = () => {
   return (
     <div className={styles.container}>
       <h4 className={styles.prizePool}>
-        {`Prize Pool: ${prizepool}€`}
+        {`${t('leaderBoard.prize')} ${prizepool}€`}
       </h4>
       <div className={styles.users}>
         {users?.length ? (
           <div className={styles.userWrapper}>
-            <h1>Participants</h1>
+            <h2>{t('leaderBoard.participants')}</h2>
             <div className={styles.infoWrapper}>
-              <span className={styles.info}>User</span>
-              <span className={styles.info}>Last games</span>
-              <span className={styles.info}>Points</span>
+              <span className={styles.info}>{t('leaderBoard.user')}</span>
+              <span className={styles.info}>{t('leaderBoard.lastGames')}</span>
+              <span className={styles.info}>{t('leaderBoard.points')}</span>
             </div>
             {users.map(({
               avatar, email, points, lastFiveGames,
@@ -43,7 +45,7 @@ const LeaderBoard = () => {
             ))}
           </div>
         ) : (
-          <h1>At the moment no users have paid the entry fee</h1>
+          <h1>{t('leaderBoard.noUsers')}</h1>
         )}
       </div>
     </div>
