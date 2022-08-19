@@ -1,0 +1,146 @@
+{
+    "title": "Welcome to react using react-i18next",
+    "header": {
+        "logout": "Log out",
+        "admin": "Admin panel",
+        "matches": "Matches",
+        "standings": "Standings",
+        "leaderboard": "User leaderboard"
+    },
+    "confirmModal": {
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+    },
+    "noGames": "No games played",
+    "matchCard": {
+        "confirmDelete": "Confirm to delete match!",
+        "addResult": "Add final result",
+        "team1": "T1",
+        "team2": "T2",
+        "publish": "Publish",
+        "predictedScore": "Predicted Score:",
+        "noPrediction": "No prediction made",
+        "outcomeUnknown": "Outcome unknown",
+        "noBettors": "No bettors for this match",
+        "noAdmin": "Admins can`t participate",
+        "submit": "Submit",
+        "locked": "Match locked, one hour before start!"
+    },
+    "signup": {
+        "addUser": "Add new user",
+        "email": "Email address:",
+        "password": "Password:",
+        "add": "ADD"
+    },
+    "teamCard": {
+        "confirmDelete": "Confirm to delete this team!"
+    },
+    "user": {
+        "promote": "Promote",
+        "demote": "Demote",
+        "payment": "Payment",
+        "delete": "Delete",
+        "points": "Points:",
+        "role": "Role",
+        "registered": "Registered",
+        "hasPaid": "Has Paid:",
+        "noUser": "No user selected",
+        "findUser": "Find user",
+        "email": "Users e-mail:",
+        "find": "FIND"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "userModal": {
+        "changeAvatar": "Change avatar",
+        "changePassword": "Change password",
+        "newPassword": "New password",
+        "confirm": "Confirm",
+        "points": "Collected points",
+        "lastGames": "Last five games"
+    },
+    "placeholder": {
+        "email": "email...",
+        "password": "password...",
+        "year": "year...",
+        "country": "country...",
+        "link": "link..."
+    },
+    "welcome": "Welcome",
+    "matches": {
+        "addNew": "Add a new match",
+        "homeTeam": "Home Team",
+        "awayTeam": "Away Team",
+        "select": "Select",
+        "startingTime": "Starting Time",
+        "gameType": "Game Type",
+        "regular": "Regular game",
+        "quarter": "Quarter Finals",
+        "semi": "Semi Finals",
+        "bronze": "Finals - Bronze",
+        "gold": "Finals - Gold",
+        "addMatch": "Add Match",
+        "noUnsettled": "No unsettled matches",
+        "upcoming": "Upcoming games",
+        "finished": "Finished games",
+        "noSeason": "Awaiting a new season to start..."
+    },
+    "seasons": {
+        "errorA": "Already 8 teams in group A",
+        "errorB": "Already 8 teams in group B",
+        "confirmStart": "Confirm to start new season!",
+        "confirmFinish": "Confirm to finish this season!",
+        "startSeason": "Start season",
+        "groupA": "Group A",
+        "groupB": "Group B",
+        "errorTeams": "Please select 16 teams",
+        "start": "START SEASON",
+        "finish": "FINISH SEASON",
+        "teamsA": "Teams for group A",
+        "teamsB": "Teams for group B",
+        "inProgress": "Season in progress...",
+        "newTeam": "New team for selection",
+        "teamName": "Team name:",
+        "teamFlag": "Link to team flag:",
+        "add": "ADD TEAM"
+    },
+    "teams": {
+        "additionalTeam": "Additional team for this season",
+        "name": "Team name:",
+        "link": "Link to team flag:",
+        "group": "Teams group:",
+        "select": "Select",
+        "err": "No active season. Start season to add teams here.",
+        "add": "ADD TEAM",
+        "current": "Current season teams",
+        "country": "Country",
+        "noActive": "No active season"
+    },
+    "admin": {
+        "season": "Season overview",
+        "match": "Match overview",
+        "team": "Team overview",
+        "user": "User overview"
+    },
+    "leaderBoard": {
+        "prize": "Prize pool:",
+        "participants": "Participants",
+        "user": "User",
+        "lastGames": "Last Games",
+        "points": "Points",
+        "noUsers": "At the moment no users have paid the entry fee"
+    },
+    "standings": {
+        "groupA": "Group A",
+        "groupB": "Group B",
+        "country": "Country",
+        "noActive": "No active season",
+        "topPredictors": "Top Predictors",
+        "noPredictors": "No Predictors",
+        "points": "Points",
+        "overall": "Overall Standings",
+        "rank": "Rank",
+        "currentStandings": "Current Standings",
+        "standings": "Standings"
+    }
+}
