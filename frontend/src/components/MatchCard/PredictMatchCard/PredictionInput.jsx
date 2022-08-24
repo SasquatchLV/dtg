@@ -4,8 +4,8 @@ import styles from './PredictCard.module.scss'
 import { useMatch } from '../../../hooks/useMatch'
 
 const PredictionInput = ({ matchId, locked }) => {
-  const [homeScore, setHomeScore] = useState(0)
-  const [awayScore, setAwayScore] = useState(0)
+  const [homeScore, setHomeScore] = useState('')
+  const [awayScore, setAwayScore] = useState('')
   const [overTime, setOverTime] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const { makePrediction } = useMatch()

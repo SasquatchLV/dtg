@@ -25,8 +25,8 @@ const PredictCard = ({
   const { deleteMatch } = useMatch()
 
   const isAdmin = user?.roles?.includes(2000)
-  const hasParticipated = usersParticipating.some(({ email }) => email === user.email)
-  const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email)
+  const hasParticipated = usersParticipating.some(({ email }) => email === user.email.toLowerCase())
+  const indexOfUser = usersParticipating?.findIndex(({ email }) => email === user.email.toLowerCase())
   const usersBet = usersParticipating[indexOfUser]
 
   const modalProps = {

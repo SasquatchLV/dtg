@@ -41,6 +41,10 @@ body {
   position: relative;
 }
 
+input {
+  min-width: 40px;
+}
+
 .pages {
   max-width: 1400px;
   padding: 20px;
@@ -59,4 +63,8 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   background-color: var(--secondary);
   border-radius: 100px;
+}
+
+button:hover {
+  text-decoration: none;
 }
