@@ -193,8 +193,10 @@ class MatchesService {
         user.email,
         homeScore,
         awayScore,
+        overTime,
         user.homeTeamScore,
         user.awayTeamScore,
+        user.overTime
       );
 
       user.pointsEarned = points;
