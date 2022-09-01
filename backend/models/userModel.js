@@ -209,8 +209,10 @@ userSchema.statics.determinePoints = async function (
   email,
   homeScore,
   awayScore,
+  overTime,
   pHomeScore,
-  pAwayScore
+  pAwayScore,
+  pOverTime
 ) {
   const user = await this.findOne({ email })
 
@@ -218,8 +220,11 @@ userSchema.statics.determinePoints = async function (
     throw Error("Can't find user with this email")
   }
 
+  const overTimeCorrectlyPredicted = overTime === pOverTime
+
   const pWinningDiff =
     Math.max(pHomeScore, pAwayScore) - Math.min(pHomeScore, pAwayScore)
+
   const winningDiff =
     Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)
 
@@ -242,7 +247,7 @@ userSchema.statics.determinePoints = async function (
     user.lastFiveGames.unshift(points)
   }
 
-  if (precisePrediction) {
+  if (precisePrediction && overTimeCorrectlyPredicted) {
     user.points += 4
     addGameToHistory('4p')
   } else if (preciseDiff) {
