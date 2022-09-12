@@ -28,8 +28,9 @@
     },
     "signup": {
         "addUser": "Add new user",
-        "email": "Email address:",
-        "password": "Password:",
+        "email": "Email address",
+        "fullName": "Name, Surname",
+        "password": "Password",
         "add": "ADD"
     },
     "teamCard": {
@@ -46,7 +47,7 @@
         "hasPaid": "Has Paid:",
         "noUser": "No user selected",
         "findUser": "Find user",
-        "email": "Users e-mail:",
+        "email": "Users e-mail",
         "find": "FIND"
     },
     "yes": "Yes",
@@ -62,6 +63,7 @@
     "placeholder": {
         "email": "email...",
         "password": "password...",
+        "fullName": "name, surname...",
         "year": "year...",
         "country": "country...",
         "link": "link..."

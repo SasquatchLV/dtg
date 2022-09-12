@@ -28,8 +28,9 @@
     },
     "signup": {
         "addUser": "Pievienot jaunu lietotāju",
-        "email": "Ēpasta adrese:",
-        "password": "Parole:",
+        "email": "Epasta adrese",
+        "fullName": "Vārds, Uzvārds",
+        "password": "Parole",
         "add": "PIEVIENOT"
     },
     "teamCard": {
@@ -46,7 +47,7 @@
         "hasPaid": "Veicis maksājumu:",
         "noUser": "Nav aktīvu lietotāju",
         "findUser": "Atrast lietotāju",
-        "email": "Lietotāja ēpasts:",
+        "email": "Lietotāja ēpasts",
         "find": "MEKLĒT"
     },
     "yes": "Jā",
@@ -57,11 +58,12 @@
         "newPassword": "Jauna parole",
         "confirm": "Apstiprināt",
         "points": "Savāktie punkti",
-        "lastGames": "Pēdējas piecas spēles"
+        "lastGames": "Pēdējās piecas spēles"
     },
     "placeholder": {
-        "email": "ēpasts...",
+        "email": "epasts...",
         "password": "parole...",
+        "fullName": "vārds, uzvārds...",
         "year": "gads...",
         "country": "valsts...",
         "link": "saite..."

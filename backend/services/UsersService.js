@@ -38,8 +38,8 @@ class UsersService {
   }
 
   // signup a user
-  static async signupUser({ email, password }) {
-    await User.signup(email, password)
+  static async signupUser({ email, password, fullName }) {
+    await User.signup(email, password, fullName)
   }
 
   // give admin

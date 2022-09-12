@@ -56,10 +56,10 @@ router.get('/is-authorized', (req, res) => {
 
 // register a user route
 router.post('/signup', verifyRoles(ROLE_LIST.Admin), async (req, res) => {
-  const { email, password } = req.body;
-  console.log(req.body)
+  const { email, password, fullName } = req.body;
+
   try {
-    await UsersService.signupUser({ email, password })
+    await UsersService.signupUser({ email, password, fullName })
 
     res.send({
       data: email,

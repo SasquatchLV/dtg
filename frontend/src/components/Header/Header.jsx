@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRightFromBracket, faHammer, faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { useLogout } from '../../hooks/useLogout'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import styles from './Header.module.scss'
@@ -43,15 +45,6 @@ const Header = () => {
       },
       pathname: '/standings',
     },
-    {
-      id: 3,
-      title: t('header.leaderboard'),
-      handleClick: () => {
-        setActiveSection('/leaderboard')
-        navigate('/leaderboard')
-      },
-      pathname: '/leaderboard',
-    },
   ]
 
   return (
@@ -90,7 +83,7 @@ const Header = () => {
             className={styles.modalBtn}
             onClick={toggleUserModal}
           >
-            {user.email}
+            <FontAwesomeIcon icon={faUserTie} size="lg" />
           </button>
           {userModal && <UserModal handleToggle={toggleUserModal} />}
           {isAdmin && (
@@ -98,14 +91,14 @@ const Header = () => {
             className={styles.adminBtn}
             onClick={handleAdmin}
           >
-            {t('header.admin')}
+            <FontAwesomeIcon icon={faHammer} size="lg" />
           </button>
           )}
           <button
             className={styles.logoutBtn}
             onClick={logout}
           >
-            {t('header.logout')}
+            <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />
           </button>
         </div>
         )}

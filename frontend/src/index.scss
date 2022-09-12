@@ -37,7 +37,7 @@ h4 {
 body {
   background-color: var(--primary);
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
   position: relative;
 }
 
@@ -46,9 +46,7 @@ input {
 }
 
 .pages {
-  max-width: 1400px;
-  padding: 20px;
-  margin: 0 auto;
+  margin: 50px auto;
 }
 
 body::-webkit-scrollbar {

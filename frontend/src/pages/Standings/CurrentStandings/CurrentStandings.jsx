@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import TeamsCard from '../../../components/TeamsCard/TeamsCard'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './CurrentStandings.module.scss'
 import { errorToast } from '../../../utils/toast'
@@ -22,6 +21,12 @@ const CurrentStandings = () => {
     }
   }
 
+  const totalGames = (w, l, wo, lo) => {
+    const total = w + l + wo + lo
+
+    return total
+  }
+
   useEffect(() => {
     if (user) {
       getAllTeams()
@@ -33,59 +38,61 @@ const CurrentStandings = () => {
       <div className={styles.container}>
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupA')}</h4>
-          <div className={styles.teamData}>
-            <span>{t('standings.country')}</span>
-            <span>W</span>
-            <span>L</span>
-            <span>WO</span>
-            <span>LO</span>
-            <span>GP</span>
-            <span>P</span>
-          </div>
-          {groupA?.map(({
-            _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-          }) => (
-            <TeamsCard
-              key={_id}
-              _id={_id}
-              country={country}
-              flag={flag}
-              gamesWon={gamesWon}
-              gamesLost={gamesLost}
-              gamesWO={gamesWO}
-              gamesLO={gamesLO}
-              points={points}
-              deletable={false}
-            />
-          ))}
+          <table>
+            <tr>
+              <th>A</th>
+              <th>{t('standings.country')}</th>
+              <th>W</th>
+              <th>L</th>
+              <th>WO</th>
+              <th>WO</th>
+              <th>GP</th>
+              <th>P</th>
+            </tr>
+            {groupA?.map(({
+              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+            }) => (
+              <tr key={_id}>
+                <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                <td>{country}</td>
+                <td>{gamesWon}</td>
+                <td>{gamesLost}</td>
+                <td>{gamesWO}</td>
+                <td>{gamesLO}</td>
+                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                <td>{points}</td>
+              </tr>
+            ))}
+          </table>
         </div>
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupB')}</h4>
-          <div className={styles.teamData}>
-            <span>{t('standings.country')}</span>
-            <span>W</span>
-            <span>L</span>
-            <span>WO</span>
-            <span>LO</span>
-            <span>GP</span>
-            <span>P</span>
-          </div>
-          {groupB?.map(({
-            _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-          }) => (
-            <TeamsCard
-              key={_id}
-              _id={_id}
-              country={country}
-              flag={flag}
-              gamesWon={gamesWon}
-              gamesLost={gamesLost}
-              gamesWO={gamesWO}
-              gamesLO={gamesLO}
-              points={points}
-              deletable={false}
-            />
-          ))}
+          <table>
+            <tr>
+              <th>A</th>
+              <th>{t('standings.country')}</th>
+              <th>W</th>
+              <th>L</th>
+              <th>WO</th>
+              <th>WO</th>
+              <th>GP</th>
+              <th>P</th>
+            </tr>
+            {groupB?.map(({
+              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+            }) => (
+              <tr key={_id}>
+                <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                <td>{country}</td>
+                <td>{gamesWon}</td>
+                <td>{gamesLost}</td>
+                <td>{gamesWO}</td>
+                <td>{gamesLO}</td>
+                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                <td>{points}</td>
+              </tr>
+            ))}
+          </table>
         </div>
       </div>
     ) : (

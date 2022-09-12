@@ -117,6 +117,7 @@ const UserModal = ({ handleToggle }) => {
       </div>
       <div className={styles.rightSide}>
         <div className={styles.box}>
+          <i className={styles.fullName}>{activeUser.fullName}</i>
           <span className={styles.title}>{t('userModal.points')}</span>
           <span className={styles.points}>{`${activeUser.points}p`}</span>
         </div>
@@ -136,9 +137,7 @@ const UserModal = ({ handleToggle }) => {
         </div>
       </div>
     </div>
-  ) : (
-    <h4>Loading..</h4>
-  )
+  ) : null
 }
 
 export default UserModal

@@ -6,15 +6,17 @@ import styles from './Signup.module.scss'
 const Signup = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [fullName, setFullName] = useState('')
   const { signupUser } = useUser()
   const { t } = useTranslation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await signupUser(email, password)
+    await signupUser(email, password, fullName)
 
     setEmail('')
+    setFullName('')
     setPassword('')
   }
 
@@ -29,6 +31,15 @@ const Signup = () => {
         placeholder={t('placeholder.email')}
         onChange={(e) => setEmail(e.target.value)}
         value={email}
+      />
+      <label>{t('signup.fullName')}</label>
+      <input
+        id="fullName"
+        name="fullName"
+        type="text"
+        placeholder={t('placeholder.fullName')}
+        onChange={(e) => setFullName(e.target.value)}
+        value={fullName}
       />
       <label>{t('signup.password')}</label>
       <input

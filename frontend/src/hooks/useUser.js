@@ -4,11 +4,11 @@ import { errorToast, successToast } from '../utils/toast'
 export const useUser = () => {
   const { dispatch } = useTotoContext()
 
-  const signupUser = async (email, password) => {
+  const signupUser = async (email, password, fullName) => {
     const response = await fetch('/api/user/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, fullName }),
     })
 
     const { status, message } = await response.json()

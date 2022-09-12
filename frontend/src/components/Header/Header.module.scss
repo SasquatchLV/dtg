@@ -4,13 +4,18 @@
     padding: 0 2rem;
     align-items: center;
     background-image: linear-gradient(to bottom, black 0%, #032d29, var(--secondary));
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 4;
 }
 
 .navigation {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 15%;
 }
 
 .actions {
@@ -22,12 +27,13 @@
 }
 
 .adminBtn,
-.logoutBtn {
+.logoutBtn,
+.modalBtn {
     background-color: var(--primary);
     color: var(--secondary);
     border: 2px solid var(--secondary);
-    padding: 6px 10px;
-    border-radius: 4px;
+    padding: 6px 8px;
+    border-radius: 50%;
     font-family: 'Poppins';
     cursor: pointer;
     font-size: 14px;
@@ -40,12 +46,6 @@
         transform: scale(1.05);
         text-decoration: none;
     }
-}
-
-.modalBtn {
-    font-size: 14px;
-    color: white;
-    margin-right: 1rem;
 }
 
 .adminBtn {

@@ -10,12 +10,14 @@ const users = async () => {
 
         const newAdmin = new User({
             email: 'Admin@toto.com',
+            fullName: 'Miervaldis',
             password: hash,
             roles: { User: 1000, Admin: 2000 },
         })
 
         const newUser = new User({
             email: 'User@toto.com',
+             fullName: 'Leons',
             password: hash,
         })
 
