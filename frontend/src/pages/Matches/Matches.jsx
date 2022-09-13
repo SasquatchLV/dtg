@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
@@ -18,6 +18,7 @@ const Matches = () => {
   const { getMatches } = useMatch()
   const { getSeasons } = useSeason()
   const { t } = useTranslation()
+  const [activeUserIndex, setActiveUserIndex] = useState(null)
 
   const determineStyle = (game) => {
     const style = {
@@ -58,11 +59,11 @@ const Matches = () => {
   return (
     <div className={styles.container}>
       <div className={styles.topUsers}>
-        {users.map(({ avatar, email, _id }, index) => (index <= 2 ? (
+        {users.map(({ avatar, fullName, _id }, index) => (index <= 2 ? (
           <div className={styles.topUserBox} key={_id}>
             <span className={styles.topUserText}>{`${index + 1}#`}</span>
             <img src={avatar} className={styles.topUserIcon} alt="avatar" />
-            <span className={styles.topUserText}>{email}</span>
+            <span className={styles.topUserText}>{formatName(fullName)}</span>
           </div>
         ) : null))}
       </div>
@@ -107,7 +108,7 @@ const Matches = () => {
             </thead>
             <tbody>
               {users.map(({
-                avatar, points, fullName, _id,
+                avatar, points, fullName, _id, lastFiveGames,
               }, index) => (index < 10 ? (
                 <tr className={styles.userRow} key={_id}>
                   <td><img src={avatar} className={styles.tableIcon} alt="avatar" /></td>

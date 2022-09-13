@@ -5,7 +5,10 @@ import { useModalContext } from '../../hooks/useModalContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
 
 const UserInfo = () => {
-  const { activeUser } = useTotoContext()
+  const { foundUser } = useTotoContext()
+  const {
+    email, avatar, points, roles, hasPaid, createdAt,
+  } = foundUser
   const {
     promoteUser, demoteUser, toggleHasPaid, deleteUser,
   } = useUser()
@@ -15,7 +18,7 @@ const UserInfo = () => {
   const deleteModalProps = {
     text: 'Confirm to delete!',
     confirm: async () => {
-      await deleteUser(activeUser.email)
+      await deleteUser(email)
       dispatchModal({ type: 'CLOSE_MODAL' })
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
@@ -25,17 +28,17 @@ const UserInfo = () => {
     {
       title: t('user.promote'),
       imgLink: 'https://cdn-icons-png.flaticon.com/32/3050/3050304.png',
-      handleClick: () => promoteUser(activeUser.email),
+      handleClick: () => promoteUser(email),
     },
     {
       title: t('user.demote'),
       imgLink: 'https://cdn-icons-png.flaticon.com/32/727/727358.png',
-      handleClick: () => demoteUser(activeUser.email),
+      handleClick: () => demoteUser(email),
     },
     {
       title: t('user.payment'),
       imgLink: 'https://cdn-icons-png.flaticon.com/512/126/126179.png',
-      handleClick: () => toggleHasPaid(activeUser.email),
+      handleClick: () => toggleHasPaid(email),
     },
     {
       title: t('user.delete'),
@@ -45,21 +48,21 @@ const UserInfo = () => {
   ]
 
   return (
-    Object.keys(activeUser).length ? (
+    Object.keys(foundUser).length ? (
       <div className={styles.userProfile}>
         <div className={styles.userLeft}>
           <img
             className={styles.userAvatar}
-            src={activeUser.avatar}
+            src={avatar}
             alt="avatar"
           />
           <div className={styles.leftBottom}>
-            <span>{`${t('user.points')} ${activeUser.points}`}</span>
+            <span>{`${t('user.points')} ${points}`}</span>
           </div>
         </div>
         <div className={styles.userRight}>
           <div className={styles.userEmail}>
-            <h3>{activeUser.email}</h3>
+            <h3>{email}</h3>
             <div className={styles.userIcons}>
               {icons.map(({ title, imgLink, handleClick }) => (
                 <div onClick={handleClick} key={title}>
@@ -77,23 +80,23 @@ const UserInfo = () => {
             <li>
               <span>{t('user.role')}</span>
               <span>
-                {Object.keys(activeUser.roles)[
-                  Object.keys(activeUser.roles).length - 1
+                {Object.keys(roles)[
+                  Object.keys(roles).length - 1
                 ]}
               </span>
             </li>
             <li>
               <span>{t('user.registered')}</span>
-              <span>{activeUser.createdAt.slice(0, 10)}</span>
+              <span>{createdAt.slice(0, 10)}</span>
             </li>
             <li>
               <span>{t('user.hasPaid')}</span>
-              <span>{activeUser.hasPaid ? t('yes') : t('no')}</span>
+              <span>{hasPaid ? t('yes') : t('no')}</span>
             </li>
           </ul>
           <img
             className={styles.paidStatus}
-            src={activeUser.hasPaid ? '/paid.png' : '/notpaid.png'}
+            src={hasPaid ? '/paid.png' : '/notpaid.png'}
             alt="hasPaid"
           />
         </div>

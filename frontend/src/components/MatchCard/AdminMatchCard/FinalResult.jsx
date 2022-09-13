@@ -54,10 +54,12 @@ const FinalResult = ({ matchId, isAdmin }) => {
               required
             />
           </div>
+          {scoreGapIsOne && (
           <div className={styles.inputBox}>
             <span>OT</span>
             <input type="checkbox" onChange={() => setOverTime(!overTime)} />
           </div>
+          )}
         </div>
         <button
           className={styles.predictBtn}

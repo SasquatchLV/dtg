@@ -30,6 +30,16 @@ export const useUser = () => {
     }
   }
 
+  const findUser = async (email) => {
+    const { data, status, message } = await (await fetch(`/api/user/${email}`)).json()
+
+    if (status === 'success') {
+      dispatch({ type: 'SET_FOUND_USER', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
   const getUsers = async () => {
     const { data, status, message } = await (await fetch('/api/user/all')).json()
 
@@ -148,5 +158,6 @@ export const useUser = () => {
     getUsers,
     getUser,
     getPrizePoolAndUsers,
+    findUser,
   }
 }

@@ -6,12 +6,12 @@ import styles from './UserSearch.module.scss'
 const UserSearch = () => {
   const [email, setEmail] = useState('')
   const { t } = useTranslation()
-  const { getUser } = useUser()
+  const { findUser } = useUser()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    getUser(email)
+    findUser(email)
     setEmail('')
   }
 

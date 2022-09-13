@@ -39,6 +39,11 @@ export const totoReducer = (state, action) => {
         ...state,
         activeUser: action.payload,
       }
+    case 'SET_FOUND_USER':
+      return {
+        ...state,
+        foundUser: action.payload,
+      }
     case 'SET_PRIZEPOOL':
       return {
         ...state,
@@ -81,6 +86,7 @@ export const TotoContextProvider = ({ children }) => {
     teams: [],
     users: [],
     activeUser: {},
+    foundUser: {},
     prizepool: 0,
     seasons: [],
     activeSeason: {},
