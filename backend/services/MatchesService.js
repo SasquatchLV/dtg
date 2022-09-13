@@ -200,6 +200,7 @@ class MatchesService {
       );
 
       user.pointsEarned = points;
+      await user.save()
     }
 
     // sort by top winners in points

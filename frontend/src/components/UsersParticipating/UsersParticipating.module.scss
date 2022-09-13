@@ -27,6 +27,8 @@ ul .row:nth-child(1) {
 
 .row {
     display: grid;
+    justify-content: center;
+    align-items: center;
     grid-template-columns: 45% 10% 45%;
     margin-bottom: 2px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.199);
@@ -57,10 +59,13 @@ ul .row:nth-child(1) {
 }
 
 .won {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #e0d315;
     font-weight: 600;
     font-size: 11px;
-    padding: .1rem .3rem;
+    padding: .2rem;
     border-radius: 5px;
     border: 1px solid #024d19;
     max-width: 15px;

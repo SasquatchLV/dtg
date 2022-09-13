@@ -15,7 +15,7 @@ import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
 import ProtectedRoute from './components/ProtectedRoute/protectedRoute'
 import ConfirmationModal from './components/ConfirmationModal/ConfirmationModal'
 
-function App() {
+const App = () => {
   const { user } = useAuthContext()
   const isAdmin = user?.roles?.includes(2000)
 
