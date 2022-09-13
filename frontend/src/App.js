@@ -22,7 +22,7 @@ function App() {
   return (
     <BrowserRouter basename="/">
       <ConfirmationModal />
-      <Header />
+      {user && <Header />}
       <div className="pages">
         <Routes>
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/matches" />} />

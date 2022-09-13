@@ -24,6 +24,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 0 .2rem;
 }
 
 .middle {
@@ -31,6 +32,7 @@
     flex-direction: column;
     justify-content: flex-start;
     row-gap: 1rem;
+    padding: 0 .5rem;
 }
 
 .timeRemaining {
@@ -86,6 +88,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 0 1rem;
 }
 
 .lockedInfo {

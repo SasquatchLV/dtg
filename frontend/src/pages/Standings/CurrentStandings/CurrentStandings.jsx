@@ -39,59 +39,67 @@ const CurrentStandings = () => {
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupA')}</h4>
           <table>
-            <tr>
-              <th>A</th>
-              <th>{t('standings.country')}</th>
-              <th>W</th>
-              <th>L</th>
-              <th>WO</th>
-              <th>WO</th>
-              <th>GP</th>
-              <th>P</th>
-            </tr>
-            {groupA?.map(({
-              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-            }) => (
-              <tr key={_id}>
-                <td><img src={flag} alt="flag" className={styles.flag} /></td>
-                <td>{country}</td>
-                <td>{gamesWon}</td>
-                <td>{gamesLost}</td>
-                <td>{gamesWO}</td>
-                <td>{gamesLO}</td>
-                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
-                <td>{points}</td>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>{t('standings.country')}</th>
+                <th>W</th>
+                <th>L</th>
+                <th>WO</th>
+                <th>WO</th>
+                <th>GP</th>
+                <th>P</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {groupA?.map(({
+                _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+              }) => (
+                <tr key={_id}>
+                  <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                  <td>{country}</td>
+                  <td>{gamesWon}</td>
+                  <td>{gamesLost}</td>
+                  <td>{gamesWO}</td>
+                  <td>{gamesLO}</td>
+                  <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                  <td>{points}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupB')}</h4>
           <table>
-            <tr>
-              <th>A</th>
-              <th>{t('standings.country')}</th>
-              <th>W</th>
-              <th>L</th>
-              <th>WO</th>
-              <th>WO</th>
-              <th>GP</th>
-              <th>P</th>
-            </tr>
-            {groupB?.map(({
-              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-            }) => (
-              <tr key={_id}>
-                <td><img src={flag} alt="flag" className={styles.flag} /></td>
-                <td>{country}</td>
-                <td>{gamesWon}</td>
-                <td>{gamesLost}</td>
-                <td>{gamesWO}</td>
-                <td>{gamesLO}</td>
-                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
-                <td>{points}</td>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>{t('standings.country')}</th>
+                <th>W</th>
+                <th>L</th>
+                <th>WO</th>
+                <th>WO</th>
+                <th>GP</th>
+                <th>P</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {groupB?.map(({
+                _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+              }) => (
+                <tr key={_id}>
+                  <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                  <td>{country}</td>
+                  <td>{gamesWon}</td>
+                  <td>{gamesLost}</td>
+                  <td>{gamesWO}</td>
+                  <td>{gamesLO}</td>
+                  <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                  <td>{points}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

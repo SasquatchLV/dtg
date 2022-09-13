@@ -19,10 +19,10 @@
         "team2": "T2",
         "publish": "Publish",
         "predictedScore": "Predicted Score:",
-        "noPrediction": "No prediction made",
+        "noPrediction": "No prediction",
         "outcomeUnknown": "Outcome unknown",
         "noBettors": "No bettors for this match",
-        "noAdmin": "Admins can`t participate",
+        "noAdmin": "Admins denied",
         "submit": "Submit",
         "locked": "Match locked, one hour before start!"
     },

@@ -71,79 +71,93 @@ const PreviousStandings = ({ seasonYear }) => {
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupA')}</h4>
           <table>
-            <tr>
-              <th>A</th>
-              <th>{t('standings.country')}</th>
-              <th>W</th>
-              <th>L</th>
-              <th>WO</th>
-              <th>WO</th>
-              <th>GP</th>
-              <th>P</th>
-            </tr>
-            {groupA?.map(({
-              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-            }) => (
-              <tr key={_id}>
-                <td><img src={flag} alt="flag" className={styles.flag} /></td>
-                <td>{country}</td>
-                <td>{gamesWon}</td>
-                <td>{gamesLost}</td>
-                <td>{gamesWO}</td>
-                <td>{gamesLO}</td>
-                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
-                <td>{points}</td>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>{t('standings.country')}</th>
+                <th>W</th>
+                <th>L</th>
+                <th>WO</th>
+                <th>WO</th>
+                <th>GP</th>
+                <th>P</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {groupA?.map(({
+                _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+              }) => (
+                <tr key={_id}>
+                  <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                  <td>{country}</td>
+                  <td>{gamesWon}</td>
+                  <td>{gamesLost}</td>
+                  <td>{gamesWO}</td>
+                  <td>{gamesLO}</td>
+                  <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                  <td>{points}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <div className={styles.teamWrapper}>
           <h4>{t('standings.groupB')}</h4>
           <table>
-            <tr>
-              <th>A</th>
-              <th>{t('standings.country')}</th>
-              <th>W</th>
-              <th>L</th>
-              <th>WO</th>
-              <th>WO</th>
-              <th>GP</th>
-              <th>P</th>
-            </tr>
-            {groupB?.map(({
-              _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
-            }) => (
-              <tr key={_id}>
-                <td><img src={flag} alt="flag" className={styles.flag} /></td>
-                <td>{country}</td>
-                <td>{gamesWon}</td>
-                <td>{gamesLost}</td>
-                <td>{gamesWO}</td>
-                <td>{gamesLO}</td>
-                <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
-                <td>{points}</td>
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>{t('standings.country')}</th>
+                <th>W</th>
+                <th>L</th>
+                <th>WO</th>
+                <th>WO</th>
+                <th>GP</th>
+                <th>P</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {groupB?.map(({
+                _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
+              }) => (
+                <tr key={_id}>
+                  <td><img src={flag} alt="flag" className={styles.flag} /></td>
+                  <td>{country}</td>
+                  <td>{gamesWon}</td>
+                  <td>{gamesLost}</td>
+                  <td>{gamesWO}</td>
+                  <td>{gamesLO}</td>
+                  <td>{totalGames(gamesWon, gamesLost, gamesWO, gamesLO)}</td>
+                  <td>{points}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         {topThreeUsers.length ? (
           <div className={styles.teamWrapper}>
             <h4>{t('standings.topPredictors')}</h4>
             <table>
-              <tr>
-                <th className={styles.notVisible}>-</th>
-                <th>Email</th>
-                <th>{t('standings.points')}</th>
-                <th>Place</th>
-              </tr>
-              {topThreeUsers.map(({ email, avatar, points }, index) => (
+              <thead>
                 <tr>
-                  <td className={styles.avatarCell}><img src={avatar} alt="avatar" className={styles.avatar} /></td>
-                  <td>{email}</td>
-                  <td>{points}</td>
-                  <td><img className={styles.icon} src={determinePlacement(index)} alt="icon" /></td>
+                  <th className={styles.notVisible}>-</th>
+                  <th>Email</th>
+                  <th>{t('standings.points')}</th>
+                  <th>Place</th>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {topThreeUsers.map(({
+                  email, avatar, points, _id,
+                }, index) => (
+                  <tr key={_id}>
+                    <td className={styles.avatarCell}><img src={avatar} alt="avatar" className={styles.avatar} /></td>
+                    <td>{email}</td>
+                    <td>{points}</td>
+                    <td><img className={styles.icon} src={determinePlacement(index)} alt="icon" /></td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         ) : <h4>{t('standings.noPredictors')}</h4>}
@@ -152,25 +166,29 @@ const PreviousStandings = ({ seasonYear }) => {
         <div className={styles.overallWrapper}>
           <h4>{t('standings.overall')}</h4>
           <table>
-            <tr>
-              <th>-</th>
-              <th>{t('standings.rank')}</th>
-              <th>{t('standings.country')}</th>
-            </tr>
-            {overallRanking.map(({ country, flag }, index) => (
-              <tr className={styles.overallRow}>
-                <td>{index + 1}</td>
-                <td><img src={flag} alt="flag" className={styles.flagSmall} /></td>
-                <td>{country}</td>
-                <td>
-                  <img
-                    className={index > 2 ? styles.notVisible : styles.icon}
-                    src={determinePlacement(index)}
-                    alt="icon"
-                  />
-                </td>
+            <thead>
+              <tr>
+                <th>-</th>
+                <th>{t('standings.rank')}</th>
+                <th>{t('standings.country')}</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {overallRanking.map(({ country, flag, _id }, index) => (
+                <tr className={styles.overallRow} key={_id}>
+                  <td>{index + 1}</td>
+                  <td><img src={flag} alt="flag" className={styles.flagSmall} /></td>
+                  <td>{country}</td>
+                  <td>
+                    <img
+                      className={index > 2 ? styles.notVisible : styles.icon}
+                      src={determinePlacement(index)}
+                      alt="icon"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>

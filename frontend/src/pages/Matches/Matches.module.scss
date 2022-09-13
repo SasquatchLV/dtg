@@ -34,6 +34,12 @@
     padding: .5rem 1rem;
 }
 
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .title {
     margin: 0;
 }
@@ -51,6 +57,10 @@
     grid-template-columns: 50% 50%;
     justify-content: center;
     column-gap: 2rem;
+}
+
+tbody .userRow {
+    background-color: #03383427;
 }
 
 .matchOverview {

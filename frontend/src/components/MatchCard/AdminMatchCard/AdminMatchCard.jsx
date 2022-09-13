@@ -45,12 +45,10 @@ const AdminMatchCard = ({
             />
           </button>
           )}
-
       <div className={styles.time}>
-        <h4>{userStartTime}</h4>
+        <h4>{userStartTime.split(' ')[0]}</h4>
         <span>{userStartDate}</span>
       </div>
-
       <div className={styles.middle}>
         <h5>{title}</h5>
         <div className={styles.teams}>

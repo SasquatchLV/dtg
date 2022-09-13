@@ -53,12 +53,8 @@ th {
     width: 2rem;
 }
 
-tr {
+tbody tr {
     background-color: var(--rowBg);
-}
-
-tr:first-child {
-    background-color: transparent;
 }
 
 td:first-child,
