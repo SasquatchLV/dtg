@@ -55,7 +55,7 @@ const CurrentStandings = () => {
               {groupA?.map(({
                 _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
               }) => (
-                <tr key={_id}>
+                <tr key={_id} className={styles.groupRow}>
                   <td><img src={flag} alt="flag" className={styles.flag} /></td>
                   <td>{country}</td>
                   <td>{gamesWon}</td>
@@ -88,7 +88,7 @@ const CurrentStandings = () => {
               {groupB?.map(({
                 _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
               }) => (
-                <tr key={_id}>
+                <tr key={_id} className={styles.groupRow}>
                   <td><img src={flag} alt="flag" className={styles.flag} /></td>
                   <td>{country}</td>
                   <td>{gamesWon}</td>

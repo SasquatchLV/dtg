@@ -73,13 +73,12 @@ export const useMatch = () => {
 
     if (status === 'success') {
       successToast(message)
+      getUnsettledMatches()
     }
 
     if (status === 'error') {
       errorToast(message)
     }
-
-    getUnsettledMatches()
   }
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone

@@ -1,11 +1,13 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
     padding: 1rem;
-    max-width: 1440px;
-    width: 100%;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    column-gap: 2rem;
+    align-items: flex-start;
+}
+
+.standingsContainer {
+
 }
 
 .teamWrapper {

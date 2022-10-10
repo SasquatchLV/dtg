@@ -16,7 +16,7 @@ const AdminMatchCard = ({
 }) => {
   const { user } = useAuthContext()
   const { dispatchModal } = useModalContext()
-  const { deleteMatch } = useMatch()
+  const { deleteMatch, getUnsettledMatches } = useMatch()
   const { t } = useTranslation()
 
   const isAdmin = user?.roles?.includes(2000)
@@ -26,6 +26,7 @@ const AdminMatchCard = ({
     confirm: async () => {
       await deleteMatch(_id)
       dispatchModal({ type: 'CLOSE_MODAL' })
+      getUnsettledMatches()
     },
     cancel: () => dispatchModal({ type: 'CLOSE_MODAL' }),
   }

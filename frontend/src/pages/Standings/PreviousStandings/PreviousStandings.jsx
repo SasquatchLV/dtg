@@ -87,7 +87,7 @@ const PreviousStandings = ({ seasonYear }) => {
               {groupA?.map(({
                 _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
               }) => (
-                <tr key={_id}>
+                <tr key={_id} className={styles.groupRow}>
                   <td><img src={flag} alt="flag" className={styles.flag} /></td>
                   <td>{country}</td>
                   <td>{gamesWon}</td>
@@ -120,7 +120,7 @@ const PreviousStandings = ({ seasonYear }) => {
               {groupB?.map(({
                 _id, country, flag, gamesWon, gamesLost, gamesWO, gamesLO, points,
               }) => (
-                <tr key={_id}>
+                <tr key={_id} className={styles.groupRow}>
                   <td><img src={flag} alt="flag" className={styles.flag} /></td>
                   <td>{country}</td>
                   <td>{gamesWon}</td>
@@ -150,7 +150,7 @@ const PreviousStandings = ({ seasonYear }) => {
                 {topThreeUsers.map(({
                   email, avatar, points, _id,
                 }, index) => (
-                  <tr key={_id}>
+                  <tr key={_id} className={styles.userRow}>
                     <td className={styles.avatarCell}><img src={avatar} alt="avatar" className={styles.avatar} /></td>
                     <td>{email}</td>
                     <td>{points}</td>

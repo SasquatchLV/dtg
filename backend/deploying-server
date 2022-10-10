@@ -1,0 +1,4 @@
+1. ar komandu scp aizsūtam backend mapīti uz serveri ( no sava kompja root foldera. scp -r backend/ koderis@toto.dtg.lv:/opt
+2. ssh uz toto.dtg.lv
+3. cd uz /opt mapi un raksta - sudo mv backend server
+4. Palaiž install.sh

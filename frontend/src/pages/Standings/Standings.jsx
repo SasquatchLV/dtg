@@ -6,6 +6,7 @@ import styles from './Standings.module.scss'
 import CurrentStandings from './CurrentStandings/CurrentStandings'
 import PreviousStandings from './PreviousStandings/PreviousStandings'
 import { useSeason } from '../../hooks/useSeason'
+import Sidebar from '../../components/Sidebar/Sidebar'
 
 const Standings = () => {
   const [chosenYear, setChosenYear] = useState('')
@@ -22,26 +23,29 @@ const Standings = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.yearWrapper}>
-        {years?.map((year) => (
+      <div className={styles.standingsContainer}>
+        <div className={styles.yearWrapper}>
+          {years?.map((year) => (
+            <button
+              key={year}
+              onClick={() => setChosenYear(year)}
+              className={styles.yearBtn}
+            >
+              {year}
+            </button>
+          ))}
           <button
-            key={year}
-            onClick={() => setChosenYear(year)}
+            onClick={() => setChosenYear('')}
             className={styles.yearBtn}
           >
-            {year}
+            {t('standings.currentStandings')}
           </button>
-        ))}
-        <button
-          onClick={() => setChosenYear('')}
-          className={styles.yearBtn}
-        >
-          {t('standings.currentStandings')}
-        </button>
+        </div>
+        <h3>{chosenYear ? `${chosenYear} ${t('standings.standings')}` : t('standings.currentStandings')}</h3>
+        {chosenYear && <PreviousStandings seasonYear={chosenYear} />}
+        {!chosenYear && <CurrentStandings />}
       </div>
-      <h3>{chosenYear ? `${chosenYear} ${t('standings.standings')}` : t('standings.currentStandings')}</h3>
-      {chosenYear && <PreviousStandings seasonYear={chosenYear} />}
-      {!chosenYear && <CurrentStandings />}
+      <Sidebar />
     </div>
   )
 }

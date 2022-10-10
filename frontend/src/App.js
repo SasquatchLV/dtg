@@ -11,7 +11,6 @@ import Header from './components/Header/Header'
 import Matches from './pages/Matches/Matches'
 import Standings from './pages/Standings/Standings'
 import AdminPanel from './pages/Admin/AdminPanel'
-import LeaderBoard from './pages/LeaderBoard/LeaderBoard'
 import ProtectedRoute from './components/ProtectedRoute/protectedRoute'
 import ConfirmationModal from './components/ConfirmationModal/ConfirmationModal'
 
@@ -32,9 +31,9 @@ const App = () => {
               <ProtectedRoute>
                 <Routes>
                   <Route path="/matches" element={<Matches />} />
-                  {isAdmin && <Route path="/admin" element={<AdminPanel />} />}
                   <Route path="/standings" element={<Standings />} />
-                  <Route path="/leaderboard" element={<LeaderBoard />} />
+
+                  {isAdmin && <Route path="/admin" element={<AdminPanel />} />}
                   <Route path="/*" element={<Navigate to="matches" replace />} />
                 </Routes>
               </ProtectedRoute>
