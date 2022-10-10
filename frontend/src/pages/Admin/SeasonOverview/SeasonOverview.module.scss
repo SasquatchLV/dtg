@@ -97,9 +97,11 @@ h3 {
 
 .selected .flag {
     opacity: 1;
+    width: 44px;
 }
 
-.selectedA, .selectedB {
+.selectedA,
+.selectedB {
     position: absolute;
     font-weight: 600;
     font-size: 16px;
@@ -119,6 +121,7 @@ h3 {
 }
 
 .notSelected .flag {
+    max-width: 40px;
     opacity: .5;
     transition: all 0.2s ease-in-out;
 }
@@ -150,7 +153,8 @@ h3 {
     width: 100%;
 }
 
-.addBtn, .finishBtn {
+.addBtn,
+.finishBtn {
     margin: 10px 0 0 0;
     width: 100%;
     background-color: var(--secondary);
