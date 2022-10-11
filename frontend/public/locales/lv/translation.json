@@ -48,7 +48,8 @@
         "noUser": "Nav aktīvu lietotāju",
         "findUser": "Atrast lietotāju",
         "email": "Lietotāja ēpasts",
-        "find": "MEKLĒT"
+        "find": "MEKLĒT",
+        "fullName": "Vārds, Uzvārds"
     },
     "yes": "Jā",
     "no": "Nē",
@@ -85,7 +86,7 @@
         "noUnsettled": "Nav spēles bez rezultāta",
         "upcoming": "Gaidāmās spēles",
         "finished": "Pabeigtas spēles",
-        "noSeason": "Gaidam jaunas sezonas sākumu..."
+        "noMatches": "Netika atrasta neviena spēle"
     },
     "seasons": {
         "errorA": "A grupā jau 8 komandas",

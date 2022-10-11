@@ -7,7 +7,7 @@ import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Sidebar = () => {
   const { t } = useTranslation()
-  const { users, prizepool } = useTotoContext()
+  const { paidUsers, prizepool } = useTotoContext()
   const { user } = useAuthContext()
   const { getPrizePoolAndUsers } = useUser()
 
@@ -40,7 +40,7 @@ const Sidebar = () => {
         <h4>{`${t('leaderBoard.prize')} ${prizepool}€`}</h4>
       </div>
       <h3 className={styles.title}>TOP 10</h3>
-      {users.length ? (
+      {paidUsers.length ? (
         <table className={styles.userTable}>
           <thead>
             <tr className={styles.userTh}>
@@ -50,7 +50,7 @@ const Sidebar = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(({
+            {paidUsers.map(({
               avatar, points, fullName, _id, lastFiveGames,
             }, index) => (index < 10 ? (
               <tr className={styles.userRow} key={_id}>

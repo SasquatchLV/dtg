@@ -18,6 +18,8 @@ export const useUser = () => {
     } else {
       errorToast(message)
     }
+
+    return { status }
   }
 
   const getUser = async (email) => {
@@ -54,7 +56,7 @@ export const useUser = () => {
     const { data, status, message } = await (await fetch('/api/user/paid')).json()
 
     if (status === 'success') {
-      await dispatch({ type: 'SET_USERS', payload: data })
+      await dispatch({ type: 'SET_PAID_USERS', payload: data })
     } else {
       errorToast(message)
     }
@@ -77,7 +79,7 @@ export const useUser = () => {
     })).json()
 
     if (status === 'success') {
-      await getUser(email)
+      await findUser(email)
     } else {
       errorToast(message)
     }
@@ -89,7 +91,7 @@ export const useUser = () => {
     })).json()
 
     if (status === 'success') {
-      await getUser(email)
+      await findUser(email)
     } else {
       errorToast(message)
     }
@@ -101,7 +103,7 @@ export const useUser = () => {
     })).json()
 
     if (status === 'success') {
-      await getUser(email)
+      await findUser(email)
     } else {
       errorToast(message)
     }
@@ -109,11 +111,11 @@ export const useUser = () => {
 
   const deleteUser = async (email) => {
     const { status, message } = await (await fetch(`/api/user/delete/${email}`, {
-      method: 'POST',
+      method: 'DELETE',
     })).json()
 
     if (status === 'success') {
-      getUser(email)
+      dispatch({ type: 'SET_FOUND_USER', payload: {} })
     } else {
       errorToast(message)
     }

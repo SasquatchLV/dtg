@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTotoContext } from '../../hooks/useTotoContext'
 import styles from './Matches.module.scss'
@@ -20,6 +21,9 @@ const Matches = () => {
   const { getSeasons } = useSeason()
   const { t } = useTranslation()
   const [activeUserIndex, setActiveUserIndex] = useState(null)
+  const navigate = useNavigate()
+
+  const isAdmin = user?.roles?.includes(2000)
 
   const determineStyle = (game) => {
     const style = {
@@ -60,6 +64,27 @@ const Matches = () => {
       getPrizePoolAndUsers()
     }
   }, [user])
+
+  if (!matches.length) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.matchContainer}>
+          <div className={styles.noMatches}>
+            <h2>{t('matches.noMatches')}</h2>
+            {isAdmin && (
+            <button
+              className={styles.adminBtn}
+              onClick={() => navigate('/admin')}
+            >
+              Admin panel
+            </button>
+            )}
+          </div>
+        </div>
+        <Sidebar />
+      </div>
+    )
+  }
 
   return (
     <div className={styles.container}>

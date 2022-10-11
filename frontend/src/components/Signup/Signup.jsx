@@ -13,11 +13,13 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    await signupUser(email, password, fullName)
+    const { status } = await signupUser(email, password, fullName)
 
-    setEmail('')
-    setFullName('')
-    setPassword('')
+    if (status === 'success') {
+      setEmail('')
+      setFullName('')
+      setPassword('')
+    }
   }
 
   return (

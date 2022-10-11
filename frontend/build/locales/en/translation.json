@@ -48,7 +48,8 @@
         "noUser": "No user selected",
         "findUser": "Find user",
         "email": "Users e-mail",
-        "find": "FIND"
+        "find": "FIND",
+        "fullName": "Full name"
     },
     "yes": "Yes",
     "no": "No",
@@ -85,7 +86,7 @@
         "noUnsettled": "No unsettled matches",
         "upcoming": "Upcoming games",
         "finished": "Finished games",
-        "noSeason": "Awaiting a new season to start..."
+        "noMatches": "No matches found"
     },
     "seasons": {
         "errorA": "Already 8 teams in group A",

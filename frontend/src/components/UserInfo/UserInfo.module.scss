@@ -8,7 +8,9 @@
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-    max-height: 275px;
+    height: min-content;
+    max-width: 600px;
+    margin: 1rem auto;
 }
 
 .userLeft {
@@ -75,9 +77,12 @@ hr {
 
 .userGameData li {
     display: grid;
-    grid-template-columns: 25% 50%;
-    column-gap: 0.5rem;
+    grid-template-columns: 35% 50%;
+    column-gap: 0.3rem;
     padding: 0.2rem 0;
+
+    // made by elvis
+    white-space: nowrap;
 }
 
 .userGameData li span:nth-child(1) {
@@ -98,6 +103,7 @@ hr {
     right: 10%;
     max-width: 100px;
     width: 100%;
+    transform: rotate(80deg);
 }
 
 .err {
@@ -105,4 +111,37 @@ hr {
     padding: 10px;
     font-weight: 700;
     color: #e7195a;
+}
+
+.heading {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #7994921c;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: .5rem;
+    row-gap: .5rem;
+}
+
+.userSmallBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #7994921c;
+    }
+}
+
+.userSmallBox img {
+    max-width: 40px;
+    border-radius: 50%;
+    margin: 0;
+    margin-bottom: .5rem;
+}
+
+.userSmallBox span {
+    font-weight: 700;
 }

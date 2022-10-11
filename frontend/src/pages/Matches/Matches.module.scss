@@ -127,7 +127,31 @@ h5 {
     width: 25px;
 }
 
+.noMatches {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+.adminBtn {
+    padding: .3rem 1rem;
+    background-color: var(--secondary);
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        opacity: 0.8;
+    }
+}
 
 @media only screen and (max-width: 1300px) {
     .matches {
