@@ -19,6 +19,7 @@ const PredictCard = ({
   locked,
 }) => {
   const [showingUser, setShowingUser] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const { dispatchModal } = useModalContext()
   const { user } = useAuthContext()
   const { t } = useTranslation()
@@ -47,7 +48,7 @@ const PredictCard = ({
             onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: modalProps })}
           >
             <img
-              src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
+              src="/delete.png"
               alt="delete"
               className={styles.deleteImg}
             />
@@ -59,8 +60,8 @@ const PredictCard = ({
           onClick={() => setShowingUser(!showingUser)}
         >
           <img
-            src="https://cdn-icons-png.flaticon.com/512/1232/1232140.png"
-            alt="delete"
+            src="/bets.png"
+            alt="bets"
             className={styles.participatorImg}
           />
           <span>{usersParticipating.length}</span>
@@ -90,10 +91,38 @@ const PredictCard = ({
           </span>
         </div>
         {hasParticipated ? (
-          <h4 className={styles.info}>
-            <p>{t('matchCard.predictedScore')}</p>
-            <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
-          </h4>
+          <>
+            <h4 className={styles.info}>
+              {isEditing ? (
+                <>
+                  <PredictResult
+                    matchId={_id}
+                    isAdmin={isAdmin}
+                    locked={locked}
+                    usersBet={usersBet}
+                    setIsEditing={setIsEditing}
+                  />
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    {t('matchCard.cancel')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>{t('matchCard.predictedScore')}</p>
+                  <p>{`${usersBet?.homeTeamScore} - ${usersBet?.awayTeamScore}`}</p>
+                  {!locked && (
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    {t('matchCard.edit')}
+                  </button>
+                  )}
+                </>
+              )}
+            </h4>
+          </>
         ) : <PredictResult matchId={_id} isAdmin={isAdmin} locked={locked} />}
       </div>
       {showingUser && <UsersParticipating users={usersParticipating} />}

@@ -10,7 +10,7 @@ class UsersService {
     const { lastFiveGames, avatar, points } = user
 
     // create a token
-    const { token } = await AccessTokenService.createToken({
+    const { token } = await AccessTokenService.getToken({
       userId: user._id,
       userAgent,
     })

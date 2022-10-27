@@ -8,11 +8,13 @@ import styles from './UserModal.module.scss'
 import { avatars } from '../../data/avatars'
 import { useUser } from '../../hooks/useUser'
 import { useTotoContext } from '../../hooks/useTotoContext'
+import { errorToast } from '../../utils/toast'
 
 const UserModal = ({ handleToggle }) => {
   const [avatarSelectionActive, setAvatarSelectionActive] = useState(false)
   const [passwordInputActive, setPasswordInputActive] = useState(false)
   const [newPassValue, setNewPassValue] = useState('')
+  const [newConfirmPassValue, setNewConfirmPassValue] = useState('')
   const { activeUser } = useTotoContext()
   const { user } = useAuthContext()
   const { updateAvatar, changeUserPassword, getUser } = useUser()
@@ -48,54 +50,52 @@ const UserModal = ({ handleToggle }) => {
   const handleClickAway = () => {
     setAvatarSelectionActive(false)
     setPasswordInputActive(false)
+    handleToggle()
   }
 
   const confirmPassword = async (e) => {
     e.preventDefault()
 
-    setPasswordInputActive(false)
+    if (newPassValue !== newConfirmPassValue) {
+      errorToast('Passwords does not match')
+      return
+    }
 
     await changeUserPassword(newPassValue)
+    setPasswordInputActive(false)
   }
 
   return userFound ? (
-    <div className={styles.container}>
-      <div className={styles.leftSide}>
-        <button
-          className={styles.close}
-          onClick={handleToggle}
-        >
-          X
-        </button>
-        <img
-          className={styles.userAvatar}
-          src={activeUser.avatar}
-          alt="avatar"
-        />
-        <button onClick={() => setAvatarSelectionActive(true)}>
-          {t('userModal.changeAvatar')}
-        </button>
-        {avatarSelectionActive && (
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <div className={styles.avatarWrapper}>
-              {avatars.map((avatar) => (
-                <img
-                  key={avatar}
-                  src={avatar}
-                  alt="avatar"
-                  className={styles.avatar}
-                  onClick={() => handleSelection(avatar)}
-                />
-              ))}
-            </div>
-          </ClickAwayListener>
-        )}
-        {!passwordInputActive ? (
-          <button onClick={() => setPasswordInputActive(true)}>
-            {t('userModal.changePassword')}
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <div className={styles.container}>
+        <div className={styles.leftSide}>
+          <i className={styles.fullName}>{activeUser.fullName}</i>
+          <img
+            className={styles.userAvatar}
+            src={activeUser.avatar}
+            alt="avatar"
+          />
+          <button onClick={() => setAvatarSelectionActive(!avatarSelectionActive)}>
+            {t('userModal.changeAvatar')}
           </button>
-        ) : (
-          <ClickAwayListener onClickAway={handleClickAway}>
+          {avatarSelectionActive && (
+          <div className={styles.avatarWrapper}>
+            {avatars.map((avatar) => (
+              <img
+                key={avatar}
+                src={avatar}
+                alt="avatar"
+                className={styles.avatar}
+                onClick={() => handleSelection(avatar)}
+              />
+            ))}
+          </div>
+          )}
+          {!passwordInputActive ? (
+            <button onClick={() => setPasswordInputActive(true)}>
+              {t('userModal.changePassword')}
+            </button>
+          ) : (
             <form
               className={styles.passwordBox}
               onSubmit={(e) => confirmPassword(e)}
@@ -108,35 +108,41 @@ const UserModal = ({ handleToggle }) => {
                 required
                 minLength="8"
               />
+              <input
+                type="password"
+                onChange={(e) => setNewConfirmPassValue(e.target.value)}
+                placeholder={t('placeholder.confirmPassword')}
+                required
+                minLength="8"
+              />
               <button type="submit" className={styles.confirm}>
                 {t('userModal.confirm')}
               </button>
             </form>
-          </ClickAwayListener>
-        )}
-      </div>
-      <div className={styles.rightSide}>
-        <div className={styles.box}>
-          <i className={styles.fullName}>{activeUser.fullName}</i>
-          <span className={styles.title}>{t('userModal.points')}</span>
-          <span className={styles.points}>{`${activeUser.points}p`}</span>
+          )}
         </div>
-        <div className={styles.box}>
-          <span className={styles.title}>{t('userModal.lastGames')}</span>
-          <div className={styles.gameWrapper}>
-            {activeUser.lastFiveGames.map((game, i) => (
-              <span
-                className={styles.won}
-                style={determineStyle(game)}
-                key={i}
-              >
-                {game}
-              </span>
-            ))}
+        <div className={styles.rightSide}>
+          <div className={styles.box}>
+            <span className={styles.title}>{t('userModal.points')}</span>
+            <span className={styles.points}>{`${activeUser.points}p`}</span>
+          </div>
+          <div className={styles.box}>
+            <span className={styles.title}>{t('userModal.lastGames')}</span>
+            <div className={styles.gameWrapper}>
+              {activeUser.lastFiveGames.map((game, i) => (
+                <span
+                  className={styles.won}
+                  style={determineStyle(game)}
+                  key={i}
+                >
+                  {game}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ClickAwayListener>
   ) : null
 }
 

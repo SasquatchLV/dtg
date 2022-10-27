@@ -49,7 +49,7 @@ const FinishedCard = ({
             onClick={() => dispatchModal({ type: 'OPEN_MODAL', payload: modalProps })}
           >
             <img
-              src="https://cdn-icons-png.flaticon.com/32/3221/3221845.png"
+              src="/delete.png"
               alt="delete"
               className={styles.deleteImg}
             />
@@ -60,7 +60,7 @@ const FinishedCard = ({
           onClick={() => setShowingUsers(!showingUsers)}
         >
           <img
-            src="https://cdn-icons-png.flaticon.com/512/1232/1232140.png"
+            src="/bets.png"
             alt="delete"
             className={styles.participatorImg}
           />

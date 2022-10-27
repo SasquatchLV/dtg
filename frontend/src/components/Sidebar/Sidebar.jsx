@@ -36,7 +36,7 @@ const Sidebar = () => {
   return (
     <div className={styles.userContainer}>
       <div className={styles.prizePool}>
-        <img src="https://cdn-icons-png.flaticon.com/512/3112/3112946.png" alt="trophy" className={styles.trophy} />
+        <img src="/trophy.png" alt="trophy" className={styles.trophy} />
         <h4>{`${t('leaderBoard.prize')} ${prizepool}€`}</h4>
       </div>
       <h3 className={styles.title}>TOP 10</h3>

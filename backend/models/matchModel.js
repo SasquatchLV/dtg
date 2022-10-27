@@ -95,6 +95,7 @@ matchSchema.statics.prediction = async function ({
   homeScore,
   awayScore,
   overTime,
+  alreadyParticipating,
 }) {
   const match = await this.findOne({ _id })
 
@@ -110,7 +111,20 @@ matchSchema.statics.prediction = async function ({
     pointsEarned: '',
   }
 
-  match.usersParticipating = [...match.usersParticipating, userPrediction]
+  // Check if user is already participating in this match, if yes, then update the hometeamscore and awayteamscore
+  if (alreadyParticipating) {
+    const updatedUsersParticipating = match.usersParticipating.map((user) => {
+      if (user.email === email) {
+        return userPrediction
+      }
+      return user
+    })
+
+    match.usersParticipating = updatedUsersParticipating
+  } else {
+    match.usersParticipating.push(userPrediction)
+  }
+  
 
   await match.save()
 

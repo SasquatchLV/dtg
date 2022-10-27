@@ -201,7 +201,7 @@ router.get("/all", verifyRoles(ROLE_LIST.User), async (req, res) => {
   }
 })
 
-// get all users route
+// get all paid users route
 router.get("/paid", verifyRoles(ROLE_LIST.User), async (req, res) => {
   try {
     const { users } = await UsersService.getPaidUsers()

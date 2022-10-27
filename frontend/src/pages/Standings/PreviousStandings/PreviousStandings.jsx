@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactTooltip from 'react-tooltip'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
 import { errorToast } from '../../../utils/toast'
@@ -75,12 +76,12 @@ const PreviousStandings = ({ seasonYear }) => {
               <tr>
                 <th>A</th>
                 <th>{t('standings.country')}</th>
-                <th>W</th>
-                <th>L</th>
-                <th>WO</th>
-                <th>WO</th>
-                <th>GP</th>
-                <th>P</th>
+                <th data-tip data-for="wins">W</th>
+                <th data-tip data-for="loses">L</th>
+                <th data-tip data-for="winsOvertime">WO</th>
+                <th data-tip data-for="losesOvertime">LO</th>
+                <th data-tip data-for="gamesPlayed">GP</th>
+                <th data-tip data-for="points">P</th>
               </tr>
             </thead>
             <tbody>
@@ -108,12 +109,12 @@ const PreviousStandings = ({ seasonYear }) => {
               <tr>
                 <th>A</th>
                 <th>{t('standings.country')}</th>
-                <th>W</th>
-                <th>L</th>
-                <th>WO</th>
-                <th>WO</th>
-                <th>GP</th>
-                <th>P</th>
+                <th data-tip data-for="wins">W</th>
+                <th data-tip data-for="loses">L</th>
+                <th data-tip data-for="winsOvertime">WO</th>
+                <th data-tip data-for="losesOvertime">LO</th>
+                <th data-tip data-for="gamesPlayed">GP</th>
+                <th data-tip data-for="points">P</th>
               </tr>
             </thead>
             <tbody>
@@ -192,6 +193,24 @@ const PreviousStandings = ({ seasonYear }) => {
           </table>
         </div>
       </div>
+      <ReactTooltip id="wins" place="top" effect="solid">
+        Wins
+      </ReactTooltip>
+      <ReactTooltip id="loses" place="top" effect="solid">
+        Loses
+      </ReactTooltip>
+      <ReactTooltip id="winsOvertime" place="top" effect="solid">
+        Wins Overtime
+      </ReactTooltip>
+      <ReactTooltip id="losesOvertime" place="top" effect="solid">
+        Loses Overtime
+      </ReactTooltip>
+      <ReactTooltip id="gamesPlayed" place="top" effect="solid">
+        Games Played
+      </ReactTooltip>
+      <ReactTooltip id="points" place="top" effect="solid">
+        Points
+      </ReactTooltip>
     </div>
   )
 }

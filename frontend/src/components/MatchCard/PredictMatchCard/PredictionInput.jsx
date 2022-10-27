@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next'
 import styles from './PredictCard.module.scss'
 import { useMatch } from '../../../hooks/useMatch'
 
-const PredictionInput = ({ matchId, locked }) => {
-  const [homeScore, setHomeScore] = useState('')
-  const [awayScore, setAwayScore] = useState('')
-  const [overTime, setOverTime] = useState(false)
+const PredictionInput = ({
+  matchId, locked, usersBet, setIsEditing,
+}) => {
+  const [homeScore, setHomeScore] = useState(usersBet?.homeTeamScore || 0)
+  const [awayScore, setAwayScore] = useState(usersBet?.awayTeamScore || 0)
   const [submitted, setSubmitted] = useState(false)
-  const { makePrediction } = useMatch()
+  const { makePrediction, getMatches } = useMatch()
   const { t } = useTranslation()
 
   const handleSubmit = async (e) => {
@@ -16,17 +17,11 @@ const PredictionInput = ({ matchId, locked }) => {
 
     setSubmitted(true)
 
-    await makePrediction(matchId, homeScore, awayScore, overTime)
+    await makePrediction(matchId, homeScore, awayScore)
+
+    setSubmitted(false)
+    setIsEditing(false)
   }
-
-  const onlyNumbers = (str) => /^[0-9]+$/.test(str)
-
-  const scoreGapIsOne = (Math.max(homeScore, awayScore) - Math.min(homeScore, awayScore)) === 1
-
-  const evenScore = (homeScore === awayScore)
-
-  const validScore = (homeScore.length > 1 && homeScore[0] === 0) || (awayScore.length > 1 && awayScore[0] === 0)
-  || !onlyNumbers(homeScore) || !onlyNumbers(awayScore)
 
   return (
     !locked ? (
@@ -39,7 +34,7 @@ const PredictionInput = ({ matchId, locked }) => {
               type="number"
               placeholder="0"
               maxLength="2"
-              value={homeScore}
+              value={Number(homeScore).toFixed(0)}
               onChange={(e) => setHomeScore(e.target.value)}
               required
             />
@@ -50,22 +45,16 @@ const PredictionInput = ({ matchId, locked }) => {
               type="number"
               placeholder="0"
               max="2"
-              value={awayScore}
+              value={Number(awayScore).toFixed(0)}
               onChange={(e) => setAwayScore(e.target.value)}
               required
             />
           </div>
-          {scoreGapIsOne && (
-          <div className={styles.inputBox}>
-            <span>OT</span>
-            <input type="checkbox" onChange={() => setOverTime(!overTime)} />
-          </div>
-          )}
         </div>
         <button
           className={styles.predictBtn}
           onClick={(e) => handleSubmit(e)}
-          disabled={evenScore || submitted || validScore}
+          disabled={submitted}
         >
           {t('matchCard.submit')}
         </button>

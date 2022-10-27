@@ -143,9 +143,9 @@ class MatchesService {
 
     const alreadyParticipating = usersParticipating.some((user) => user.email === email)
 
-    if (alreadyParticipating) {
-      throw new Error('Already participating')
-    }
+    // if (alreadyParticipating) {
+    //   throw new Error('Already participating')
+    // }
 
     const timeTillMatch = getTime(new Date(startingTime)) - getTime(new Date())
 
@@ -161,6 +161,7 @@ class MatchesService {
       homeScore,
       awayScore,
       overTime,
+      alreadyParticipating,
     })
 
     return {
@@ -206,7 +207,7 @@ class MatchesService {
     // sort by top winners in points
     match.usersParticipating.sort((a, b) => b - a)
 
-    match.save()
+    await match.save()
 
     let homePoints = 0
     let awayPoints = 0

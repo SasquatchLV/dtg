@@ -24,7 +24,9 @@
         "noBettors": "No bettors for this match",
         "noAdmin": "Admins denied",
         "submit": "Submit",
-        "locked": "Match locked, one hour before start!"
+        "locked": "Match locked, one hour before start!",
+        "edit": "Edit",
+        "cancel": "Cancel"
     },
     "signup": {
         "addUser": "Add new user",
@@ -64,6 +66,7 @@
     "placeholder": {
         "email": "email...",
         "password": "password...",
+        "confirmPassword": "confirm password...",
         "fullName": "name, surname...",
         "year": "year...",
         "country": "country...",

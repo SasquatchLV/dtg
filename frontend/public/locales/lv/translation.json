@@ -24,7 +24,9 @@
         "noBettors": "Spēlei nav dalībnieku",
         "noAdmin": "Admini nepiedalās",
         "submit": "Iesniegt",
-        "locked": "Prognozes slēgtas, stunda līdz sākumam!"
+        "locked": "Prognozes slēgtas, stunda līdz sākumam!",
+        "edit": "Labot",
+        "cancel": "Atcelt"
     },
     "signup": {
         "addUser": "Pievienot jaunu lietotāju",
@@ -64,6 +66,7 @@
     "placeholder": {
         "email": "epasts...",
         "password": "parole...",
+        "confirmPassword": "apstiprināt paroli...",
         "fullName": "vārds, uzvārds...",
         "year": "gads...",
         "country": "valsts...",

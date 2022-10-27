@@ -1,9 +1,9 @@
 .matchOverview {
     display: grid;
     padding: 1rem;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 30% 70%;
     justify-content: space-between;
-    column-gap: 2rem;
+    gap: 1.5rem;
     margin-top: 1rem;
 }
 
