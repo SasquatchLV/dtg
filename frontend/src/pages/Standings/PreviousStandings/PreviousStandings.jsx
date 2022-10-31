@@ -10,13 +10,14 @@ const PreviousStandings = ({ seasonYear }) => {
   const [groupB, setGroupB] = useState([])
   const [topThreeUsers, setTopThreeUsers] = useState([])
   const [overallRanking, setOverallRanking] = useState([])
+  const [matches, setMatches] = useState([])
   const { user } = useAuthContext()
   const { t } = useTranslation()
 
   const getSeason = async () => {
     const response = await fetch(`/api/season/${seasonYear}`)
 
-    const { data: { season: { users, teams } }, status, message } = await response.json()
+    const { data: { season: { users, teams, matches: seasonMatches } }, status, message } = await response.json()
 
     const sortRankingsForTeams = (teamArr) => {
       const sortedEliminatedTeams = teamArr.filter(({ position }) => position === 'eliminated')
@@ -32,6 +33,7 @@ const PreviousStandings = ({ seasonYear }) => {
     if (status === 'success') {
       setGroupA(teams.filter(({ group }) => group === 'A'))
       setGroupB(teams.filter(({ group }) => group === 'B'))
+      setMatches(seasonMatches)
       setTopThreeUsers(users)
       const sortedRankings = sortRankingsForTeams(teams)
       setOverallRanking(sortedRankings)
@@ -58,6 +60,20 @@ const PreviousStandings = ({ seasonYear }) => {
     }
 
     return link
+  }
+
+  const determineWinner = (match) => {
+    let winner = null
+
+    if (match.homeTeamScore > match.awayTeamScore) {
+      winner = '<b>match.homeTeam.country</b>'
+    } else if (match.homeTeamScore < match.awayTeamScore) {
+      winner = '<b>match.awayTeam.country</b>'
+    } else {
+      winner = 'draw'
+    }
+
+    return winner
   }
 
   useEffect(() => {
@@ -135,33 +151,28 @@ const PreviousStandings = ({ seasonYear }) => {
             </tbody>
           </table>
         </div>
-        {topThreeUsers.length ? (
-          <div className={styles.teamWrapper}>
-            <h4>{t('standings.topPredictors')}</h4>
-            <table>
-              <thead>
-                <tr>
-                  <th className={styles.notVisible}>-</th>
-                  <th>Email</th>
-                  <th>{t('standings.points')}</th>
-                  <th>Place</th>
+        <div className={styles.matchWrapper}>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matches.map((match, index) => (
+                <tr key={match._id}>
+                  <td>{index + 1}</td>
+                  <td>{match.homeTeam.country}</td>
+                  <td>{match.awayTeam.country}</td>
+                  <td><b>{`${match.homeTeamScore} - ${match.awayTeamScore}`}</b></td>
                 </tr>
-              </thead>
-              <tbody>
-                {topThreeUsers.map(({
-                  email, avatar, points, _id,
-                }, index) => (
-                  <tr key={_id} className={styles.userRow}>
-                    <td className={styles.avatarCell}><img src={avatar} alt="avatar" className={styles.avatar} /></td>
-                    <td>{email}</td>
-                    <td>{points}</td>
-                    <td><img className={styles.icon} src={determinePlacement(index)} alt="icon" /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : <h4>{t('standings.noPredictors')}</h4>}
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className={styles.right}>
         <div className={styles.overallWrapper}>
@@ -192,6 +203,33 @@ const PreviousStandings = ({ seasonYear }) => {
             </tbody>
           </table>
         </div>
+        {topThreeUsers.length ? (
+          <div className={styles.overallWrapper}>
+            <h4>{t('standings.topPredictors')}</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th className={styles.notVisible}>-</th>
+                  <th>Email</th>
+                  <th>{t('standings.points')}</th>
+                  <th>Place</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topThreeUsers.map(({
+                  email, avatar, points, _id,
+                }, index) => (
+                  <tr key={_id} className={styles.userRow}>
+                    <td className={styles.avatarCell}><img src={avatar} alt="avatar" className={styles.avatar} /></td>
+                    <td>{email}</td>
+                    <td>{points}</td>
+                    <td><img className={styles.icon} src={determinePlacement(index)} alt="icon" /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : <h4>{t('standings.noPredictors')}</h4>}
       </div>
       <ReactTooltip id="wins" place="top" effect="solid">
         Wins

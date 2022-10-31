@@ -89,7 +89,8 @@
         "noUnsettled": "No unsettled matches",
         "upcoming": "Upcoming games",
         "finished": "Finished games",
-        "noMatches": "No matches found"
+        "noMatches": "No matches found",
+        "noSeason": "Currently there is no active season"
     },
     "seasons": {
         "errorA": "Already 8 teams in group A",

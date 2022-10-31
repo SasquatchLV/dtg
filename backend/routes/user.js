@@ -282,5 +282,25 @@ router.get("/:email", verifyRoles(ROLE_LIST.User), async (req, res) => {
   }
 })
 
+router.get("/byname/:fullName", verifyRoles(ROLE_LIST.User), async (req, res) => {
+  const { fullName } = req.params
+
+  try {
+    const { user } = await UsersService.searchSingleUser({ fullName })
+
+    res.send({
+      data: user,
+      message: `${fullName} found`,
+      status: "success",
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      status: "error",
+    })
+  }
+})
+
 
 module.exports = router

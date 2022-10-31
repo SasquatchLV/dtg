@@ -42,6 +42,16 @@ export const useUser = () => {
     }
   }
 
+  const searchUser = async (fullName) => {
+    const { data, status, message } = await (await fetch(`/api/user/byname/${fullName}`)).json()
+
+    if (status === 'success') {
+      dispatch({ type: 'SET_FOUND_USER', payload: data })
+    } else {
+      errorToast(message)
+    }
+  }
+
   const getUsers = async () => {
     const { data, status, message } = await (await fetch('/api/user/all')).json()
 
@@ -161,5 +171,6 @@ export const useUser = () => {
     getUser,
     getPrizePoolAndUsers,
     findUser,
+    searchUser,
   }
 }

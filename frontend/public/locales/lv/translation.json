@@ -89,7 +89,8 @@
         "noUnsettled": "Nav spēles bez rezultāta",
         "upcoming": "Gaidāmās spēles",
         "finished": "Pabeigtas spēles",
-        "noMatches": "Netika atrasta neviena spēle"
+        "noMatches": "Netika atrasta neviena spēle",
+        "noSeason": "Patreiz nav nevienas aktīvas sezonas"
     },
     "seasons": {
         "errorA": "A grupā jau 8 komandas",

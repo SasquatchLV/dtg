@@ -3,6 +3,7 @@ const { formatDistance, getTime } = require('date-fns')
 const Match = require('../models/matchModel')
 const User = require('../models/userModel')
 const Team = require('../models/teamModel')
+const UserService = require('./UsersService')
 
 class MatchesService {
   // get all matches
@@ -190,7 +191,7 @@ class MatchesService {
     for (let x = 0; x < usersParticipating.length; x++) {
       let user = usersParticipating[x];
 
-      const points = await User.determinePoints(
+      const points = await UserService.determinePoints(
         user.email,
         homeScore,
         awayScore,
@@ -201,7 +202,6 @@ class MatchesService {
       );
 
       user.pointsEarned = points;
-      await user.save()
     }
 
     // sort by top winners in points
