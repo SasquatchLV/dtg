@@ -58,6 +58,7 @@ const usersParticipatingSchema = new Schema({
   homeTeamScore: Number,
   awayTeamScore: Number,
   overTime: Boolean,
+  pointsEarned: String,
 })
 
 const matchSchema = new Schema({

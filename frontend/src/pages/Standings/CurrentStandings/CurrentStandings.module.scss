@@ -48,13 +48,13 @@ table {
     width: 50px;
 }
 
-th:nth-child(1) {
-    opacity: 0;
-}
+// th:nth-child(1) {
+//     opacity: 0;
+// }
 
-td:nth-child(1) {
-    text-align: right;
-}
+// td:nth-child(1) {
+//     text-align: right;
+// }
 
 tbody tr {
     background-color: var(--rowBg);

@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip'
 import { useAuthContext } from '../../../hooks/useAuthContext'
 import styles from './PreviousStandings.module.scss'
 import { errorToast } from '../../../utils/toast'
+import UsersParticipating from '../../../components/UsersParticipating/UsersParticipating'
 
 const PreviousStandings = ({ seasonYear }) => {
   const [groupA, setGroupA] = useState([])
@@ -11,6 +12,7 @@ const PreviousStandings = ({ seasonYear }) => {
   const [topThreeUsers, setTopThreeUsers] = useState([])
   const [overallRanking, setOverallRanking] = useState([])
   const [matches, setMatches] = useState([])
+  const [showingUser, setShowingUser] = useState([])
   const { user } = useAuthContext()
   const { t } = useTranslation()
 
@@ -18,7 +20,6 @@ const PreviousStandings = ({ seasonYear }) => {
     const response = await fetch(`/api/season/${seasonYear}`)
 
     const { data: { season: { users, teams, matches: seasonMatches } }, status, message } = await response.json()
-
     const sortRankingsForTeams = (teamArr) => {
       const sortedEliminatedTeams = teamArr.filter(({ position }) => position === 'eliminated')
       const sortedPlayoffTeams = teamArr.filter(
@@ -62,15 +63,12 @@ const PreviousStandings = ({ seasonYear }) => {
     return link
   }
 
-  const determineWinner = (match) => {
-    let winner = null
+  const determineWinner = (team1, team2) => {
+    let winner = 'home'
+    const awayWon = team1 < team2
 
-    if (match.homeTeamScore > match.awayTeamScore) {
-      winner = '<b>match.homeTeam.country</b>'
-    } else if (match.homeTeamScore < match.awayTeamScore) {
-      winner = '<b>match.awayTeam.country</b>'
-    } else {
-      winner = 'draw'
+    if (awayWon) {
+      winner = 'away'
     }
 
     return winner
@@ -90,7 +88,7 @@ const PreviousStandings = ({ seasonYear }) => {
           <table>
             <thead>
               <tr>
-                <th>A</th>
+                <th className="hidden">A</th>
                 <th>{t('standings.country')}</th>
                 <th data-tip data-for="wins">W</th>
                 <th data-tip data-for="loses">L</th>
@@ -123,7 +121,7 @@ const PreviousStandings = ({ seasonYear }) => {
           <table>
             <thead>
               <tr>
-                <th>A</th>
+                <th className="hidden">A</th>
                 <th>{t('standings.country')}</th>
                 <th data-tip data-for="wins">W</th>
                 <th data-tip data-for="loses">L</th>
@@ -155,21 +153,85 @@ const PreviousStandings = ({ seasonYear }) => {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th>Bettors</th>
+                <th>Game Type</th>
                 <th>Home Team</th>
                 <th>Away Team</th>
                 <th>Score</th>
               </tr>
             </thead>
             <tbody>
-              {matches.map((match, index) => (
-                <tr key={match._id}>
-                  <td>{index + 1}</td>
-                  <td>{match.homeTeam.country}</td>
-                  <td>{match.awayTeam.country}</td>
-                  <td><b>{`${match.homeTeamScore} - ${match.awayTeamScore}`}</b></td>
-                </tr>
-              ))}
+              {matches.map((match) => {
+                const {
+                  homeTeamScore, awayTeamScore, _id, usersParticipating,
+                } = match
+
+                // const sortedUsers = usersParticipating.map((player) => ({
+                //   ...player,
+                //   pointsEarned: player.pointsEarned?.slice(1),
+                // })).sort((a, b) => b.pointsEarned - a.pointsEarned)
+
+                return (
+                  <>
+                    <tr>
+                      <td>
+                        <button
+                          className={styles.participators}
+                          onClick={() => {
+                            if (showingUser.includes(_id)) {
+                              const newShowingUser = showingUser.filter(
+                                (id) => id !== _id,
+                              )
+                              setShowingUser(newShowingUser)
+                            } else {
+                              setShowingUser([...showingUser, _id])
+                            }
+                          }}
+                        >
+                          <img
+                            src="/bets.png"
+                            alt="bets"
+                            className={styles.participatorImg}
+                          />
+                          <span>{match.usersParticipating.length}</span>
+                        </button>
+                      </td>
+                      <td>
+                        {match.title}
+                      </td>
+                      <td className={determineWinner(homeTeamScore, awayTeamScore) === 'home' ? 'bolder' : ''}>
+                        {match.homeTeam.country}
+                      </td>
+                      <td className={determineWinner(homeTeamScore, awayTeamScore) === 'away' ? 'bolder' : ''}>
+                        {match.awayTeam.country}
+                      </td>
+                      <td className={styles.matchScore}>
+                        <span className={determineWinner(homeTeamScore, awayTeamScore) === 'home' ? 'bolder' : ''}>
+                          {homeTeamScore}
+                        </span>
+                        <span>
+                          -
+                        </span>
+                        <span className={determineWinner(homeTeamScore, awayTeamScore) === 'away' ? 'bolder' : ''}>
+                          {awayTeamScore}
+                        </span>
+                        {match.overTime && (
+                        <span>
+                          OT
+                        </span>
+                        )}
+                      </td>
+                    </tr>
+                    {showingUser?.includes(_id) && (
+                    <tr>
+                      <th scope="row" colSpan="5">
+                        <UsersParticipating users={usersParticipating} />
+                      </th>
+                    </tr>
+                    )}
+                  </>
+                )
+              })}
             </tbody>
           </table>
         </div>
@@ -180,7 +242,7 @@ const PreviousStandings = ({ seasonYear }) => {
           <table>
             <thead>
               <tr>
-                <th>-</th>
+                <th className="hidden">-</th>
                 <th>{t('standings.rank')}</th>
                 <th>{t('standings.country')}</th>
               </tr>

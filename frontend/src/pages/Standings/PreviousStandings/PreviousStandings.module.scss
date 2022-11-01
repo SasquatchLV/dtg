@@ -19,6 +19,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
+    align-content: flex-start;
 }
 
 .teamWrapper {
@@ -54,6 +55,31 @@
     background-color: #7994921c;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     height: min-content;
+}
+
+.matchScore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
+.participators {
+    background-color: transparent;
+    border: none;
+    opacity: 0.6;
+    cursor: pointer;
+    font-weight: 700;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: none;
+    }
+}
+
+.participatorImg {
+    max-width: 25px;
+    width: 100%;
 }
 
 .overallWrapper {

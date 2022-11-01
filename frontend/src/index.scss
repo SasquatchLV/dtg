@@ -41,6 +41,14 @@ body {
   position: relative;
 }
 
+.hidden {
+  opacity: 0;
+}
+
+.bolder {
+  font-weight: 700;
+}
+
 input {
   min-width: 40px;
 }

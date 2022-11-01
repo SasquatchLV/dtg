@@ -4,6 +4,7 @@ import styles from './UsersParticipating.module.scss'
 
 const UsersParticipating = ({ users }) => {
   const { t } = useTranslation()
+  const sorted = users.sort((a, b) => b.pointsEarned?.localeCompare(a.pointsEarned))
 
   const determineStyle = (game) => {
     const style = {
@@ -23,9 +24,9 @@ const UsersParticipating = ({ users }) => {
 
   return (
     <div className={styles.container}>
-      {users.length ? (
+      {sorted.length ? (
         <ul>
-          {users.map(({
+          {sorted.map(({
             email, homeTeamScore, awayTeamScore, overTime, pointsEarned,
           }, i) => (
             <li key={i} className={styles.row}>
